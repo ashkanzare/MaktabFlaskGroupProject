@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}پروفایل{% endblock %}
+{% block style %}
+    <style>
+        #profile {
+            text-align: right;
+        }
+
+        .card-body span {
+            color: rgba(0,0,0,0.61)
+        }
+    </style>
+{% endblock %}
+{% block active_profile %}active{% endblock %}
+{% block content %}
+{% if user %}
+    <div class="container d-flex justify-content-center mt-5" id="profile">
+         <div class="card shadow" style="width: 50rem;">
+              <img class="card-img-top mx-auto d-block mt-2" src="{{ url_for('static', filename=user.photo ) }}" alt="Card image cap" style="width: 18rem; height: 18rem; border-radius: 50%">
+              <div class="card-body">
+                    <h3 class="card-title">اطلاعات کابر</h3>
+                    <h4 class="mt-4">نام:  <span>{{ user.first_name|capitalize }}</span></h4>
+                    <h4 class="mt-4">نام خانوادگی:  <span>{{ user.last_name|capitalize }}</span></h4>
+                    <h4 class="mt-4">نام کاربری:  <span>{{ user.username|capitalize }}</span></h4>
+                    <h4 class="mt-4">ایمیل:  <span>{{ user.email|capitalize }}</span></h4>
+
+                    <a href="{{ url_for('user.edit_profile') }}" class="btn btn-primary mt-5">ویرایش اطلاعات</a>
+              </div>
+        </div>
+    </div>
+{% else %}
+
+{% endif %}
+
+{% endblock %}

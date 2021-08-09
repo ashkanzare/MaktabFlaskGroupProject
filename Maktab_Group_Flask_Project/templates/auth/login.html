@@ -1,0 +1,45 @@
+{% extends "base_login_restore.html" %}
+{% block head %}
+    {{ super() }}
+    <title>ثبت نام</title>
+{% endblock %}
+{% block content %}
+
+    {% with messages = get_flashed_messages() %}
+						 {% if messages %}
+							   {% for message in messages %}
+                                   {% if message == 'ابتدا باید ثبت نام کنید' or message == 'ثبت نام شما با موفقیت انجام شد' %}
+                                <div role="alert">
+                                        <span style="color: green; font-family: Ubuntu-Bold, sans-serif">{{ message }}</span>
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close" >
+                                        <span style="color: green" aria-hidden="true">×</span>
+                                        </button>
+                                    </div>
+                                   {% endif %}
+							   {% endfor %}
+						 {% endif %}
+                        {% endwith %}
+<div class="text-center mt-3">
+    <h3>
+           ورود
+    </h3>
+</div>
+<form method="post"  class="text-right">
+      <div class="form-group">
+        <label for="username">نام کاربری</label>
+        <input type="text" name="username" class="form-control" id="username" placeholder="نام کاربری خود را وارد کنید">
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">رمز عبور</label>
+        <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="رمز عبور خود را وارد کنید">
+      </div>
+      <div class="text-center">
+        <button type="submit" class="btn btn-primary">ورود</button>
+      </div>
+      <div class="mt-2 mb-2 text-center">
+            <a href="{{ url_for('home.home') }}">
+                                    بازگشت به خانه
+            </a>
+       </div>
+</form>
+{% endblock %}

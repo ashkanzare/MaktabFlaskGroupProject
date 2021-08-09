@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block title %}پست های من{% endblock %}
+{% block active_profile %}active{% endblock %}
+{% block content %}
+    <div class="container d-flex mt-5 flex-column align-items-center" id="profile">
+        {% for post in posts %}
+             <div class="card shadow text-right mt-2" style="width: inherit">
+                  <img class="card-img-top mx-auto d-block mt-2 cover " style="height: 20rem; width: auto;" src="{{ url_for('static', filename=post.image ) }}" alt="Card image cap">
+                  <div class="card-body">
+                        <h3 class="card-title" style="height: 5rem">{{ post.title }}</h3>
+                        <p class="mt-4">دسته:<span class="mr-2"><a href="#">{{ post.category.name }}</a></span></p>
+                        <div class="d-flex">
+                            <div class="likes-comments">
+                                <i class="fas fa-thumbs-up m-2" aria-hidden="true" style="font-size: 150%; color: green"></i>
+                                <span class="likes-comments-count" style="color: green">{{ post.likes_count }}</span>
+                                <span class="tooltiptext">دیدن لایک ها</span>
+                            </div>
+                            <div class="likes-comments">
+                                <i class="fas fa-thumbs-down m-2" style="font-size: 150%; color: red"></i>
+                                <span class="likes-comments-count" style="color: red">{{ post.dislikes_count }}</span>
+                                <span class="tooltiptext">دیدن دیس لایک ها</span>
+                            </div>
+                            <div class="likes-comments">
+                                <i class="fa fa-comments m-2" aria-hidden="true" style="font-size: 150%"></i>
+                                <span class="likes-comments-count">{{ post.comments_count }}</span>
+                                <span class="tooltiptext">دیدن کامنت ها</span>
+                            </div>
+                        </div>
+                        <p class="mt-5" style="font-size: 90%; text-align: justify;">{{ post.content }}</p>
+                        <div class="pt-3">
+                            <p>برچسب ها:</p>
+                            <ul class="tags">
+                                {% for tag in post.tags %}
+                                    <li><a href="#" class="text-white">{{ tag }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        <div></div>
+                        </div>
+                        <a href="#" class="btn btn-primary mt-5">ویرایش پست</a>
+                        <a href="{{ url_for('user.delete_post', variable=post.id)  }}" class="btn btn-danger mt-5">حذف پست</a>
+
+                  </div>
+            </div>
+
+        {% endfor %}
+    </div>
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends "base_login_restore.html" %}
+{% block head %}
+    {{ super() }}
+    <title>Restore</title>
+
+{% endblock %}
+{% block content %}
+
+{% if info == None %}
+
+<form class="login100-form validate-form p-l-55 p-r-55 p-t-100 " method="post">
+    <span class="login100-form-title m-t-0">
+						Restore Info
+					</span>
+    <h5 style="margin-top: 15%; margin-bottom: 10%">Enter the email address you entered when signing up: (may take a few seconds)</h5>
+    <div class="wrap-input100">
+            <input class="input100 mb-3" type="email" name="email" placeholder="Email">
+			<span class="focus-input100"></span>
+			</div>
+            {% with messages = get_flashed_messages() %}
+                 {% if messages %}
+                       {% for message in messages %}
+                            <div class="text-danger" style="margin-left: 15%; margin-top: 5%;">{{ message }}</div>
+                       {% endfor %}
+                 {% endif %}
+              {% endwith %}
+
+                <div class="container-login100-form-btn mb-5 mt-3">
+                    <button class="login100-form-btn" onclick="show_loading()">
+                        Submit
+                    </button>
+                </div>
+
+            </form>
+
+{% else %}
+<form class="login100-form validate-form p-l-55 p-r-55 p-t-100 ">
+        <span class="login100-form-title m-t-0 mb-5 ">
+						Information Recovery
+					</span>
+					<div class="p-t-13 p-b-95 text-center">
+						<p class="txt1 m-t-100"  style="font-size: 140%">
+                            The information recovery email has been sent
+                            to your email address!
+                            please check your email (spam folder too)
+						</p>
+                    </div>
+                <div class="flex-col-c p-t-170 p-b-40">
+                        <a href="{{ url_for('home.home') }}" class="txt3">
+                            Back to home
+                        </a>
+					</div>
+
+</form>
+
+{% endif %}
+{% endblock %}
