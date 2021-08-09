@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 {% block title %}پست های من{% endblock %}
 {% block active_profile %}active{% endblock %}
+{% block font %}
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+{% endblock %}
 {% block content %}
     <div class="container d-flex mt-5 flex-column align-items-center" id="profile">
         {% for post in posts %}
@@ -8,7 +11,7 @@
                   <img class="card-img-top mx-auto d-block mt-2 cover " style="height: 20rem; width: auto;" src="{{ url_for('static', filename=post.image ) }}" alt="Card image cap">
                   <div class="card-body">
                         <h3 class="card-title" style="height: 5rem">{{ post.title }}</h3>
-                        <p class="mt-4">دسته:<span class="mr-2"><a href="#">{{ post.category.name }}</a></span></p>
+                        <p class="mt-2 mb-4">دسته:<span class="mr-2"><a href="#">{{ post.category.name }}</a></span></p>
                         <div class="d-flex">
                             <div class="likes-comments">
                                 <i class="fas fa-thumbs-up m-2" aria-hidden="true" style="font-size: 150%; color: green"></i>
@@ -24,6 +27,15 @@
                                 <i class="fa fa-comments m-2" aria-hidden="true" style="font-size: 150%"></i>
                                 <span class="likes-comments-count">{{ post.comments_count }}</span>
                                 <span class="tooltiptext">دیدن کامنت ها</span>
+                            </div>
+                            <div class="likes-comments">
+                                {% if post.is_active %}
+                                    <i class="fa fa-eye m-2 text-dark" aria-hidden="true" style="font-size: 150%"></i>
+                                     <span class="likes-comments-count text-dark">فعال</span>
+                                {% else %}
+                                    <i class="fa fa-eye-slash m-2 text-secondary" aria-hidden="true" style="font-size: 150%"></i>
+                                     <span class="likes-comments-count text-secondary">غیرفعال</span>
+                                {% endif %}
                             </div>
                         </div>
                         <p class="mt-5" style="font-size: 90%; text-align: justify;">{{ post.content }}</p>
