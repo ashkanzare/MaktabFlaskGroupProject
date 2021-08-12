@@ -17,29 +17,13 @@ function clearInputError(inputElement) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    const loginForm = document.querySelector("#login");
     const createAccountForm = document.querySelector("#createAccount");
-    const ForgetPasswordForm = document.querySelector("#ForgetPassword")
-
-
-    loginForm.addEventListener("submit", e => {
-
-        if ($("#username").val() === "") {
-            e.preventDefault();
-            setFormMessage(loginForm, "error", "نام کاربری را وارد گنید");
-        }
-        else if ($("#password").val() === "") {
-            e.preventDefault();
-            setFormMessage(loginForm, "error", "رمز عبور را وارد گنید");
-        }
-
-
-    });
 
     createAccountForm.addEventListener("submit", e => {
 
         if ($("#name").val() === "") {
             e.preventDefault();
+            console.log('yeeees')
             setFormMessage(createAccountForm, "error", "نام خود را وارد کنید");
         }
         else if ($("#lastname").val() === "") {
@@ -54,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
             e.preventDefault();
             setFormMessage(createAccountForm, "error", "رمز عبور را وارد کنید");
         }
-        else if ($("#re_password").val() !== $("#re_password").val()) {
+        else if ($("#re_password").val() !== $("#password").val()) {
             e.preventDefault();
             setFormMessage(createAccountForm, "error", "رمز عبور با تکرار آن تطابق ندارد");
         }
@@ -67,7 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (e.target.id === "signupUsername" && e.target.value.length > 0 && e.target.value.length < 5) {
                 setInputError(inputElement, "نام کاربری باید حداقل 5 حرف باشد");
             }
-        }); 
+        });
 
         inputElement.addEventListener("input", e => {
             clearInputError(inputElement);

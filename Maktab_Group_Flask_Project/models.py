@@ -20,7 +20,7 @@ class User(db.Document):
 
 class Category(db.Document):
     name = db.StringField(max_length=30, required=True)
-    children = db.ListField(db.ReferenceField('self'), required=False, null=True)
+    parent = db.ReferenceField('self', required=False, null=True)
 
     def __str__(self):
         return self.name

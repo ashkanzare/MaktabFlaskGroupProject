@@ -17,23 +17,19 @@ body {
     --color-secondary: #252c6a;
     --color-error: #cc3333;
     --color-success: #4bb544;
-    --border-radius: 4px;
+    --border-radius: 10px;
     --color-title: #686b6a;
-    margin: 0;
-    margin-top: 11%;
+    margin: 11% 0 0;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 18px;
-    background-image: url("/picture/full01.jpg");
+    background-image: url("../../static/img/full01.jpg");
     background-size: cover;
     height: auto;
-    background-position: center top; //adjust according to you need
+    background-position: center top;
     background-repeat: no-repeat;
-    padding-top: 10rem; //adjust according to your need
-    padding-bottom:3rem; //adjust according to your need
-    padding-left:inherit;
-    padding-right:inherit;
+    padding: 10rem 0 10rem;
 }
 
 .container {
@@ -46,17 +42,13 @@ body {
     background: #ffffff;
 }
 
-.container,
 .form__input{
     font: 500 1rem 'Quicksand', sans-serif;
     text-align: right;
-    font-family: "byekan";
+    font-family: "byekan", sans-serif;
 }
 .form__button {
     font: 500 1rem 'Quicksand', sans-serif;
-}
-.form--hidden {
-    display: none;
 }
 
 .form > *:first-child {
@@ -70,9 +62,9 @@ body {
 .form__title {
     margin-bottom: 2rem;
     text-align: center;
-    font-family: "byekan";
+    font-family: "byekan", sans-serif;
     color:var(--color-title);
-    text-shadow: 1px 1px 2px black, 0 0 25px #484646, 0 0 5px #525254;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.42), 0 0 50px rgba(72, 70, 70, 0.58), 0 0 5px rgba(82, 82, 84, 0.52);
 }
 
 .form__message {
@@ -130,7 +122,7 @@ body {
     border: none;
     border-radius: var(--border-radius);
     outline: none;
-    font-family: "byekan";
+    font-family: "byekan", sans-serif;
     cursor: pointer;
     background: var(--color-primary);
 }
@@ -151,10 +143,11 @@ body {
     color: var(--color-secondary);
     text-decoration: none;
     cursor: pointer;
-    font-family: "byekan";
-    text-shadow: 1px 1px 2px #525254 , 0 0 5px #00ff55 ;
+    font-family: "byekan", sans-serif;
+    text-shadow: 1px 1px 2px rgba(82, 82, 84, 0.6), 0 0 5px rgba(0, 255, 85, 0.56);
 }
 
 .form__link:hover {
     text-decoration: underline;
 }
+
