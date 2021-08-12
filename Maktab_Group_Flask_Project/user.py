@@ -9,7 +9,7 @@ from hashlib import sha256
 bp = Blueprint("user", __name__)
 
 
-# bakhshe profile va post-list va ejade post
+# bakhshe profile va post-list va ejade posts
 
 @bp.route('/profile/')
 def profile():

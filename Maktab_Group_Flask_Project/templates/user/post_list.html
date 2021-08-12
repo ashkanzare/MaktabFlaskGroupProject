@@ -6,25 +6,28 @@
 {% endblock %}
 {% block content %}
     <div class="container d-flex mt-5 flex-column align-items-center" id="profile">
+        <div>
+            <h3 class="text-secondary">پست های من</h3>
+        </div>
         {% for post in posts %}
              <div class="card shadow text-right mt-2" style="width: inherit">
-                  <img class="card-img-top mx-auto d-block mt-2 cover " style="height: 20rem; width: auto;" src="{{ url_for('static', filename=post.image ) }}" alt="Card image cap">
+                  <img class="card-img-top mx-auto d-block mt-2 cover" style="height: 20rem; width: auto" src="{{ url_for('static', filename=post.image ) }}" alt="Card image cap">
                   <div class="card-body">
                         <h3 class="card-title" style="height: 5rem">{{ post.title }}</h3>
                         <p class="mt-2 mb-4">دسته:<span class="mr-2"><a href="#">{{ post.category.name }}</a></span></p>
                         <div class="d-flex">
                             <div class="likes-comments">
-                                <i class="fas fa-thumbs-up m-2" aria-hidden="true" style="font-size: 150%; color: green"></i>
+                                <i class="fas fa-thumbs-up m-2 text-success" aria-hidden="true" style="font-size: 150%;"></i>
                                 <span class="likes-comments-count" style="color: green">{{ post.likes_count }}</span>
                                 <span class="tooltiptext">دیدن لایک ها</span>
                             </div>
                             <div class="likes-comments">
-                                <i class="fas fa-thumbs-down m-2" style="font-size: 150%; color: red"></i>
+                                <i class="fas fa-thumbs-down m-2 text-danger" style="font-size: 150%;"></i>
                                 <span class="likes-comments-count" style="color: red">{{ post.dislikes_count }}</span>
                                 <span class="tooltiptext">دیدن دیس لایک ها</span>
                             </div>
                             <div class="likes-comments">
-                                <i class="fa fa-comments m-2" aria-hidden="true" style="font-size: 150%"></i>
+                                <i class="fa fa-comments m-2 text-dark" aria-hidden="true" style="font-size: 150%"></i>
                                 <span class="likes-comments-count">{{ post.comments_count }}</span>
                                 <span class="tooltiptext">دیدن کامنت ها</span>
                             </div>

@@ -11,6 +11,7 @@
                   <img class="card-img-top mx-auto d-block mt-2 cover " style="height: 20rem; width: auto;" src="{{ url_for('static', filename=post.image ) }}" alt="Card image cap">
                   <div class="card-body">
                         <h3 class="card-title" style="height: 5rem">{{ post.title }}</h3>
+                        <p class="mt-2 mb-4">نویسنده:<span class="mr-2"><a href="#">{{ post.author.username|capitalize }}</a></span></p>
                         <p class="mt-2 mb-4">دسته:<span class="mr-2"><a href="#">{{ post.category.name }}</a></span></p>
                         <div class="d-flex">
                             <div class="likes-comments">
@@ -28,7 +29,7 @@
                         </div>
                         <div class="d-flex mt-3">
                             <div class="ml-3 text-success"><span class="ml-2">{{ post.likes_count }}</span>لایک</div>
-                            <div class="ml-3 text-success"><span>|</span></div>
+                            <div class="ml-3"><span>|</span></div>
                             <div class="text-danger"><span class="ml-2">{{ post.dislikes_count }}</span>دیس لایک</div>
                         </div>
                         <p class="mt-5" style="font-size: 90%; text-align: justify;">{{ post.content }}</p>
