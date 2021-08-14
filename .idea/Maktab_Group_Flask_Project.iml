@@ -19,6 +19,8 @@
     <orderEntry type="library" name="bootstrap-tagsinput" level="application" />
     <orderEntry type="library" name="twitter-bootstrap" level="application" />
     <orderEntry type="library" name="BKoodakBold" level="application" />
+    <orderEntry type="library" name="8a6d8ba80e" level="application" />
+    <orderEntry type="library" name="53bbe38c27" level="application" />
   </component>
   <component name="TemplatesService">
     <option name="TEMPLATE_CONFIGURATION" value="Jinja2" />

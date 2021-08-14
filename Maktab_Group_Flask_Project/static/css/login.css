@@ -1,0 +1,153 @@
+
+@font-face {
+font-family: 'byekan';
+src: url('../fonts/BYekan.eot');
+src: url('../fonts/BYekan.woff') format('woff');
+url('../fonts/BYekan.ttf') format('truetype');
+
+font-weight: normal;
+font-style: normal;
+}
+
+
+
+body {
+    --color-primary: #009579;
+    --color-primary-dark: #007f67;
+    --color-secondary: #252c6a;
+    --color-error: #cc3333;
+    --color-success: #4bb544;
+    --border-radius: 10px;
+    --color-title: #686b6a;
+    margin: 11% 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    background-image: url("../../static/img/full01.jpg");
+    background-size: cover;
+    height: auto;
+    background-position: center top;
+    background-repeat: no-repeat;
+    padding: 10rem 0 10rem;
+}
+
+.container {
+    width: 400px;
+    max-width: 400px;
+    margin: 1rem;
+    padding: 2rem;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.2);
+    border-radius: var(--border-radius);
+    background: #ffffff;
+}
+
+.form__input{
+    font: 500 1rem 'Quicksand', sans-serif;
+    text-align: right;
+    font-family: "byekan", sans-serif;
+}
+.form__button {
+    font: 500 1rem 'Quicksand', sans-serif;
+}
+
+.form > *:first-child {
+    margin-top: 0;
+}
+
+.form > *:last-child {
+    margin-bottom: 0;
+}
+
+.form__title {
+    margin-bottom: 2rem;
+    text-align: center;
+    font-family: "byekan", sans-serif;
+    color:var(--color-title);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.42), 0 0 50px rgba(72, 70, 70, 0.58), 0 0 5px rgba(82, 82, 84, 0.52);
+}
+
+.form__message {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.form__message--success {
+    color: var(--color-success);
+}
+
+.form__message--error {
+    color: var(--color-error);
+}
+
+.form__input-group {
+    margin-bottom: 1rem;
+    text-align: left;
+}
+
+.form__input {
+    display: block;
+    width: 100%;
+    padding: 0.75rem;
+    box-sizing: border-box;
+    border-radius: var(--border-radius);
+    border: 1px solid #dddddd;
+    outline: none;
+    background: #eeeeee;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.form__input:focus {
+    border-color: var(--color-primary);
+    background: #ffffff;
+}
+
+.form__input--error {
+    color: var(--color-error);
+    border-color: var(--color-error);
+}
+
+.form__input-error-message {
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--color-error);
+}
+
+.form__button {
+    width: 100%;
+    padding: 1rem 2rem;
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: #ffffff;
+    border: none;
+    border-radius: var(--border-radius);
+    outline: none;
+    font-family: "byekan", sans-serif;
+    cursor: pointer;
+    background: var(--color-primary);
+}
+
+.form__button:hover {
+    background: var(--color-primary-dark);
+}
+
+.form__button:active {
+    transform: scale(0.98);
+}
+
+.form__text {
+    text-align: center;
+}
+
+.form__link {
+    color: var(--color-secondary);
+    text-decoration: none;
+    cursor: pointer;
+    font-family: "byekan", sans-serif;
+    text-shadow: 1px 1px 2px rgba(82, 82, 84, 0.6), 0 0 5px rgba(0, 255, 85, 0.56);
+}
+
+.form__link:hover {
+    text-decoration: underline;
+}
+

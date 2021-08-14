@@ -13,11 +13,6 @@ def get_db():
     again.
     """
     if "db" not in g:
-        current_app.config['MONGODB_SETTINGS'] = {
-            'db': 'Blog',
-            'host': 'localhost',
-            'port': 27017
-        }
         db = MongoEngine()
         db.init_app(current_app)
         g.db = db

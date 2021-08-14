@@ -9,7 +9,7 @@ from hashlib import sha256
 bp = Blueprint("user", __name__)
 
 
-# bakhshe profile va post-list va ejade post
+# bakhshe profile va post-list va ejade posts
 
 @bp.route('/profile/')
 def profile():
@@ -53,19 +53,11 @@ def edit_profile():
         user.email = request.form['email'].lower()
         user.phone = request.form['email'].lower()
         user.photo = photo
-        print(photo)
         if password != '' and re_password != '':
             user.password = generate_password_hash(password)
         user.save()
         return render_template('user/profile.html', user=user)
     return render_template('user/edit_profile.html')
-
-
-@bp.route('/post-list/')
-def post_list():
-    user = g.user
-    user_post = Post.objects(author=user)
-    return render_template('user/post_list.html', posts=user_post)
 
 
 @bp.route('/<variable>/delete_post/')
@@ -128,7 +120,7 @@ def create_post():
                     new_tag = Tag.objects(name=i.strip()).first()
                     new_tag.update(push__posts=new_post)
                     new_tag.save()
-        return render_template('user/profile.html')
+        return redirect(url_for('user.post_list'))
     else:
         tags = Tag.objects().limit(6)
         categories = Category.objects()
@@ -136,6 +128,13 @@ def create_post():
         for tag in tags:
             tags_str = f"{tags_str}, {tag.name}"
         return render_template('user/create.html', tags=tags_str, categories=categories)
+
+
+@bp.route('/post-list/')
+def post_list():
+    user = g.user
+    user_post = Post.objects(author=user)
+    return render_template('user/post_list.html', posts=user_post)
 #
 #
 # @bp.route('/edit-post/')
