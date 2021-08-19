@@ -122,6 +122,8 @@ def create_post():
                     new_tag.save()
         return redirect(url_for('user.post_list'))
     else:
+        c1 = Category(name='first')
+        c1.save()
         tags = Tag.objects().limit(6)
         categories = Category.objects()
         tags_str = ''
@@ -135,8 +137,64 @@ def post_list():
     user = g.user
     user_post = Post.objects(author=user)
     return render_template('user/post_list.html', posts=user_post)
-#
-#
-# @bp.route('/edit-post/')
-# def edit_post():
-#     return render_template('edit_post.html', username=None)
+
+
+@bp.route('/<variable>/edit_post/',methods=['POST', 'GET'])
+def edit_post(variable):
+    post = Post.objects(id=variable).first()
+    user = g.user
+
+    if request.method == 'POST':
+        try:
+            check_active_exist = request.form['is_active']
+            is_active = True
+        except:
+            is_active = False
+        tags = []
+        if request.form['invisible']:
+            tags = request.form['invisible'].split(',')
+        post.title = request.form['title']
+        category_name = request.form['category']
+        post.category = Category.objects(name=category_name.strip()).first()
+        if request.files['file']:
+            post.image = request.files['file']
+            ext = post.image.filename.split('.')[-1]
+            final_image = ''
+            posts_len = Post.objects().count()
+            if post.image:
+                try:
+                    os.makedirs(f'static/media/posts/post_{posts_len + 1}/')
+                except FileExistsError:
+                    pass
+                path = f'static/media/posts/post_{posts_len + 1}/' + \
+                       sha256(request.form['title'].encode()).hexdigest() + '.' + ext
+                post.image.save(path)
+                final_image = path[7:]
+                post.image = final_image
+
+            else:
+                post.image = post.image
+
+        post.content = request.form['content']
+
+
+        post.save()
+        if tags:
+            for i in tags:
+                if not Tag.objects(name=i.strip()).first():
+                    c_tag = Tag(name=i.strip())
+                    c_tag.save()
+                    c_tag.update(push__posts=post)
+                    c_tag.save()
+                else:
+                    c_tag = Tag.objects(name=i.strip()).first()
+                    c_tag.update(push__posts=post)
+                    c_tag.save()
+        return redirect(url_for('user.post_list'))
+    else:
+        tags = Tag.objects().limit(6)
+        categories = Category.objects()
+        tags_str = ''
+        for tag in tags:
+            tags_str = f"{tags_str}, {tag.name}"
+    return render_template('user/edit_post.html', post=post, tags=tags_str, categories=categories )
