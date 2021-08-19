@@ -74,4 +74,4 @@ class Comment(db.Document):
 
     @classmethod
     def top_3_comment(cls, post):
-        return Comment.objects(post=post)
+        return Comment.objects(post=post).limit(3)
