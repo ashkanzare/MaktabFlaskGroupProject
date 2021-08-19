@@ -16,3 +16,22 @@ def list_post():
         post['author'] = User.objects(pk=post['author']['$oid']).first().username
         post['category'] = str(Category.objects(pk=post['category']['$oid']).first().name)
     return json.dumps(json_posts)
+
+@bp.route('/delete_post/<variable>',methods =['POST','GET'])
+def delete_post(variable):
+    post = Post.objects(id=variable).first()
+    if post:
+        Tag.objects(posts=post).update(pull__posts=post)
+        post.delete()
+    return redirect(url_for("user.post_list"))
+
+
+
+@bp.route('/deactive_post/<variable>',methods =['POST','GET'])
+def deactive_post(variable):
+    post = Post.objects(id=variable).first()
+    if post.is_active:
+        post.update(is_active =False)
+    else:
+        post.update(is_active = True)
+    return redirect(url_for('user.post_list'))
