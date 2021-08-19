@@ -22,8 +22,8 @@
                     <h4 class="mt-4">نام:  <span>{{ user.first_name|capitalize }}</span></h4>
                     <h4 class="mt-4">نام خانوادگی:  <span>{{ user.last_name|capitalize }}</span></h4>
                     <h4 class="mt-4">نام کاربری:  <span>{{ user.username|capitalize }}</span></h4>
-                    <h4 class="mt-4">ایمیل:  <span>{{ user.email|capitalize }}</span></h4>
-
+                    <h4 class="mt-4">ایمیل:  <span>{{ user.email|capitalize|make_caps }}</span></h4>
+                    <h4 class="mt-4">تاریخ عضویت:  <span>{{ user.date }}</span></h4>
                     <a href="{{ url_for('user.edit_profile') }}" class="btn btn-primary mt-5">ویرایش اطلاعات</a>
               </div>
         </div>

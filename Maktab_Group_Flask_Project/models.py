@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from Maktab_Group_Flask_Project.db import get_db
 
 db = get_db()
@@ -10,17 +12,18 @@ class User(db.Document):
     last_name = db.StringField(max_length=50)
     username = db.StringField(max_length=50)
     email = db.StringField(required=False, null=True)
-    phone = db.StringField(required=True)
     photo = db.StringField(required=False, null=True)
     password = db.StringField(required=True)
+    date = db.DateTimeField(required=True, default=datetime.now())
 
     def __str__(self):
         return self.username
 
 
 class Category(db.Document):
-    name = db.StringField(max_length=30, required=True)
-    parent = db.ReferenceField('self', required=False, null=True)
+    name = db.StringField(max_length=30, required=True, unique=True)
+    # parent = db.ReferenceField('self', required=False, null=True)
+    path = db.StringField(required=True, default='0')
 
     def __str__(self):
         return self.name
@@ -37,6 +40,7 @@ class Post(db.Document):
     likes_count = db.IntField(required=False, default=0)
     dislikes_count = db.IntField(required=False, default=0)
     comments_count = db.IntField(required=False, default=0)
+    date = db.DateTimeField(required=True, default=datetime.now())
 
     def __str__(self):
         return f"{self.author} -- {self.category.name} -- {self.title} -- {self.likes_count}"
@@ -63,6 +67,7 @@ class Comment(db.Document):
     user = db.ReferenceField(User, required=True, reverse_delete_rule=db.CASCADE)
     post = db.ReferenceField(Post, required=True, reverse_delete_rule=db.CASCADE)
     comment = db.StringField(required=True)
+    date = db.DateTimeField(required=True, default=datetime.now())
 
     def __str__(self):
         return f"{self.user} -- {self.post.title} -- {self.comment}"

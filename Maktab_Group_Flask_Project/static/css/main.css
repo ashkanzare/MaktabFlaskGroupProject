@@ -54,3 +54,55 @@
 .likes-comments > i:hover {
   color: rgba(17, 113, 186, 0.93);
 }
+
+.sidenav {
+  direction: rtl;
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  left: 0;
+  opacity: 70%;
+  background-color: #009579;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+
+}
+
+.sidenav a {
+  opacity: 1;
+  padding: 8px 8px 8px 5px;
+  text-decoration: none;
+  font-size: 15px;
+  color: rgba(206, 199, 199, 0.87);
+  transition: 0.3s;
+}
+
+.sidenav a:hover {
+  color: #f1f1f1;
+}
+
+.sidenav .closebtn {
+  position: absolute;
+  top: 0;
+  right: 50%;
+  font-size: 36px;
+  margin-left: 50px;
+  text-decoration: none;
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
+
+.category_a {
+  text-decoration: none;
+}
+
+#categories {
+  margin-right: 10%;
+}

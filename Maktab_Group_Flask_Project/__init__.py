@@ -3,6 +3,7 @@ import os
 from flask import Flask
 
 
+
 def create_app(test_config=None):
     """Create and configure an instance of the Flask application."""
     app = Flask(__name__, instance_relative_config=True)
@@ -27,10 +28,12 @@ def create_app(test_config=None):
 
     # apply the blueprints to the app
     from Maktab_Group_Flask_Project import blog, user, API
+    from .utils import filters
 
     app.register_blueprint(blog.bp)
     app.register_blueprint(user.bp)
     app.register_blueprint(API.bp)
+    app.register_blueprint(filters.bp)
 
     # make url_for('index') == url_for('blog.index')
     # in another app, you might define a separate main index here with

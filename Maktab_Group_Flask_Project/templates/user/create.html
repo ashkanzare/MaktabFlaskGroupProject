@@ -72,7 +72,7 @@
        </div>
        <div>
            <label class="form-check-label" for="tags">برچسب ها</label>
-           <input type="text" value="{{ tags }}" data-role="tagsinput" id="tags" class="form-control" name="tags">
+           <input type="text" value="{{ tags }}" data-role="tagsinput" id="tags_input" class="form-control" name="tags">
        </div>
        <div class="text-center mt-2">
             <button type="submit" class="btn btn-primary" onclick="get_tags()">ایجاد پست</button>
@@ -87,7 +87,7 @@
 {% block js %}
     <script>
     function get_tags() {
-        $('#invisible').html($('#tags').val())
+        $('#invisible').html($('#tags_input').val())
     }
 
     </script>

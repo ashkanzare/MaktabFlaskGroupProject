@@ -10,11 +10,11 @@
             <h3 class="text-secondary">پست های من</h3>
         </div>
         {% for post in posts %}
-             <div class="card shadow text-right mt-2" style="width: inherit">
+             <div class="card shadow text-right mt-2" style="width: inherit" id="{{ post.id }}">
                   <img class="card-img-top mx-auto d-block mt-2 cover" style="height: 20rem; width: auto" src="{{ url_for('static', filename=post.image ) }}" alt="Card image cap">
                   <div class="card-body">
                         <h3 class="card-title" style="height: 5rem">{{ post.title }}</h3>
-                        <p class="mt-2 mb-4">دسته:<span class="mr-2"><a href="#">{{ post.category.name }}</a></span></p>
+                        <p class="mt-2 mb-4">دسته:<span class="mr-2"><a href="{{ url_for('blog.category', variable=post.category.id ) }}">{{ post.category.name }}</a></span></p>
                         <div class="d-flex">
                             <div class="likes-comments">
                                 <i class="fas fa-thumbs-up m-2 text-success" aria-hidden="true" style="font-size: 150%;"></i>
@@ -46,17 +46,20 @@
                             <p>برچسب ها:</p>
                             <ul class="tags">
                                 {% for tag in post.tags %}
-                                    <li><a href="#" class="text-white">{{ tag }}</a></li>
+                                    <li><a href="{{ url_for('blog.tag', variable=tag.id ) }}" class="text-white">{{ tag.name }}</a></li>
                                 {% endfor %}
                             </ul>
                         <div></div>
                         </div>
                         <a href="#" class="btn btn-primary mt-5">ویرایش پست</a>
-                        <a href="{{ url_for('user.delete_post', variable=post.id)  }}" class="btn btn-danger mt-5">حذف پست</a>
+                        <a  onclick="delete({{ post.id }})" class="btn btn-danger mt-5">حذف پست</a>
 
                   </div>
             </div>
 
         {% endfor %}
     </div>
+{% endblock %}
+{% block js %}
+
 {% endblock %}
