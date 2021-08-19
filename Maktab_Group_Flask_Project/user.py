@@ -4,7 +4,7 @@ from flask import g
 from werkzeug.security import generate_password_hash
 
 from Maktab_Group_Flask_Project.utils.extra_functions import (
-    check_photo, check_user_email_username, lower_form_values, tags_changes)
+    check_photo, check_user_email_username, lower_form_values, tags_changes, change_photo)
 
 bp = Blueprint("user", __name__)
 
@@ -39,7 +39,7 @@ def edit_profile():
         # check if edited email and username are unique
         # if there is no error then save new changes
         check_info = check_user_email_username(user_field['username'], user_field['email'], user.id)
-        if check_info == True:
+        if check_info:
             user.first_name = user_field['first_name']
             user.last_name = user_field['last_name']
             user.username = user_field['username']
@@ -75,7 +75,6 @@ def create_post():
         tags = []
         if request.form['invisible']:
             tags = request.form['invisible'].split(',')
-        print('tags: ', tags)
 
         user = g.user
         title = request.form['title']
@@ -110,6 +109,7 @@ def create_post():
         return redirect(url_for('user.post_list'))
 
     else:
+
         tags = Tag.objects().limit(6)
         categories = Category.objects()
         tags_str = ''
@@ -124,8 +124,50 @@ def post_list():
     user = g.user
     user_post = Post.objects(author=user).order_by('-id')
     return render_template('user/post_list.html', posts=user_post)
-#
-#
-# @bp.route('/edit-post/')
-# def edit_post():
-#     return render_template('edit_post.html', username=None)
+
+
+@bp.route('/edit-post/<variable>', methods=['POST', 'GET'])
+def edit_post(variable):
+    """ edit a post """
+    post = Post.objects(pk=variable).first()
+    if request.method == 'POST':
+        try:
+            check_active_exist = request.form['is_active']
+            is_active = True
+        except:
+            is_active = False
+
+        tags = []
+        if request.form['invisible']:
+            tags = request.form['invisible'].split(',')
+
+        title = request.form['title']
+        content = request.form['content']
+        image = request.files['file']
+
+        category_name = request.form['category']
+        category = Category.objects(name=category_name.strip()).first()
+
+        final_image = change_photo(image, post, 'title')
+
+        # commit tags changes
+        tags_changes(tags, post)
+
+        post.update(
+            set__category=category,
+            set__title=title,
+            set__content=content,
+            set__image=final_image,
+            set__is_active=is_active,
+            set__tags=[Tag.objects(name=tag.strip()).first() for tag in tags]
+        )
+
+        return redirect(url_for('user.post_list'))
+
+    else:
+        tags = post.tags
+        categories = Category.objects()
+        tags_str = ''
+        for tag in tags:
+            tags_str = f"{tags_str}, {tag.name}"
+        return render_template('user/edit_post.html', post=post, tags=tags_str, categories=categories)

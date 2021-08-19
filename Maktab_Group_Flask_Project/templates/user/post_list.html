@@ -51,8 +51,10 @@
                             </ul>
                         <div></div>
                         </div>
-                        <a href="#" class="btn btn-primary mt-5">ویرایش پست</a>
-                        <a  onclick="delete({{ post.id }})" class="btn btn-danger mt-5">حذف پست</a>
+
+                        <a href="{{ url_for('user.edit_post', variable=post.id) }}" class="btn btn-primary mt-5">ویرایش پست</a>
+                        <a href="{{ url_for('API.delete_post', variable=post.id)  }}" class="btn btn-danger mt-5">حذف پست</a>
+
 
                   </div>
             </div>

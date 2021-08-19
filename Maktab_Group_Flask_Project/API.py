@@ -20,7 +20,7 @@ def list_post():
     return flask.jsonify(json_posts)
 
 
-@bp.route('/<variable>/delete_post/')
+@bp.route('/delete_post/<variable>/')
 def delete_post(variable):
     # todo: if a post deleted then delete it reference from tags
     """ delete post with the given id """
@@ -31,7 +31,7 @@ def delete_post(variable):
     return redirect(url_for('user.post_list'))
 
 
-@bp.route('/<variable>/deactivate_post/')
+@bp.route('/deactivate_post/<variable>/')
 def deactivate_post(variable):
     """ deactivate post with the given id """
     post = Post.objects(id=variable).first()
@@ -48,7 +48,7 @@ def list_categories():
     """ return list of categories """
     all_categories = Category.objects(__raw__={"path": {"$regex": fr"^0\/[^\/]*$"}})
     json_categories = json.loads(all_categories.to_json())
-    print(find_categories(json_categories))
+    find_categories(json_categories)
     return flask.jsonify(json_categories)
 
 

@@ -1,0 +1,25 @@
+{% extends 'user/create_edit_base.html' %}
+{% block title %} ویرایش پست{% endblock %}
+{% block button %} ذخیره{% endblock %}
+{% block header %}ویرایش پست{% endblock %}
+{% block post_title %}{{ post.title }}{% endblock %}
+{% block post_content %}{{ post.content }}{% endblock %}
+{% block post_checked %}
+    {% if post.is_active %}
+        checked
+    {% endif %}
+{% endblock %}
+{% block image_place_holder %}در صورت تمایل تصویر را تغییر دهید{% endblock %}
+{% block image_preview %}
+        <p style="font-size: 85%" class="mt-2">تصویر فعلی:</p>
+        <img src="{{ url_for('static', filename=post.image ) }}" style="height: 100px; width: 100px">
+{% endblock %}
+{% block categories %}
+    {% for category in categories %}
+        {% if post.category.name == category.name %}
+              <option selected >{{ category.name }}</option>
+        {% else %}
+              <option>{{ category.name }}</option>
+        {% endif %}
+    {% endfor %}
+{% endblock %}

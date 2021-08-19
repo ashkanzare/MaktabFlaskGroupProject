@@ -9,9 +9,9 @@ import os
 
 def check_photo(image, users_len, dir_name, hash_word, default_photo=''):
     """ make a directory for the user and save photo in it at media/users """
-    extension = image.filename.split('.')[-1]
     photo = default_photo
     if image:
+        extension = image.filename.split('.')[-1]
         try:
             os.makedirs(f'static/media/{dir_name}s/{dir_name}_{users_len + 1}/')
         except FileExistsError:
@@ -21,6 +21,18 @@ def check_photo(image, users_len, dir_name, hash_word, default_photo=''):
         image.save(path)
         photo = path[7:]
     return photo
+
+
+def change_photo(image, post, hash_word):
+    """ make a directory for the user and save photo in it at media/users """
+    if image:
+        path = post.image.split('/')
+        extension = image.filename.split('.')[-1]
+        path[-1] = sha256(request.form[hash_word].encode()).hexdigest() + '.' + extension
+        photo = '/'.join(path)
+        image.save(f'static/{photo}')
+        return photo
+    return post.image
 
 
 def check_for_register_errors(username, password, re_password, email):
