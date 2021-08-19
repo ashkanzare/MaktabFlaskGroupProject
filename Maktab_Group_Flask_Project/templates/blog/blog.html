@@ -5,15 +5,25 @@
     <script src="https://kit.fontawesome.com/53bbe38c27.js" crossorigin="anonymous"></script>
 {% endblock %}
 {% block content %}
-
+    {% if category %}
+        <div class="text-center mt-2">
+            <h3>پست های مربوط به دسته '<span>{{ category }}'</span><span style="font-size: 70%"> ({{ posts|length|en_to_fa }} پست)</span></h3>
+        </div>
+    {% elif tag %}
+        <div class="text-center mt-2">
+            <h3>پست های مربوط به برچسب '<span>{{ tag }}'</span><span style="font-size: 70%"> ({{ posts|length|en_to_fa }} پست)</span></h3>
+        </div>
+    {% endif %}
     <div class="container d-flex mt-5 flex-column align-items-center" id="profile" >
     {% for post in posts %}
         <div class="card shadow text-right mt-2" style="width: inherit">
-                      <img class="card-img-top mx-auto d-block mt-2 cover " style="height: 20rem; width: auto;" src="{{ url_for('static', filename=post.image ) }}" alt="Post image">
+                    {% if post.image %}
+                            <img class="card-img-top mx-auto d-block mt-2 cover " style="height: 20rem; width: auto;" src="{{ url_for('static', filename=post.image ) }}" alt="Post image">
+                    {% endif %}
                       <div class="card-body">
-                            <h3 class="card-title" style="height: 5rem">{{ post.title }}</h3>
+                            <h3 class="card-title mt-2" style="height: 5rem">{{ post.title }}</h3>
                             <p class="mt-2 mb-4">نویسنده:<span class="mr-2"><a href="#">{{ post.author }}</a></span></p>
-                            <p class="mt-2 mb-4">دسته:<span class="mr-2"><a href="#">{{ post.category }}</a></span></p>
+                            <p class="mt-2 mb-4">دسته:<span class="mr-2"><a href="{{ url_for('blog.category', variable=post.category.id ) }}">{{ post.category }}</a></span></p>
                             <div class="d-flex">
                                 <div class="likes-comments">
                                     <i class="fa fa-thumbs-o-up m-2" aria-hidden="true" style="font-size: 150%;"></i>
@@ -29,16 +39,16 @@
                                 </div>
                             </div>
                             <div class="d-flex mt-3">
-                                <div class="ml-3 text-success"><span class="ml-2">{{ post.likes_count }}</span>لایک</div>
+                                <div class="ml-3 text-success"><span class="ml-2">{{ post.likes_count|en_to_fa }}</span>لایک</div>
                                 <div class="ml-3"><span>|</span></div>
-                                <div class="text-danger"><span class="ml-2">{{ post.dislikes_count }}</span>دیس لایک</div>
+                                <div class="text-danger"><span class="ml-2">{{ post.dislikes_count|en_to_fa }}</span>دیس لایک</div>
                             </div>
                             <p class="mt-5" style="font-size: 90%; text-align: justify;">{{ post.content }}</p>
                             <div class="pt-3">
                                 <p>برچسب ها:</p>
                                 <ul class="tags">
                                         {% for tag in post.tags %}
-                                            <li><a href="#" class="text-white m-2">{{ tag }}</a></li>
+                                            <li><a href="{{ url_for('blog.tag', variable=tag.id ) }}" class="text-white m-2">{{ tag.name }}</a></li>
                                         {% endfor %}
                                 </ul>
                             <div>

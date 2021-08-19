@@ -4,10 +4,10 @@
         <form class="form" id="login" method="post">
             <h1 class="form__title ">صفحه ورود</h1>
             <div class="form__message form__message--error">
-                {% with messages = get_flashed_messages() %}
+                {% with messages = get_flashed_messages(with_categories=true) %}
                  {% if messages %}
-                       {% for message in messages %}
-                            <div class="text-danger text-center">{{ message }}</div>
+                       {% for category, message in messages %}
+                            <div class="{{ category }} text-center">{{ message }}</div>
                        {% endfor %}
                  {% endif %}
             {% endwith %}

@@ -1,15 +1,14 @@
-from flask import session, redirect, url_for, flash, Blueprint
+from flask import session, redirect, url_for, Blueprint, json, jsonify
 from flask import flash
 from flask import g
 from flask import render_template
 from flask import request
 from werkzeug.security import check_password_hash
-from werkzeug.security import generate_password_hash
 
-from Maktab_Group_Flask_Project.models import User
+from Maktab_Group_Flask_Project.models import User, Category, Tag
+from Maktab_Group_Flask_Project.utils.extra_functions import (
+    check_photo, create_user, check_for_register_errors, lower_form_values)
 
-from hashlib import sha256
-import os
 import functools
 
 from Maktab_Group_Flask_Project.models import Post
@@ -17,15 +16,12 @@ from Maktab_Group_Flask_Project.models import Post
 bp = Blueprint("blog", __name__)
 
 
-# blueprinte home baraye neshan dadan sadheye khoshamad gooyi
-# front in bakhsh tavasote aghaye sahrayi anjam mishavad
 @bp.route('/')
 def home():
+    """ home route for showing all posts """
     all_posts = Post.objects(is_active=True)
-    return render_template('blog/blog.html', posts=all_posts)
+    return render_template('blog/blog.html', posts=all_posts.order_by('-id'))
 
-
-# front in bakhsh tavasote aghaye ebrahim zade anjam shode
 
 def login_required(view):
     """View decorator that redirects anonymous users to the auth page."""
@@ -33,7 +29,7 @@ def login_required(view):
     @functools.wraps(view)
     def wrapped_view(**kwargs):
         if g.user is None:
-            flash('ابتدا باید ثبت نام کنید')
+            flash('ابتدا باید ثبت نام کنید', 'text-danger')
             return redirect(url_for("blog.register"))
 
         return view(**kwargs)
@@ -50,9 +46,7 @@ def load_logged_in_user():
     if user_id is None:
         g.user = None
     else:
-        g.user = (
-            User.objects(id=user_id).first()
-        )
+        g.user = User.objects(id=user_id).first()
 
 
 @bp.route("/register", methods=("GET", "POST"))
@@ -62,56 +56,21 @@ def register():
     password for security.
     """
     if request.method == "POST":
-        users_len = User.objects().count()
-        image = request.files['file']
-        ext = image.filename.split('.')[-1]
-        photo = ''
-        if image:
-            try:
-                os.makedirs(f'static/media/users/user_{users_len + 1}/')
-            except FileExistsError:
-                pass
-            path = f'static/media/users/user_{users_len + 1}/' + \
-                   sha256(request.form['username'].encode()).hexdigest() + '.' + ext
-            image.save(path)
-            photo = path[7:]
-        first_name = request.form['first_name'].lower()
-        last_name = request.form['last_name'].lower()
-        username = request.form['username'].lower()
-        email = request.form['email'].lower()
-        phone = request.form['email'].lower()
-        password = request.form['password'].lower()
-        re_password = request.form['re_password'].lower()
-        if re_password != password:
-            flash('رمز عبور با تکرار رمز یکسان نیست')
-            return redirect(url_for('blog.register'))
-        error = None
+        user_field = lower_form_values(request)
 
-        if not username:
-            error = "نام کاربری را وارد کنید"
-        elif not password:
-            error = "رمز عبور را وارد کنید"
-        elif (
-                User.objects(username=username).first()
-                is not None
-        ):
-            error = f" نام کاربری {username} گرفته شده است"
+        # find users length in database and compute new user index
+        users_len = User.objects().count()
+
+        # get image from request
+        image = request.files['file']
+
+        # if there is any error in register store it in error
+        error = check_for_register_errors(user_field['username'], user_field['password'], user_field['re_password'],
+                                          user_field['email'])
 
         if error is None:
-            # the name is available, store it in the database and go to
-            # the auth page
-            new_user = User(
-                first_name=first_name,
-                last_name=last_name,
-                username=username,
-                email=email,
-                phone=phone,
-                photo=photo,
-                password=generate_password_hash(password),
-            )
-            new_user.save()
-            flash('ثبت نام شما با موفقیت انجام شد')
-            return redirect(url_for("blog.login"))
+            if create_user(user_field, image):
+                return redirect(url_for("blog.login"))
 
         flash(error)
 
@@ -120,13 +79,15 @@ def register():
 
 @bp.route("/login", methods=("GET", "POST"))
 def login():
-    """Log in a registered user by adding the user id to the session."""
+    """ Log in a registered user by adding the user id to the session. """
     if request.method == "POST":
         username = request.form["username"].lower()
         password = request.form["password"].lower()
-        error = None
+
+        # find user with the given username
         user = User.objects(username=username).first()
 
+        error = None
         if user is None:
             error = "نام کاربری اشتباه است"
         elif not check_password_hash(user.password, password):
@@ -138,13 +99,14 @@ def login():
             session["user_id"] = str(user.id)
             return redirect(url_for("blog.home"))
 
-        flash(error)
+        flash(error, 'text-danger')
 
     return render_template("blog/auth/login.html")
 
 
 @bp.route('/restore/', methods=['GET', 'POST'])
 def restore():
+    """ restore page for restoring username and password """
     return render_template('blog/auth/restore.html', info=None)
 
 
@@ -153,3 +115,33 @@ def logout():
     """Clear the current session, including the stored user id."""
     session.clear()
     return redirect(url_for("blog.login"))
+
+
+@bp.route("/create_category")
+def create_category():
+    """ Create category """
+    c1 = Category.objects(name='برنامه نویسی').first()
+    c2 = Category(name='جاوا اسکریپت')
+    c2.save()
+    c2.path = f"{c1.path}/{c2.id}"
+    c2.save()
+
+    return 'category saved'
+
+
+@bp.route("/category/<variable>")
+def category(variable):
+    """ search a category's posts """
+    categories = Category.objects(path__contains=variable)
+    posts = Post.objects(category__in=[cat.id for cat in categories], is_active=True).order_by('-id')
+    # json_categories = json.loads(posts.to_json())
+    # return jsonify(json_categories)
+    return render_template('blog/blog.html', posts=posts, category=categories.first().name)
+
+
+@bp.route("/tag/<variable>")
+def tag(variable):
+    """ search a tag's posts """
+    tag_posts = Tag.objects(pk=variable).first()
+    return render_template('blog/blog.html', posts=[post for post in tag_posts.posts if post.is_active],
+                           tag=tag_posts.name)

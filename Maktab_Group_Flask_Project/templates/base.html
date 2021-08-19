@@ -14,7 +14,9 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="../static/js/deactivate_delete_post.js"></script>
         {% block font %}{% endblock %}
+        <script src="{{ url_for('static', filename="js/deactivate_delete_post.js" ) }}"></script>
     <style>
         @font-face {
           font-family: iranian sans;
@@ -25,11 +27,25 @@
             direction: rtl;
             font-family: "iranian sans", sans-serif;
         }
+
+        .level-2 {
+            display: block!important;
+        }
+
+        .arrow {
+            cursor: pointer;
+            transition: transform ease-in-out 250ms;
+        }
+
+        li > i {
+            top: 5%;
+            font-size: 120%;
+        }
     </style>
     {% block style %}{% endblock %}
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light bg-light text-right">
   <a class="navbar-brand" href="#" style="color: #007f67">بلاگ</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -39,6 +55,9 @@
     <ul class="navbar-nav ml-auto">
       <li class="nav-item {% block active_home %}{% endblock %}">
         <a class="nav-link" href="{{ url_for("blog.home") }}">خانه <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link"><span style="cursor: pointer" onclick="openNav()"> دسته ها</span></a>
       </li>
       {% if not g.user %}
           <li class="nav-item">
@@ -71,12 +90,89 @@
   </div>
 </nav>
 
-<div class="container">
+<div class="">
+<div id="mySidenav" class="sidenav text-right">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+  <div class="d-flex flex-column">
+      <div id="categories" class="text-right mt-3">
+            <h3 class="font-weight-bolder">دسته ها</h3>
+      </div>
+      <div id="tags" class="text-right mt-3">
+            <h3 class="font-weight-bolder">برچسب ها</h3>
+      </div>
+  </div>
+</div>
+
+<div class="container" id="main-body">
 {% block content %}{% endblock %}
 </div>
 <div style="height: 5rem" class="container" id="footer">
 
 </div>
+</div>
+<script>
+    let count = 0;
+    function json_loop(array, ul_name) {
+        for (let category of array) {
+            count += 1
+            let ul = $('<ul/>')
+            let li = $('<li/>')
+            ul.attr('class', 'mt-2')
+            li.html(`<a class="category_a" href="{{ url_for('blog.category', variable='' ) }}${category._id.$oid}">${category.name}</a>`)
+            const myArr = category.path.split("/");
+            ul.attr('class', `d-none level-${myArr.length}`)
+            ul.attr('id', `${Math.random().toString(36).substr(2, 5)}`)
+            ul.append(li)
+            ul_name.append(ul)
+            if ('children' in category) {
+                    let i = $('<i/>').attr('class', 'fa fa-caret-down arrow').attr('onclick', `get_sub("${ul.attr('id')}")`)
+                    li.append(i)
+                    json_loop(category.children, ul)
+                    }
+
+        }
+        return ul_name
+    }
+    $( document ).ready(function() {
+         $.get("{{ url_for('API.list_categories') }}", function(data, status){
+                let div = $('#categories')
+                let ul = json_loop(data, div)
+                div.append(ul)
+            });
+         $.get("{{ url_for('API.list_tags') }}", function(data, status){
+                let div = $('#tags')
+                let ul = $("<ul/>").attr('class', 'mt-2')
+                for (let tag of data) {
+                    let li = $('<li/>')
+                    li.html(`<a href="{{ url_for('blog.tag', variable='' ) }}${tag._id.$oid}">${tag.name}</a>`)
+                    ul.append(li)
+                }
+                div.append(ul)
+            })
+            });
+    function get_sub(id) {
+        let ul = $(`#${id} > li > i`)
+        if (ul.css('transform') === 'none') {
+            $(`#${id} > ul`).removeAttr('class', 'd-none')
+            ul.css('transform', 'rotate(90deg)')
+
+        }
+        else {
+            $(`#${id} > ul`).attr('class', 'd-none');
+             ul.css('transform', 'none')
+    }}
+    function openNav() {
+          document.getElementById("mySidenav").style.width = "50%";
+          $('.navbar').css('filter', 'blur(3px)')
+          $('#main-body').css('filter', 'blur(3px)')
+        }
+
+        function closeNav() {
+          document.getElementById("mySidenav").style.width = "0";
+          $('.navbar').css('filter', 'none')
+          $('#main-body').css('filter', 'none')
+        }
+</script>
 {% block js %}{% endblock %}
 </body>
 </html>
