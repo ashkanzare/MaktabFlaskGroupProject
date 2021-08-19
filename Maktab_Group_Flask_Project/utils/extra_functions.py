@@ -7,16 +7,16 @@ from hashlib import sha256
 import os
 
 
-def check_photo(image, users_len, dir_name, hash_word, default_photo=''):
+def check_photo(image, _id, dir_name, hash_word, default_photo=''):
     """ make a directory for the user and save photo in it at media/users """
     photo = default_photo
     if image:
         extension = image.filename.split('.')[-1]
         try:
-            os.makedirs(f'static/media/{dir_name}s/{dir_name}_{users_len + 1}/')
+            os.makedirs(f'static/media/{dir_name}s/{dir_name}_{_id}/')
         except FileExistsError:
             pass
-        path = f'static/media/{dir_name}s/{dir_name}_{users_len + 1}/' + \
+        path = f'static/media/{dir_name}s/{dir_name}_{_id}/' + \
                sha256(request.form[hash_word].encode()).hexdigest() + '.' + extension
         image.save(path)
         photo = path[7:]
@@ -57,17 +57,24 @@ def check_for_register_errors(username, password, re_password, email):
     return error
 
 
-def create_user(user_field, photo):
+def create_user(user_field, image):
     """ if there is no error then this function will create the user in database """
     new_user = User(
         first_name=user_field['first_name'],
         last_name=user_field['last_name'],
         username=user_field['username'],
         email=user_field['email'],
-        photo=photo,
+        photo='',
         password=generate_password_hash(user_field['password']),
     )
+
     new_user.save()
+
+    # make directory for user profile picture
+    photo = check_photo(image, new_user.id, 'user', 'username')
+    new_user.image = photo
+    new_user.save()
+
     flash('ثبت نام شما با موفقیت انجام شد', 'text-success')
     return True
 
@@ -113,8 +120,9 @@ def tags_changes(tags, new_post):
                 new_tag.save()
             else:
                 new_tag = Tag.objects(name=tag.strip()).first()
-                new_tag.update(push__posts=new_post)
-                new_tag.save()
+                if new_post not in new_tag.posts:
+                    new_tag.update(push__posts=new_post)
+                    new_tag.save()
 
 
 def find_categories(categories):

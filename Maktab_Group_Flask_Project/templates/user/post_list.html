@@ -11,33 +11,35 @@
         </div>
         {% for post in posts %}
              <div class="card shadow text-right mt-2" style="width: inherit" id="{{ post.id }}">
-                  <img class="card-img-top mx-auto d-block mt-2 cover" style="height: 20rem; width: auto" src="{{ url_for('static', filename=post.image ) }}" alt="Card image cap">
+                    {% if post.image %}
+                            <img class="card-img-top mx-auto d-block mt-2 cover " style="height: 20rem; width: auto;" src="{{ url_for('static', filename=post.image ) }}" alt="Post image">
+                    {% endif %}
                   <div class="card-body">
-                        <h3 class="card-title" style="height: 5rem">{{ post.title }}</h3>
+                        <h3 class="card-title mt-2" style="height: 5rem">{{ post.title }}</h3>
                         <p class="mt-2 mb-4">دسته:<span class="mr-2"><a href="{{ url_for('blog.category', variable=post.category.id ) }}">{{ post.category.name }}</a></span></p>
                         <div class="d-flex">
                             <div class="likes-comments">
                                 <i class="fas fa-thumbs-up m-2 text-success" aria-hidden="true" style="font-size: 150%;"></i>
-                                <span class="likes-comments-count" style="color: green">{{ post.likes_count }}</span>
+                                <span class="likes-comments-count" style="color: green">{{ post.likes_count|en_to_fa }}</span>
                                 <span class="tooltiptext">دیدن لایک ها</span>
                             </div>
                             <div class="likes-comments">
                                 <i class="fas fa-thumbs-down m-2 text-danger" style="font-size: 150%;"></i>
-                                <span class="likes-comments-count" style="color: red">{{ post.dislikes_count }}</span>
+                                <span class="likes-comments-count" style="color: red">{{ post.dislikes_count|en_to_fa }}</span>
                                 <span class="tooltiptext">دیدن دیس لایک ها</span>
                             </div>
                             <div class="likes-comments">
                                 <i class="fa fa-comments m-2 text-dark" aria-hidden="true" style="font-size: 150%"></i>
-                                <span class="likes-comments-count">{{ post.comments_count }}</span>
+                                <span class="likes-comments-count">{{ post.comments_count|en_to_fa }}</span>
                                 <span class="tooltiptext">دیدن کامنت ها</span>
                             </div>
                             <div class="likes-comments">
                                 {% if post.is_active %}
-                                    <i class="fa fa-eye m-2 text-dark" aria-hidden="true" style="font-size: 150%"></i>
-                                     <span class="likes-comments-count text-dark">فعال</span>
+                                    <i onclick="deActivate('{{ post.id }}', '{{ url_for('API.deactivate_post',variable='')}}'+'{{ post.id }}')" id ="active-{{ post.id }}" class="fa fa-eye m-2 text-dark" aria-hidden="true" style="font-size: 150%"></i>
+                                     <span id ="span-{{ post.id }}" class="likes-comments-count text-dark">فعال</span>
                                 {% else %}
-                                    <i class="fa fa-eye-slash m-2 text-secondary" aria-hidden="true" style="font-size: 150%"></i>
-                                     <span class="likes-comments-count text-secondary">غیرفعال</span>
+                                    <i onclick="deActivate('{{ post.id }}', '{{ url_for('API.deactivate_post',variable='')}}'+'{{ post.id }}')" id = "active-{{ post.id }}" class="fa fa-eye-slash m-2 text-secondary" aria-hidden="true" style="font-size: 150%"></i>
+                                     <span id ="span-{{ post.id }}"  class="likes-comments-count text-secondary">غیرفعال</span>
                                 {% endif %}
                             </div>
                         </div>
@@ -53,15 +55,11 @@
                         </div>
 
                         <a href="{{ url_for('user.edit_post', variable=post.id) }}" class="btn btn-primary mt-5">ویرایش پست</a>
-                        <a href="{{ url_for('API.delete_post', variable=post.id)  }}" class="btn btn-danger mt-5">حذف پست</a>
+                        <button type="button"  class="btn btn-danger mt-5" onclick="doDelete('{{ post.id }}', '{{ url_for('API.delete_post',variable='')}}'+'{{ post.id }}')">حذف پست</button>
 
 
                   </div>
             </div>
-
         {% endfor %}
     </div>
-{% endblock %}
-{% block js %}
-
 {% endblock %}

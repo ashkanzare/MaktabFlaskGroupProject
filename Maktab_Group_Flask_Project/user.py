@@ -84,25 +84,24 @@ def create_post():
         category_name = request.form['category']
         category = Category.objects(name=category_name.strip()).first()
 
-        posts_len = Post.objects().count()
-        final_image = check_photo(image, posts_len, 'post', 'title')
-
         new_post = Post(
             author=user,
             category=category,
             title=title,
             content=content,
-            image=final_image,
+            image='',
             is_active=is_active,
             tags=[]
         )
         new_post.save()
 
+        final_image = check_photo(image, new_post.id, 'post', 'title')
+
         # commit tags changes
         tags_changes(tags, new_post)
 
         # save tags object in post
-
+        new_post.image = final_image
         new_post.tags = [Tag.objects(name=tag.strip()).first() for tag in tags]
         new_post.save()
 
@@ -162,6 +161,10 @@ def edit_post(variable):
             set__tags=[Tag.objects(name=tag.strip()).first() for tag in tags]
         )
 
+        # delete post from deleted tags
+        for tag in post.tags:
+            if tag.name not in [t.strip() for t in tags]:
+                tag.update(pull__posts=post)
         return redirect(url_for('user.post_list'))
 
     else:

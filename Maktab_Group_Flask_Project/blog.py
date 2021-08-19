@@ -7,7 +7,7 @@ from werkzeug.security import check_password_hash
 
 from Maktab_Group_Flask_Project.models import User, Category, Tag
 from Maktab_Group_Flask_Project.utils.extra_functions import (
-            check_photo, create_user, check_for_register_errors, lower_form_values)
+    check_photo, create_user, check_for_register_errors, lower_form_values)
 
 import functools
 
@@ -25,6 +25,7 @@ def home():
 
 def login_required(view):
     """View decorator that redirects anonymous users to the auth page."""
+
     @functools.wraps(view)
     def wrapped_view(**kwargs):
         if g.user is None:
@@ -62,15 +63,13 @@ def register():
 
         # get image from request
         image = request.files['file']
-        # make directory for user profile picture
-        photo = check_photo(image, users_len, 'user', 'username')
 
         # if there is any error in register store it in error
-        error = check_for_register_errors(user_field['username'], user_field['password'], user_field['re_password'], user_field['email'])
+        error = check_for_register_errors(user_field['username'], user_field['password'], user_field['re_password'],
+                                          user_field['email'])
 
         if error is None:
-            if create_user(user_field, photo):
-
+            if create_user(user_field, image):
                 return redirect(url_for("blog.login"))
 
         flash(error)
@@ -134,7 +133,7 @@ def create_category():
 def category(variable):
     """ search a category's posts """
     categories = Category.objects(path__contains=variable)
-    posts = Post.objects(category__in=[cat.id for cat in categories]).order_by('-id')
+    posts = Post.objects(category__in=[cat.id for cat in categories], is_active=True).order_by('-id')
     # json_categories = json.loads(posts.to_json())
     # return jsonify(json_categories)
     return render_template('blog/blog.html', posts=posts, category=categories.first().name)
@@ -144,4 +143,5 @@ def category(variable):
 def tag(variable):
     """ search a tag's posts """
     tag_posts = Tag.objects(pk=variable).first()
-    return render_template('blog/blog.html', posts=tag_posts.posts, tag=tag_posts.name)
+    return render_template('blog/blog.html', posts=[post for post in tag_posts.posts if post.is_active],
+                           tag=tag_posts.name)

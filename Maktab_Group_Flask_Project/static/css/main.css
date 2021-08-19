@@ -65,7 +65,7 @@
   right: 0;
   left: 0;
   opacity: 70%;
-  background-color: #009579;
+  background-color: rgba(0, 149, 121, 0.73);
   overflow-x: hidden;
   transition: 0.5s;
   padding-top: 60px;
@@ -103,6 +103,28 @@
   text-decoration: none;
 }
 
-#categories {
+#categories, #tags{
   margin-right: 10%;
+}
+
+@font-face {
+      font-family: iranian sans;
+      src: url('../fonts/FontsFree-Net-ir_sans.ttf');
+    }
+
+* {
+    direction: rtl;
+    font-family: "iranian sans", sans-serif;
+}
+
+
+
+.arrow {
+    cursor: pointer;
+    transition: transform ease-in-out 250ms;
+}
+
+li > i {
+    top: 5%;
+    font-size: 120%;
 }

@@ -14,7 +14,9 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="../static/js/deactivate_delete_post.js"></script>
         {% block font %}{% endblock %}
+        <script src="{{ url_for('static', filename="js/deactivate_delete_post.js" ) }}"></script>
     <style>
         @font-face {
           font-family: iranian sans;
@@ -29,7 +31,7 @@
         .level-2 {
             display: block!important;
         }
-        
+
         .arrow {
             cursor: pointer;
             transition: transform ease-in-out 250ms;
@@ -91,11 +93,11 @@
 <div class="">
 <div id="mySidenav" class="sidenav text-right">
   <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-  <div class="row justify-content-center">
-      <div id="categories" class="text-right mt-3 col-2">
+  <div class="d-flex flex-column">
+      <div id="categories" class="text-right mt-3">
             <h3 class="font-weight-bolder">دسته ها</h3>
       </div>
-      <div id="tags" class="text-right mt-3 col-2">
+      <div id="tags" class="text-right mt-3">
             <h3 class="font-weight-bolder">برچسب ها</h3>
       </div>
   </div>
@@ -160,7 +162,7 @@
              ul.css('transform', 'none')
     }}
     function openNav() {
-          document.getElementById("mySidenav").style.width = "auto";
+          document.getElementById("mySidenav").style.width = "50%";
           $('.navbar').css('filter', 'blur(3px)')
           $('#main-body').css('filter', 'blur(3px)')
         }
