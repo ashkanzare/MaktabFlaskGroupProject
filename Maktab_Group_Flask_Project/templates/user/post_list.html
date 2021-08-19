@@ -33,12 +33,11 @@
                             </div>
                             <div class="likes-comments">
                                 {% if post.is_active %}
-                                    <i onclick="myFunction('{{ post.id }}')" id ="active-{{ post.id }}" class="fa fa-eye m-2 text-dark" aria-hidden="true" style="font-size: 150%"></i>
+                                    <i onclick="deActivate('{{ post.id }}', '{{ url_for('API.deactivate_post',variable='')}}'+'{{ post.id }}')" id ="active-{{ post.id }}" class="fa fa-eye m-2 text-dark" aria-hidden="true" style="font-size: 150%"></i>
                                      <span id ="span-{{ post.id }}" class="likes-comments-count text-dark">فعال</span>
                                 {% else %}
-                                    <i onclick="myFunction('{{ post.id }}')" id = "active-{{ post.id }}" class="fa fa-eye-slash m-2 text-secondary" aria-hidden="true" style="font-size: 150%"></i>
+                                    <i onclick="deActivate('{{ post.id }}', '{{ url_for('API.deactivate_post',variable='')}}'+'{{ post.id }}')" id = "active-{{ post.id }}" class="fa fa-eye-slash m-2 text-secondary" aria-hidden="true" style="font-size: 150%"></i>
                                      <span id ="span-{{ post.id }}"  class="likes-comments-count text-secondary">غیرفعال</span>
-
                                 {% endif %}
                             </div>
                         </div>
@@ -53,8 +52,7 @@
                         <div></div>
                         </div>
                         <a href="#" class="btn btn-primary mt-5">ویرایش پست</a>
-                        <button type="button"  class="btn btn-danger mt-5"
-                        onclick="doDelete('{{ post.id }}')">حذف پست</button>
+                        <button type="button"  class="btn btn-danger mt-5" onclick="doDelete('{{ post.id }}', '{{ url_for('API.deactive_post',variable='')}}'+'{{ post.id }}')">حذف پست</button>
 
 
                   </div>
@@ -63,43 +61,5 @@
         {% endfor %}
     </div>
 {% endblock %}
-{% block js %}
-<script>
-                            function  doDelete(id){
-                           $.ajax({
-                               url:"{{ url_for('API.delete_post',variable='')}}"+id,
-                               type:"GET",
-                               success:function (response){
-                                   $('#'+id).css('display','none')
 
-                               }
-                           })
-
-                            }
-</script>
-      <script>
-                                        function  myFunction(id){
-                                            $.ajax({
-                                            url:"{{ url_for('API.deactive_post',variable='')}}"+id,
-                                                    type:"GET",
-                                                    success:function (response){
-                                                           let icon = $('#active-'+id)
-                                                            let span=$('#span-'+id)
-                                                                if(icon.hasClass('fa-eye')){
-                                                                    icon.removeAttr('class','fa-eye')
-                                                                    icon.attr('class','m-2 fa fa-eye-slash')
-                                                                    span.html('غیرفعال')
-                                                                }
-                                                                else {
-                                                                        icon.removeAttr('class','fa-eye-slash')
-                                                                        icon.attr('class','m-2 fa fa-eye')
-                                                                        span.html('فعال')
-                                                                }
-
-                                                        }
-                                                     })
-
-                                                    }
-                                        </script>
-{% endblock %}
 

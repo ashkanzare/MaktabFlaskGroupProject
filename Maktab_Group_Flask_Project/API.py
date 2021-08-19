@@ -1,9 +1,8 @@
 from flask import g
-from flask import render_template, Blueprint
+from flask import render_template, Blueprint, redirect, url_for
 from flask import json
 
-
-from Maktab_Group_Flask_Project.models import Post, User, Category
+from Maktab_Group_Flask_Project.models import Post, User, Category, Tag
 
 bp = Blueprint("API", __name__)
 
@@ -17,7 +16,8 @@ def list_post():
         post['category'] = str(Category.objects(pk=post['category']['$oid']).first().name)
     return json.dumps(json_posts)
 
-@bp.route('/delete_post/<variable>',methods =['POST','GET'])
+
+@bp.route('/delete_post/<variable>', methods=['POST', 'GET'])
 def delete_post(variable):
     post = Post.objects(id=variable).first()
     if post:
@@ -26,12 +26,11 @@ def delete_post(variable):
     return redirect(url_for("user.post_list"))
 
 
-
-@bp.route('/deactive_post/<variable>',methods =['POST','GET'])
-def deactive_post(variable):
+@bp.route('/deactivate_post/<variable>', methods=['POST', 'GET'])
+def deactivate_post(variable):
     post = Post.objects(id=variable).first()
     if post.is_active:
-        post.update(is_active =False)
+        post.update(is_active=False)
     else:
-        post.update(is_active = True)
+        post.update(is_active=True)
     return redirect(url_for('user.post_list'))
