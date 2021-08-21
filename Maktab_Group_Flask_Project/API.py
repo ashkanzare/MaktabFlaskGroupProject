@@ -2,7 +2,7 @@ import shutil
 
 import flask
 
-from flask import Blueprint, redirect, url_for
+from flask import Blueprint, redirect, url_for, render_template
 
 from Maktab_Group_Flask_Project.utils.extra_functions import find_categories
 
@@ -63,3 +63,9 @@ def list_tags():
     json_tags = json.loads(all_tags.to_json())
     return flask.jsonify(json_tags)
 
+
+@bp.route('/user-profile/<variable>', methods=['POST', 'GET'])
+def user_profile(variable):
+    user = User.objects(id=variable).first()
+    post_user = Post.objects(author=variable)
+    return render_template('user/user_profile.html', user=user, post_user=post_user)

@@ -108,7 +108,8 @@ def create_post():
         return redirect(url_for('user.post_list'))
 
     else:
-
+        c1 = Category(name='first',path='')
+        c1.save()
         tags = Tag.objects().limit(6)
         categories = Category.objects()
         tags_str = ''
@@ -174,3 +175,6 @@ def edit_post(variable):
         for tag in tags:
             tags_str = f"{tags_str}, {tag.name}"
         return render_template('user/edit_post.html', post=post, tags=tags_str, categories=categories)
+
+
+
