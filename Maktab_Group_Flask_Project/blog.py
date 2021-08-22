@@ -58,9 +58,6 @@ def register():
     if request.method == "POST":
         user_field = lower_form_values(request)
 
-        # find users length in database and compute new user index
-        users_len = User.objects().count()
-
         # get image from request
         image = request.files['file']
 

@@ -72,7 +72,7 @@ def create_user(user_field, image):
 
     # make directory for user profile picture
     photo = check_photo(image, new_user.id, 'user', 'username')
-    new_user.image = photo
+    new_user.photo = photo
     new_user.save()
 
     flash('ثبت نام شما با موفقیت انجام شد', 'text-success')

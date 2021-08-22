@@ -29,8 +29,9 @@ def edit_profile():
 
         # get image from request
         image = request.files['file']
+
         # make directory for user profile picture
-        photo = check_photo(image, int(path[2].split('_')[-1]), 'user', 'username', default_photo=user.photo)
+        photo = check_photo(image, user_id, 'user', 'username', default_photo=user.photo)
 
         if user_field['password'] != user_field['re_password']:
             flash('رمز عبور با تکرار رمز یکسان نیست', 'text-danger')
