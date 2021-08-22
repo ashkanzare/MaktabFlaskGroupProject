@@ -1,9 +1,9 @@
-from flask import g
+from flask import g, redirect, url_for
 from flask import render_template, Blueprint
 from flask import json
 
 
-from Maktab_Group_Flask_Project.models import Post, User, Category
+from Maktab_Group_Flask_Project.models import Post, User, Category, Tag
 
 bp = Blueprint("API", __name__)
 
