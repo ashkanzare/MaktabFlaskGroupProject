@@ -1,4 +1,4 @@
-from ..models import User, Tag, Category
+from ..models import User, Tag, Category, LikeDislike, Post
 
 from werkzeug.security import generate_password_hash
 from flask import request, redirect, url_for, flash, json
@@ -132,4 +132,32 @@ def find_categories(categories):
             category['children'] = json.loads(have_child.to_json())
             find_categories(category['children'])
     return categories
+
+def has_liked_post(post,user,action):
+    post_like = LikeDislike.objects(post =post ,user = user).first()
+    post_count = Post.objects(pk=post.id).first()
+    if post_like:
+
+        if post_like.value==action:
+            if action:
+                post_count.likes_count -=1
+            else:
+                post_count.dislikes_count -=1
+            post_like.delete()
+        else:
+            if action:
+                post_count.likes_count +=1
+            else:
+                post_count.dislikes_count +=1
+            post_like.value=action
+        post_like.save()
+        post_count.save()
+    else:
+        new_like = LikeDislike(user=user, post=post , value = action)
+        new_like.save()
+        if action:
+            post_count.likes_count += 1
+        else:
+            post_count.dislikes_count += 1
+
 
