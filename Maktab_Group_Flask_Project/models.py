@@ -44,6 +44,12 @@ class Post(db.Document):
 
     def __str__(self):
         return f"{self.author} -- {self.category.name} -- {self.title} -- {self.likes_count}"
+    #in api.py i cant give user's posts to front because username is a stirng and author is an id
+    # so i wrote a classmethod for it
+    @classmethod
+    def top_6_posts(cls, username):
+        user = User.objects(username=username).first()
+        return Post.objects(author=user.id).limit(6)
 
 
 class Tag(db.Document):
