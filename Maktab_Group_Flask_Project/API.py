@@ -66,6 +66,6 @@ def list_tags():
 
 @bp.route('/user-profile/<variable>', methods=['POST', 'GET'])
 def user_profile(variable):
-    user = User.objects(id=variable).first()
-    post_user = Post.objects(author=variable)
+    user = User.objects(username=variable).first()
+    post_user = Post.objects(author=variable).first()
     return render_template('user/user_profile.html', user=user, post_user=post_user)

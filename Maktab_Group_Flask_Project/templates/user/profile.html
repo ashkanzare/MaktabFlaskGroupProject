@@ -16,11 +16,12 @@
 {% if user %}
     <div class="container d-flex justify-content-center mt-5" id="profile">
          <div class="card shadow" style="width: 50rem;">
-            {% if user.photo %}
-               <img class="card-img-top mx-auto d-block mt-2" src="{{ url_for('static', filename=user.photo ) }}" alt="profile image" style="width: 18rem; height: 18rem; border-radius: 50%">
-            {% else %}
-               <img class="card-img-top mx-auto d-block mt-2" src="{{ url_for('static', filename=media/users/user_public/profile.jpg ) }}" alt="profile image" style="width: 18rem; height: 18rem; border-radius: 50%">
-            {% endif %}
+                            <img class="card-img-top mx-auto d-block mt-2" src="{{ url_for('static', filename=user.photo ) }}" alt="profile image" style="width: 18rem; height: 18rem; border-radius: 50%">
+
+{#            {% if user.photo %}#}
+{#            {% else %}#}
+{#               <img class="card-img-top mx-auto d-block mt-2" src="{{ url_for('static', filename='media/users/user_public/profile.jpg' ) }}" alt="profile image" style="width: 18rem; height: 18rem; border-radius: 50%">#}
+{#            {% endif %}#}
              <div class="card-body">
                     <h3 class="card-title">اطلاعات کابر</h3>
                     <h4 class="mt-4">نام:  <span>{{ user.first_name|capitalize }}</span></h4>
