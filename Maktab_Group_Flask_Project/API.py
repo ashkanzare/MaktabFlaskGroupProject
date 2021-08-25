@@ -2,14 +2,13 @@ import shutil
 
 import flask
 
-from flask import Blueprint, redirect, url_for
+from flask import Blueprint, redirect, url_for, request, g
 
 from Maktab_Group_Flask_Project.utils.extra_functions import find_categories
 
 from flask import json
 
-from Maktab_Group_Flask_Project.models import Post, User, Category, Tag
-
+from Maktab_Group_Flask_Project.models import Post, User, Category, Tag, LikeDislike
 
 bp = Blueprint("API", __name__)
 
@@ -63,3 +62,39 @@ def list_tags():
     json_tags = json.loads(all_tags.to_json())
     return flask.jsonify(json_tags)
 
+
+
+@bp.route('/like-post/',methods=['POST','GET'])
+def like_post():
+    data=request.args
+    action = True if data['value']=='like' else False
+
+    post = Post.objects(pk=data['post']).first()
+    post_like = LikeDislike.objects(post =post ,user = g.user).first()
+    post_count = Post.objects(pk=post.id).first()
+    if post_like:
+        if post_like.value==action:
+            if action:
+                post_count.likes_count -=1
+            else:
+                post_count.dislikes_count -=1
+            post_like.delete()
+        # else:
+        #     if action:
+        #         post_count.likes_count +=1
+        #     else:
+        #         post_count.dislikes_count +=1
+          #  post_like.value=action
+
+        post_like.save()
+        post_count.save()
+    else:
+        new_like = LikeDislike(user=g.user, post=post , value = action)
+        new_like.save()
+        if action:
+            post_count.likes_count += 1
+        else:
+            post_count.dislikes_count += 1
+        post_count.save()
+
+    return 'salam'

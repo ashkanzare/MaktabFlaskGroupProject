@@ -3,8 +3,10 @@
 {% block active_home %}active{% endblock %}
 {% block font %}
     <script src="https://kit.fontawesome.com/53bbe38c27.js" crossorigin="anonymous"></script>
+
 {% endblock %}
 {% block content %}
+
     {% if category %}
         <div class="text-center mt-2">
             <h3>پست های مربوط به دسته '<span>{{ category }}'</span><span style="font-size: 70%"> ({{ posts|length|en_to_fa }} پست)</span></h3>
@@ -26,16 +28,16 @@
                             <p class="mt-2 mb-4">دسته:<span class="mr-2"><a href="{{ url_for('blog.category', variable=post.category.id ) }}">{{ post.category }}</a></span></p>
                             <div class="d-flex">
                                 <div class="likes-comments">
-                                    <i class="fa fa-thumbs-o-up m-2" aria-hidden="true" style="font-size: 150%;"></i>
+                                    <i id="like" onclick="like_dislike('{{ post.id }}','{{ g.user.id }}', 'like','{{ url_for('API.like_post')}}')" class="like fa fa-thumbs-o-up m-2" value="like" aria-hidden="true" style="font-size: 150%;"></i>
                                     <span class="tooltiptext">لایک</span>
                                 </div>
                                 <div class="likes-comments">
-                                    <i class="fa fa-thumbs-o-down m-2" aria-hidden="true" style="font-size: 150%;"></i>
+                                    <i id="dislike" onclick="like_dislike('{{ post.id }}','{{ g.user.id }}', 'dislike','{{ url_for('API.like_post')}}')" class="dislike fa fa-thumbs-o-down m-2" value="dislike" aria-hidden="true"  style="font-size: 150%;"></i>
                                     <span class="tooltiptext">دیس لایک </span>
                                 </div>
                                 <div class="likes-comments">
-                                    <i class="fa fa-comments-o m-2" aria-hidden="true" style="font-size: 150%"></i>
-                                    <span class="tooltiptext">کامنت</span>
+                                    <i class="fa fa-comments-o m-2"  aria-hidden="true" style="font-size: 150%"></i>
+                                    <span  class="tooltiptext" >کامنت</span>
                                 </div>
                             </div>
                             <div class="d-flex mt-3">
@@ -61,7 +63,13 @@
                             </div>
                           </div>
                 </div>
+            <script>
+                            let btnLike = document.querySelector('#like')
+                            let btnDisLike = document.querySelector('#dislike')
+                            btnDisLike.addEventListener('click',() =>btnDisLike.style.backgroundColor ='#cc3333')
+                            btnLike.addEventListener('click',()=>btnLike.style.backgroundColor ='#4bb544')
+
+</script>
     {% endfor %}
     </div>
 {% endblock %}
-

@@ -133,6 +133,8 @@ def find_categories(categories):
             find_categories(category['children'])
     return categories
 
+
+
 def has_liked_post(post,user,action):
     post_like = LikeDislike.objects(post =post ,user = user).first()
     post_count = Post.objects(pk=post.id).first()
