@@ -22,6 +22,7 @@
                     {% endif %}
                       <div class="card-body">
                             <h3 class="card-title mt-2" style="height: 5rem">{{ post.title }}</h3>
+{#                            add a tooltip for author specs #}
                             <p class="mt-2 mb-4">نویسنده:<span class="mr-2"><a href="#" data-toggle="tooltip" data-placement="left" data-html="true" title="first name : {{ post.author.first_name }}<br>last name : {{ post.author.last_name }}<br> join date : {{ post.author.date }}">{{ post.author }}</a></span></p>
                             <p class="mt-2 mb-4">دسته:<span class="mr-2"><a href="{{ url_for('blog.category', variable=post.category.id ) }}">{{ post.category }}</a></span></p>
                             <div class="d-flex">
@@ -64,6 +65,7 @@
     {% endfor %}
     </div>
 {% endblock %}
+{#js block for tooltip script please move this code to .js files#}
 {% block js %}
     <script>
 $(document).ready(function(){

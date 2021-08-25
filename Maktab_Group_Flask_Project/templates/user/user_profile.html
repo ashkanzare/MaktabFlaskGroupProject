@@ -4,15 +4,13 @@
     <style>
     #userprofile {
         text-align: right;
-    }#userposts {
-        text-align: right;
     }
-
     </style>
 
 {% endblock %}
 {% block content %}
 {% if user %}
+{#    show the user specs #}
     <div class="container d-flex justify-content-center mt-5" id="userprofile">
 
         <div class="card shadow" style="width: 50rem;">
@@ -39,23 +37,7 @@
 
         </div>
         </div>
-{#    <div class="container d-flex justify-content-center mt-5" id="userposts">#}
-{##}
-{#        <div class="card shadow" style="width: 60rem;">#}
-{#            <div class="card-body">#}
-{#                {% for post in posts_user %}#}
-{#                <div class="card shadow" style="width: 50rem;">#}
-{#                    <img class="card-img-top" src="{{ url_for('static', filename=post.image ) }}" alt="Card image cap">#}
-{#                    <div class="card-body">#}
-{#                        <h5 class="card-title">{{ post.title }}</h5>#}
-{#                        <p class="card-text">{{ post.content }}</p>#}
-
-{#                    </div>#}
-{#                </div>#}
-{#                {% endfor %}#}
-{#            </div>#}
-{#        </div>#}
-{#    </div>#}
+{#    show the user last 6 posts#}
      <div class="container d-flex justify-content-center mt-5" id="userprofile">
 
                  <div class="card shadow" style="width: 50rem;">
