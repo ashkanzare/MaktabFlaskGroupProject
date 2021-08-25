@@ -13,6 +13,49 @@
         <div class="text-center mt-2">
             <h3>پست های مربوط به برچسب '<span>{{ tag }}'</span><span style="font-size: 70%"> ({{ posts|length|en_to_fa }} پست)</span></h3>
         </div>
+    {% elif home_mode %}
+        <div id="header-site" class="d-flex text-center justify-content-center">
+            <h3>تازه ها</h3>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div style='background-image: url("{{ url_for('static', filename=new_posts.0.image ) }}")'
+                     class="new_posts col-md-10">
+                    <div class="text-white text-test">
+
+                            <div class="card-body">
+                                <h4 class="card-title mt-2">{{ new_posts.0.title|safe }}</h4>
+                                <p id="new_1" class="card-text mt-5"></p>
+                            </div>
+                            <div class="float-left ml-5">
+                                <a href="#" class="text-white">ادامه مطلب...</a>
+                            </div>
+
+                    </div>
+                </div>
+                <div class="col-md-2"></div>
+            </div>
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div style='background-image: url("{{ url_for('static', filename=new_posts.1.image ) }}")'
+                     class="new_posts col-md-10">
+                    <div class="text-white text-test">
+
+                            <div class="card-body">
+                                <h4 class="card-title mt-2">{{ new_posts.1.title|safe }}</h4>
+                                <p id="new_2" class="card-text mt-5"></p>
+
+                            </div>
+                            <div class="float-left ml-5">
+                                <a href="#" class="text-white">ادامه مطلب...</a>
+                            </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
     {% endif %}
     <div class="container d-flex mt-5 flex-column align-items-center" id="profile" >
     {% for post in posts %}
@@ -62,6 +105,15 @@
                           </div>
                 </div>
     {% endfor %}
+
     </div>
 {% endblock %}
+{% block js %}
+{% if home_mode %}
 
+        <script>
+            parse('{{ new_posts.1.content|safe }}', '{{ new_posts.2.content|safe }}')
+        </script>
+
+{% endif %}
+{% endblock %}

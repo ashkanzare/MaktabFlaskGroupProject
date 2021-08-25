@@ -31,7 +31,8 @@ def delete_post(variable):
     post = Post.objects(id=variable).first()
     if post:
         Tag.objects(posts=post).update(pull__posts=post)
-        # shutil.rmtree(f"static/{'/'.join(post.image.split('/')[:3])}")
+        if post.image != '':
+            shutil.rmtree(f"static/{'/'.join(post.image.split('/')[:3])}")
         post.delete()
     return redirect(url_for('user.post_list'))
 

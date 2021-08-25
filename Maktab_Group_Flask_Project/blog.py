@@ -19,8 +19,16 @@ bp = Blueprint("blog", __name__)
 @bp.route('/')
 def home():
     """ home route for showing all posts """
-    all_posts = Post.objects(is_active=True)
-    return render_template('blog/blog.html', posts=all_posts.order_by('-id'))
+    all_posts = Post.objects(is_active=True).order_by('-id')
+    new_posts = all_posts[:2]
+    return render_template('blog/blog.html', posts=all_posts[2:], new_posts=new_posts, home_mode=True)
+
+
+@bp.route('/post/<variable>')
+def post(variable):
+    """ show one post """
+    selected_post = Post.objects(pk=variable)
+    return render_template('blog/blog.html', posts=selected_post)
 
 
 def login_required(view):

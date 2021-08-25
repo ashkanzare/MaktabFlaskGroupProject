@@ -205,3 +205,64 @@ li > i {
 .search-overlay button:hover {
   background: #bbb;
 }
+
+.new_posts {
+    background-position: center;
+    background-size: cover;
+    backdrop-filter: blur(2px);
+    height: 25rem;
+    border-radius: 15px;
+    margin-bottom: 3%;
+
+}
+.text-test {
+      background-color: rgba(255, 255, 255, 0.3);
+      border-radius: 5px;
+      font-family: sans-serif;
+      text-align: center;
+      line-height: 1;
+     -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      width: 80%;
+      height: 80%;
+      margin: 0;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      -ms-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+
+}
+
+#new_1, #new_2 {
+    line-height: 2rem;
+}
+
+.card-title {
+    font-weight: bolder;
+    text-shadow: 0 0 3px #e8e6e2, 0 0 5px #6d6966;
+  }
+
+@media only screen and (max-width: 600px) {
+  .card-title {
+    font-size: 120%;
+  }
+}
+
+#header-site {
+    padding-top: 1%;
+    padding-bottom: 1%;
+    border-radius: 20px;
+    background-color: rgba(187, 187, 187, 0.3);
+    text-shadow: 0 0 3px #e8e6e2, 0 0 5px rgba(109, 105, 102, 0.64);
+    margin-top: 5%;
+    margin-bottom: 5%;
+
+}
+
+#header-site > h3 {
+    color: rgb(255, 255, 255);
+    backdrop-filter: blur(20px);
+    width: 80%;
+
+}

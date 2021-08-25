@@ -106,7 +106,7 @@
             <span class="closebtn" onclick="closeSearch()" title="Close Overlay">×</span>
             <div class="container">
                 <div class="mt-2 mb-5">
-                    <input style="width: 100%" class="mb-2 rounded" onkeyup="search('{{ url_for('API.search', variable='') }}')" id="search_bar" type="text"
+                    <input style="width: 100%" class="mb-2 rounded" onkeyup="search('{{ url_for('API.search', variable='') }}', '{{ url_for('static', filename="" ) }}')" id="search_bar" type="text"
                            placeholder="کلمه ی مورد نظر خود را وارد کنید..." name="search">
                 </div>
                 <div id="search_result" class="container">
