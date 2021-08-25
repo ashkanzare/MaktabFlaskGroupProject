@@ -64,8 +64,9 @@ def list_tags():
     return flask.jsonify(json_tags)
 
 
-@bp.route('/user-profile/<variable>', methods=['POST', 'GET'])
+@bp.route('/user-profile/<variable>')
 def user_profile(variable):
+    """ return userprofile and 6 post from the same user """
     user = User.objects(username=variable).first()
     posts_user = Post.top_6_posts(variable)
     return render_template('user/user_profile.html', user=user, posts_user=posts_user)
