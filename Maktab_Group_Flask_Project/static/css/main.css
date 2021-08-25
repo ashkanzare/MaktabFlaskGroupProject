@@ -1,3 +1,8 @@
+#main-body, #header-content, body {
+    background-color: rgb(253, 253, 253) !important;
+}
+
+
 .tags li {
     display: inline-block;
     background-color: #1b96c6;
@@ -236,11 +241,12 @@ li > i {
 
 #new_1, #new_2 {
     line-height: 2rem;
+    text-shadow: 0 0 2px rgba(80,80,80,0.72);
 }
 
-.card-title {
+.card-title, .user-date {
     font-weight: bolder;
-    text-shadow: 0 0 3px #e8e6e2, 0 0 5px #6d6966;
+    text-shadow: 0 0 3px #e8e6e2, 0 0 5px rgba(109, 105, 102, 0.38);
   }
 
 @media only screen and (max-width: 600px) {
@@ -265,4 +271,20 @@ li > i {
     backdrop-filter: blur(20px);
     width: 80%;
 
+}
+
+.card-content {
+  overflow: hidden;
+  position: relative;
+}
+
+.card-content::after {
+  position: absolute;
+  content: "";
+  left: 0;
+  top: 10%;
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(transparent, rgb(255, 255, 255));
+  pointer-events: none;
 }

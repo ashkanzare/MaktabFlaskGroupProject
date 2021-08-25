@@ -20,15 +20,23 @@
         <div class="container">
             <div class="row">
                 <div style='background-image: url("{{ url_for('static', filename=new_posts.0.image ) }}")'
-                     class="new_posts col-md-10">
+                     class="new_posts col-md-10 shadow">
                     <div class="text-white text-test">
 
                             <div class="card-body">
                                 <h4 class="card-title mt-2">{{ new_posts.0.title|safe }}</h4>
                                 <p id="new_1" class="card-text mt-5"></p>
                             </div>
-                            <div class="float-left ml-5">
-                                <a href="#" class="text-white">ادامه مطلب...</a>
+                            <div >
+                                <div class="float-right mr-5">
+                                    <div class="user-date">
+                                        <h5  style="font-size: 110%">{{ new_posts.0.author.username }}</h5>
+                                        <p  style="font-size: 110%">{{ new_posts.0.date }}</p>
+                                    </div>
+                                </div>
+                                <div class="float-left ml-5">
+                                <a href="#" class="text-white read_more">ادامه مطلب...</a>
+                                </div>
                             </div>
 
                     </div>
@@ -38,7 +46,7 @@
             <div class="row">
                 <div class="col-md-2"></div>
                 <div style='background-image: url("{{ url_for('static', filename=new_posts.1.image ) }}")'
-                     class="new_posts col-md-10">
+                     class="new_posts col-md-10 shadow">
                     <div class="text-white text-test">
 
                             <div class="card-body">
@@ -47,7 +55,7 @@
 
                             </div>
                             <div class="float-left ml-5">
-                                <a href="#" class="text-white">ادامه مطلب...</a>
+                                <a href="#" class="text-white read_more">ادامه مطلب...</a>
                             </div>
 
                     </div>
@@ -57,62 +65,40 @@
 
         </div>
     {% endif %}
-    <div class="container d-flex mt-5 flex-column align-items-center" id="profile" >
+    <div class="container d-flex mt-5 flex-column align-items-center" id="profile">
+
+    <div class="row justify-content-center">
     {% for post in posts %}
-        <div class="card shadow text-right mt-2" style="width: inherit">
+        <div class="card shadow text-right mt-2 col-md-4" style="width: inherit">
                     {% if post.image %}
-                            <img class="card-img-top mx-auto d-block mt-2 cover " style="height: 20rem; width: auto;" src="{{ url_for('static', filename=post.image ) }}" alt="Post image">
+                        <div style="max-height: 10rem; overflow: hidden;">
+                            <img class="card-img-top mx-auto d-block mt-2 rounded shadow" style="max-width: 100%; max-height: 100%; object-fit: cover; object-position: inherit" src="{{ url_for('static', filename=post.image ) }}" alt="Post image">
+                        </div>
                     {% endif %}
-                      <div class="card-body">
-                            <h3 class="card-title mt-2" style="height: 5rem">{{ post.title }}</h3>
-                            <p class="mt-2 mb-4">نویسنده:<span class="mr-2"><a href="#">{{ post.author.username }}</a></span></p>
-                            <p class="mt-2 mb-4">دسته:<span class="mr-2"><a href="{{ url_for('blog.category', variable=post.category.id ) }}">{{ post.category }}</a></span></p>
-                            <div class="d-flex">
-                                <div class="likes-comments">
-                                    <i class="fa fa-thumbs-o-up m-2" aria-hidden="true" style="font-size: 150%;"></i>
-                                    <span class="tooltiptext">لایک</span>
-                                </div>
-                                <div class="likes-comments">
-                                    <i class="fa fa-thumbs-o-down m-2" aria-hidden="true" style="font-size: 150%;"></i>
-                                    <span class="tooltiptext">دیس لایک </span>
-                                </div>
-                                <div class="likes-comments">
-                                    <i class="fa fa-comments-o m-2" aria-hidden="true" style="font-size: 150%"></i>
-                                    <span class="tooltiptext">کامنت</span>
-                                </div>
+                      <div class="card-body" >
+                            <h5 class="card-title mt-1" style="height: 2rem">{{ post.title }}</h5>
+                            <p class=" mb-2">نویسنده:<span class="mr-2"><a href="#">{{ post.author.username }}</a></span></p>
+                            <p class="mt-2 mb-2">دسته:<span class="mr-2"><a href="{{ url_for('blog.category', variable=post.category.id ) }}">{{ post.category }}</a></span></p>
+                            <div class="d-flex mt-1">
+                                <div class="ml-3 text-success" style="font-size: 80%"><span class="ml-2">{{ post.likes_count|en_to_fa }}</span>لایک</div>
+                                <div class="ml-3" style="font-size: 80%"><span>|</span></div>
+                                <div class="text-danger" style="font-size: 80%"><span class="ml-2" >{{ post.dislikes_count|en_to_fa }}</span>دیس لایک</div>
                             </div>
-                            <div class="d-flex mt-3">
-                                <div class="ml-3 text-success"><span class="ml-2">{{ post.likes_count|en_to_fa }}</span>لایک</div>
-                                <div class="ml-3"><span>|</span></div>
-                                <div class="text-danger"><span class="ml-2">{{ post.dislikes_count|en_to_fa }}</span>دیس لایک</div>
-                            </div>
-                            <p class="mt-5" style="font-size: 90%; text-align: justify;">{{ post.content|safe }}</p>
-                            <div class="pt-3">
-                                <p>برچسب ها:</p>
-                                <ul class="tags">
-                                        {% for tag in post.tags %}
-                                            <li><a href="{{ url_for('blog.tag', variable=tag.id ) }}" class="text-white m-2">{{ tag.name }}</a></li>
-                                        {% endfor %}
-                                </ul>
-                            <div>
-                                {% if post.comments_count == 0 %}
-                                    <div class="d-flex mt-3"><div class="ml-3 text-secondary">بدون کامنت</div></div>
-                                {% else %}
-                                    <div class="d-flex mt-3"><div class="ml-3 text-dark"><a href="#" class="ml-2 text-dark">دیدن <span></span> کامنت...</a></div></div>
-                                {% endif %}
-                            </div>
-                            </div>
+
+                            <div class="mt-2 card-content" style="max-height: 10rem; font-size: 80%; text-align: justify;overflow: hidden;text-overflow: ellipsis; ">{{ post.content|safe}}</div>
+
+
                           </div>
                 </div>
     {% endfor %}
-
+    </div>
     </div>
 {% endblock %}
 {% block js %}
 {% if home_mode %}
 
         <script>
-            parse('{{ new_posts.1.content|safe }}', '{{ new_posts.2.content|safe }}')
+            parse('{{ new_posts.0.content|safe }}', '{{ new_posts.1.content|safe }}')
         </script>
 
 {% endif %}

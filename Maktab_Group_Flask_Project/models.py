@@ -32,7 +32,7 @@ class Category(db.Document):
 class Post(db.Document):
     author = db.DictField(required=True)
     category = db.ReferenceField(Category, required=True)
-    title = db.StringField(max_length=30, required=True)
+    title = db.StringField(max_length=250, required=True)
     content = db.StringField(required=True)
     image = db.StringField(required=False, null=True)
     is_active = db.BooleanField(default=True)
