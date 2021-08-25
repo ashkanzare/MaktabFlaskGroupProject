@@ -117,13 +117,11 @@ def logout():
 @bp.route("/create_category")
 def create_category():
     """ Create category """
-    c1 = Category.objects(name='برنامه نویسی').first()
-    c2 = Category(name='جاوا اسکریپت')
-    c2.save()
-    c2.path = f"{c1.path}/{c2.id}"
-    c2.save()
-
-    return 'category saved'
+    # c1 = Category.objects(name='برنامه نویسی').first()
+    # c1.path = f"0/{c1.id}"
+    # c1.save()
+    q = Post.objects.search_text('ashkan').first()
+    return f'{q}'
 
 
 @bp.route("/category/<variable>")

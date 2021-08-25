@@ -128,3 +128,80 @@ li > i {
     top: 5%;
     font-size: 120%;
 }
+.openBtn {
+  background: #f1f1f1;
+  border: none;
+  padding: 10px 15px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.openBtn:hover {
+  background: #bbb;
+}
+
+.search-overlay {
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  background-color: rgb(0,0,0);
+  background-color: rgba(0, 149, 121, 0.73);
+  direction: rtl;
+  overflow-y: auto;
+
+
+}
+
+.overlay-content > form > button {
+    border-bottom-left-radius: 15px;
+    border-top-left-radius: 15px;
+}
+
+.overlay-content > form > input {
+    border-bottom-right-radius: 15px;
+    border-top-right-radius: 15px;
+}
+.search-overlay .closebtn {
+  position: absolute;
+  top: 20px;
+  right: 45px;
+  font-size: 60px;
+  cursor: pointer;
+  color: white;
+
+}
+
+.search-overlay .closebtn:hover {
+  color: #ccc;
+
+}
+
+.search-overlay input[type=text] {
+  padding: 15px;
+  font-size: 17px;
+  border: none;
+  float: left;
+  width: 100%;
+  background: white;
+}
+
+.search-overlay input[type=text]:hover {
+  background: #f1f1f1;
+}
+
+.search-overlay button {
+  float: left;
+  width: 20%;
+  padding: 15px;
+  background: #ddd;
+  font-size: 17px;
+  border: none;
+  cursor: pointer;
+}
+
+.search-overlay button:hover {
+  background: #bbb;
+}

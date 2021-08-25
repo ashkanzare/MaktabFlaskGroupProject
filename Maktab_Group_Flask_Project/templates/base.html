@@ -4,19 +4,21 @@
         <meta charset="UTF-8">
         <title>{% block title %}{% endblock %}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="https://cdn.ckeditor.com/ckeditor5/29.1.0/decoupled-document/ckeditor.js"></script>
         <link href="{{ url_for('static', filename="css/main.css" ) }}" rel="stylesheet" type="text/css">
         <link href="{{ url_for('static', filename="css/tagsinput.css" ) }}" rel="stylesheet" type="text/css">
-        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
-        </script>
-        <script src="../static/js/tagsinput.js"></script>
+
         <script src="https://kit.fontawesome.com/53bbe38c27.js" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="../static/js/deactivate_delete_post.js"></script>
+        <script type="text/javascript" src="../static/js/main.js"></script>
+        <script src="../static/js/tagsinput.js"></script>
         {% block font %}{% endblock %}
         <script src="{{ url_for('static', filename="js/deactivate_delete_post.js" ) }}"></script>
+        {% block head %}{% endblock %}
     <style>
         @font-face {
           font-family: iranian sans;
@@ -83,10 +85,7 @@
           </li>
       {% endif %}
     </ul>
-    <form class="form-inline my-2 my-lg-0 d-flex">
-      <input class="form-control mr-sm-2" type="search" placeholder="جستجو..." aria-label="Search">
-      <button class="btn btn-outline-success my-2 my-sm-0 mr-2" type="submit">جستجو</button>
-    </form>
+  <button class="openBtn btn btn-outline-success my-2 my-sm-0 mr-2" onclick="openSearch()" >جستجو</button>
   </div>
 </nav>
 
@@ -102,9 +101,27 @@
       </div>
   </div>
 </div>
+    <div id="search_bar_container" style="display: none">
+        <div class="search-overlay">
+            <span class="closebtn" onclick="closeSearch()" title="Close Overlay">×</span>
+            <div class="container">
+                <div class="mt-2 mb-5">
+                    <input style="width: 100%" class="mb-2 rounded" onkeyup="search('{{ url_for('API.search', variable='') }}')" id="search_bar" type="text"
+                           placeholder="کلمه ی مورد نظر خود را وارد کنید..." name="search">
+                </div>
+                <div id="search_result" class="container">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="container" id="main-body">
-{% block content %}{% endblock %}
+{% block content %}
+
+{% endblock %}
+
 </div>
 <div style="height: 5rem" class="container" id="footer">
 
@@ -172,6 +189,7 @@
           $('.navbar').css('filter', 'none')
           $('#main-body').css('filter', 'none')
         }
+
 </script>
 {% block js %}{% endblock %}
 </body>

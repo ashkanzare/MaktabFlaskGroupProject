@@ -1,4 +1,5 @@
 {% extends 'user/create_edit_base.html' %}
+
 {% block title %} ایجاد پست{% endblock %}
 {% block button %} ایجاد{% endblock %}
 {% block header %}ایجاد پست{% endblock %}
@@ -9,4 +10,6 @@
     {% for category in categories %}
               <option >{{ category.name }}</option>
     {% endfor %}
+
+
 {% endblock %}

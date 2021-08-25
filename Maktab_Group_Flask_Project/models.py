@@ -30,7 +30,7 @@ class Category(db.Document):
 
 
 class Post(db.Document):
-    author = db.ReferenceField(User, required=True)
+    author = db.DictField(required=True)
     category = db.ReferenceField(Category, required=True)
     title = db.StringField(max_length=30, required=True)
     content = db.StringField(required=True)

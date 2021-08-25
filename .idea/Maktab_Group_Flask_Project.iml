@@ -21,6 +21,8 @@
     <orderEntry type="library" name="BKoodakBold" level="application" />
     <orderEntry type="library" name="8a6d8ba80e" level="application" />
     <orderEntry type="library" name="53bbe38c27" level="application" />
+    <orderEntry type="library" name="ckeditor" level="application" />
+    <orderEntry type="library" name="tinymce" level="application" />
   </component>
   <component name="TemplatesService">
     <option name="TEMPLATE_CONFIGURATION" value="Jinja2" />

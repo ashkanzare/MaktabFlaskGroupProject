@@ -22,7 +22,7 @@
                     {% endif %}
                       <div class="card-body">
                             <h3 class="card-title mt-2" style="height: 5rem">{{ post.title }}</h3>
-                            <p class="mt-2 mb-4">نویسنده:<span class="mr-2"><a href="#">{{ post.author }}</a></span></p>
+                            <p class="mt-2 mb-4">نویسنده:<span class="mr-2"><a href="#">{{ post.author.username }}</a></span></p>
                             <p class="mt-2 mb-4">دسته:<span class="mr-2"><a href="{{ url_for('blog.category', variable=post.category.id ) }}">{{ post.category }}</a></span></p>
                             <div class="d-flex">
                                 <div class="likes-comments">
@@ -43,7 +43,7 @@
                                 <div class="ml-3"><span>|</span></div>
                                 <div class="text-danger"><span class="ml-2">{{ post.dislikes_count|en_to_fa }}</span>دیس لایک</div>
                             </div>
-                            <p class="mt-5" style="font-size: 90%; text-align: justify;">{{ post.content }}</p>
+                            <p class="mt-5" style="font-size: 90%; text-align: justify;">{{ post.content|safe }}</p>
                             <div class="pt-3">
                                 <p>برچسب ها:</p>
                                 <ul class="tags">

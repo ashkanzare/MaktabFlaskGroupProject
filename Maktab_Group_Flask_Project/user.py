@@ -6,7 +6,9 @@ from werkzeug.security import generate_password_hash
 from Maktab_Group_Flask_Project.utils.extra_functions import (
     check_photo, check_user_email_username, lower_form_values, tags_changes, change_photo)
 
+
 bp = Blueprint("user", __name__)
+
 
 
 @bp.route('/profile/')
@@ -67,6 +69,7 @@ def edit_profile():
 def create_post():
     """ create a post """
     if request.method == 'POST':
+        print(request.args)
         try:
             check_active_exist = request.form['is_active']
             is_active = True
@@ -79,14 +82,14 @@ def create_post():
 
         user = g.user
         title = request.form['title']
-        content = request.form['content']
+        content = request.form['content-data']
         image = request.files['file']
 
         category_name = request.form['category']
         category = Category.objects(name=category_name.strip()).first()
 
         new_post = Post(
-            author=user,
+            author={'id': user.id, 'username': user.username},
             category=category,
             title=title,
             content=content,
@@ -103,7 +106,7 @@ def create_post():
 
         # save tags object in post
         new_post.image = final_image
-        new_post.tags = [Tag.objects(name=tag.strip()).first() for tag in tags]
+        new_post.tags = [{"id": Tag.objects(name=tag.strip()).first().id, "name": tag.strip()} for tag in tags]
         new_post.save()
 
         return redirect(url_for('user.post_list'))
@@ -122,7 +125,7 @@ def create_post():
 def post_list():
     """ return user's posts"""
     user = g.user
-    user_post = Post.objects(author=user).order_by('-id')
+    user_post = Post.objects(author__id=user.id).order_by('-id')
     return render_template('user/post_list.html', posts=user_post)
 
 
@@ -142,7 +145,7 @@ def edit_post(variable):
             tags = request.form['invisible'].split(',')
 
         title = request.form['title']
-        content = request.form['content']
+        content = request.form['content-data']
         image = request.files['file']
 
         category_name = request.form['category']
@@ -159,12 +162,12 @@ def edit_post(variable):
             set__content=content,
             set__image=final_image,
             set__is_active=is_active,
-            set__tags=[Tag.objects(name=tag.strip()).first() for tag in tags]
+            set__tags=[{"id": Tag.objects(name=tag.strip()).first().id, "name": tag.strip()} for tag in tags]
         )
 
         # delete post from deleted tags
         for tag in post.tags:
-            if tag.name not in [t.strip() for t in tags]:
+            if tag['name'] not in [t.strip() for t in tags]:
                 tag.update(pull__posts=post)
         return redirect(url_for('user.post_list'))
 
@@ -173,5 +176,5 @@ def edit_post(variable):
         categories = Category.objects()
         tags_str = ''
         for tag in tags:
-            tags_str = f"{tags_str}, {tag.name}"
+            tags_str = f"{tags_str}, {tag['name']}"
         return render_template('user/edit_post.html', post=post, tags=tags_str, categories=categories)

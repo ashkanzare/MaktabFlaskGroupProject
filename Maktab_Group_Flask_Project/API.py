@@ -6,10 +6,11 @@ from flask import Blueprint, redirect, url_for
 
 from Maktab_Group_Flask_Project.utils.extra_functions import find_categories
 
+from mongoengine import Q
+
 from flask import json
 
 from Maktab_Group_Flask_Project.models import Post, User, Category, Tag
-
 
 bp = Blueprint("API", __name__)
 
@@ -63,3 +64,13 @@ def list_tags():
     json_tags = json.loads(all_tags.to_json())
     return flask.jsonify(json_tags)
 
+
+@bp.route('/search/<variable>')
+def search(variable):
+    """ return results of search """
+    all_posts = Post.objects(Q(content__contains=variable) |
+                             Q(title__contains=variable) |
+                             Q(tags__name__contains=variable) |
+                             Q(author__username__contains=variable))
+    json_posts = json.loads(all_posts.to_json())
+    return flask.jsonify(results=json_posts)

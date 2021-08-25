@@ -3,7 +3,7 @@
 {% block button %} ذخیره{% endblock %}
 {% block header %}ویرایش پست{% endblock %}
 {% block post_title %}{{ post.title }}{% endblock %}
-{% block post_content %}{{ post.content }}{% endblock %}
+{% block post_content %}{{ post.content|safe }}{% endblock %}
 {% block post_checked %}
     {% if post.is_active %}
         checked

@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% block active_profile %}active{% endblock %}
-{% block title %}kir{% endblock %}
+
+
 {% block style %}
 <style>
     .bootstrap-tagsinput {
@@ -25,6 +26,9 @@
     margin: 0;
     width: auto;
     max-width: inherit;
+}
+.ck-editor__editable_inline {
+    min-height: 400px;
 }
 </style>
 {% endblock %}
@@ -65,7 +69,16 @@
       </div>
       <div class="form-group">
         <label for="exampleFormControlTextarea1">متن پست</label>
-        <textarea class="form-control" style="resize: none" id="exampleFormControlTextarea1" rows="8" name="content">{% block post_content %}{% endblock %}</textarea>
+              <div class="document-editor" >
+            <div class="document-editor__toolbar"></div>
+            <div class="document-editor__editable-container">
+                <div class="document-editor__editable border" id="content">
+                    {% block post_content %}{% endblock %}
+                </div>
+            </div>
+        </div>
+        <input class="d-none" type="text" name="content-data" id="content-data">
+
       </div>
        <div class="form-check form-check-inline">
           <input class="form-check-input ml-2" type="checkbox" id="inlineCheckbox1" value="1" {% block post_checked %}{% endblock %} name="is_active">
@@ -76,7 +89,7 @@
            <input type="text" value="{{ tags }}" data-role="tagsinput" id="tags_input" class="form-control" name="tags">
        </div>
        <div class="text-center mt-2">
-            <button type="submit" class="btn btn-primary" onclick="get_tags()">{% block button %}{% endblock %}</button>
+            <button type="submit" class="btn btn-primary" onclick="get_tags(); get_content()">{% block button %}{% endblock %}</button>
        </div>
 <textarea name="invisible" id="invisible" style="display:none;"></textarea>
 
@@ -91,5 +104,25 @@
         $('#invisible').html($('#tags_input').val())
     }
 
+    function get_content() {
+        $('#content-data').val($('#content ').html())
+    }
     </script>
+    <script type="text/javascript">
+        DecoupledEditor
+    .create( document.querySelector( '.document-editor__editable' ), {
+        toolbar: [ 'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'fontColor', 'fontSize', 'fontFamily', 'fontBackgroundColor', 'alignment']
+
+    }).then( editor => {
+        const toolbarContainer = document.querySelector( '.document-editor__toolbar' );
+
+        toolbarContainer.appendChild( editor.ui.view.toolbar.element );
+
+        window.editor = editor;
+    } )
+    .catch( err => {
+        console.error( err );
+    } );
+    </script>
+
 {% endblock %}
