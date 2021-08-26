@@ -15,7 +15,7 @@
                         <h4 class="modal-title">کامنت ها</h4>
                     </div>
                     <div>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <button type="button" class="close" data-dismiss="modal" onclick="$('#comment-counter').html(1)">&times;</button>
                     </div>
 
                 </div>
@@ -31,6 +31,7 @@
                             <input type="text" class="form-control" placeholder="کامنت بگذارید..." name="comment" id="comment">
                     </div>
                     <div class="col-2">
+                            <p class="d-none" id="comment-counter">1</p>
                             <button type="button" class="btn btn-secondary" onclick="comment('{{ url_for('blog.comment', variable=post.id ) }}', '{{ url_for('API.post_comments', variable=post.id ) }}')"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
                     </div>
 
@@ -59,7 +60,7 @@
                                     <span class="tooltiptext">دیس لایک </span>
                                 </div>
                                 <div class="likes-comments">
-                                    <i class="fa fa-comments-o m-2" aria-hidden="true" style="font-size: 150%" data-toggle="modal" data-target="#CommentModal" onclick="show_comments('{{ url_for('API.post_comments', variable=post.id ) }}')"></i>
+                                    <i class="fa fa-comments-o m-2" aria-hidden="true" style="font-size: 150%" data-toggle="modal" data-target="#CommentModal" onclick="show_comments('{{ url_for('API.post_comments', variable=post.id ) }}', 1);"></i>
                                     <span class="tooltiptext">کامنت</span>
                                 </div>
                             </div>

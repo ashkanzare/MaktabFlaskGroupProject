@@ -65,7 +65,9 @@ function comment(url1, url2) {
     let comment = $('#comment')
     let comment_text = comment.val()
     $.post(url1, {'comment_content': comment_text}, function(data, status) {
-            show_comments(url2)
+            let counter_elem = $('#comment-counter')
+            let counter = Number(counter_elem.html())
+            show_comments(url2, counter)
           });
     comment.val('')
 }
@@ -106,14 +108,33 @@ function get_time_diff( datetime1, datetime2 )
 
 }
 
-function show_comments(url) {
-    $.get(url, function(data, status) {
+
+
+
+function more_comments(url) {
+    let counter_elem = $('#comment-counter')
+    let counter = Number(counter_elem.html()) + 1
+    counter_elem.html(counter)
+    show_comments(url, counter)
+
+}
+
+function show_comments(url, counter) {
+    $.get(url, {'counter': counter}, function(data, status) {
             const section = document.getElementById('comment-section');
             section.innerHTML = ''
-
-            for (let comment of data['result']) {
+            let more_comments = `
+                <div class="text-center mb-4">
+                    <button class="bg-white" onclick="more_comments('${url}')" id="more_comment" style="outline: none; width: 50px; height: 50px; border-radius: 50%"><i class="fa fa-plus bg-white" aria-hidden="true"></i></button>
+                </div>
+            `
+            if (data['result'].length !== data['max']) {
+                section.innerHTML += more_comments;
+            }
+            for (let comment of data['result'].reverse()) {
                   let date = Number(comment.date);
                   const content = `
+                
                 <div class="row">
                     <div class="col-9" style="width: 80%">
                         <div class="row">
@@ -127,4 +148,7 @@ function show_comments(url) {
 
                   section.innerHTML += content;}
             });
+
 }
+
+

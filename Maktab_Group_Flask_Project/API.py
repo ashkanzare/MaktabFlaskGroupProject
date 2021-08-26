@@ -81,6 +81,8 @@ def search(variable):
 @bp.route('/post-comments/<variable>')
 def post_comments(variable):
     """ return comments of a post """
-    comments = Comment.objects(post=variable)[:2]
-    json_comments = json.loads(comments.to_json())
-    return flask.jsonify(result=json_comments, time=int(datetime.datetime.utcnow().timestamp() * 1000))
+    counter = int(request.args['counter'])
+    comments = Comment.objects(post=variable)
+    comment_select = comments.order_by('-id')[:5*counter]
+    json_comments = json.loads(comment_select.to_json())
+    return flask.jsonify(result=json_comments, time=int(datetime.datetime.utcnow().timestamp() * 1000), max=len(comments))
