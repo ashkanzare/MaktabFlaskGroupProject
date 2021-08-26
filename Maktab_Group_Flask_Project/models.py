@@ -25,6 +25,7 @@ class Category(db.Document):
     # parent = db.ReferenceField('self', required=False, null=True)
     path = db.StringField(required=True, default='0')
 
+
     def __str__(self):
         return self.name
 

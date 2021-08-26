@@ -3,7 +3,8 @@ import shutil
 
 import flask
 
-from flask import Blueprint, redirect, url_for, g, request
+from flask import Blueprint, redirect, url_for, request, g
+
 
 from Maktab_Group_Flask_Project.utils.extra_functions import find_categories
 
@@ -12,6 +13,7 @@ from mongoengine import Q
 from flask import json
 
 from Maktab_Group_Flask_Project.models import Post, User, Category, Tag, Comment
+
 
 bp = Blueprint("API", __name__)
 
