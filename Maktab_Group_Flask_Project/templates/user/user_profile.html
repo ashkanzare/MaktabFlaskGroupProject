@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% block title %}پروفایل{% endblock %}
+{% block style %}
+    <style>
+    #userprofile {
+        text-align: right;
+    }
+    </style>
+
+{% endblock %}
+{% block content %}
+{% if user %}
+{#    show the user specs #}
+    <div class="container d-flex justify-content-center mt-5" id="userprofile">
+
+        <div class="card shadow" style="width: 50rem;">
+            {% if user.photo %}
+            <img class="card-img-top mx-auto d-block mt-2" src="{{ url_for('static', filename=user.photo ) }}"
+                 alt="profile image" style="width: 18rem; height: 18rem; border-radius: 50%">
+            {% else %}
+                <h3 style="margin-right: 1rem; margin-top: 1rem; text-align: center; ">بدون عکس</h3>
+                <br>
+                <br>
+            {% endif %}
+            <div class="card-body">
+
+                <h3 class="card-title">اطلاعات کابر</h3>
+                <h4 class="mt-4">نام:  <span>{{ user.first_name|capitalize }}</span></h4>
+                <h4 class="mt-4">نام خانوادگی:  <span>{{ user.last_name|capitalize }}</span></h4>
+                <h4 class="mt-4">نام کاربری:  <span>{{ user.username|capitalize }}</span></h4>
+                <h4 class="mt-4">ایمیل:  <span>{{ user.email|capitalize }}</span></h4>
+                <h4 class="mt-4">تاریخ عضویت:  <span>{{ user.date }}</span></h4>
+
+
+            </div>
+
+
+        </div>
+        </div>
+{#    show the user last 6 posts#}
+     <div class="container d-flex justify-content-center mt-5" id="userprofile">
+
+                 <div class="card shadow" style="width: 50rem;">
+                    <div class="card-body">
+                        <div class="row">
+                        {% for post in posts_user %}
+
+                            <div class="col-6">
+                            <div class="card shadow">
+
+                            <img class="card-img-top" src="{{ url_for('static', filename=post.image ) }}" alt="Card image cap" style="width: 20rem; margin-right: 1.3rem;">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ post.title }}</h5>
+                                <p class="card-text">{{ post.content }}</p>
+                                <div class="likes-comments">
+                                    <i class="fa fa-thumbs-o-up m-2" aria-hidden="true" style="font-size: 150%;"></i>
+                                    <span class="tooltiptext">لایک</span>
+                                </div>
+                                <div class="likes-comments">
+                                    <i class="fa fa-thumbs-o-down m-2" aria-hidden="true" style="font-size: 150%;"></i>
+                                    <span class="tooltiptext">دیس لایک </span>
+                                </div>
+                                <div class="likes-comments">
+                                    <i class="fa fa-comments-o m-2" aria-hidden="true" style="font-size: 150%"></i>
+                                    <span class="tooltiptext">کامنت</span>
+                                </div>
+
+                                <p>برچسب ها:</p>
+                                <ul class="tags">
+                                        {% for tag in post.tags %}
+                                            <li><a href="{{ url_for('blog.tag', variable=tag.id ) }}" class="text-white m-2">{{ tag.name }}</a></li>
+                                        {% endfor %}
+                                </ul>
+                                {% if post.comments_count == 0 %}
+                                    <div class="d-flex mt-3"><div class="ml-3 text-secondary">بدون کامنت</div></div>
+                                {% else %}
+                                    <div class="d-flex mt-3"><div class="ml-3 text-dark"><a href="#" class="ml-2 text-dark">دیدن <span></span> کامنت...</a></div></div>
+                                {% endif %}
+
+
+                            </div>
+                        </div>
+                            </div>
+                        {% endfor %}
+
+        </div>
+            </div>
+
+        </div>
+
+     </div>
+
+
+{% else %}
+
+{% endif %}
+
+{% endblock %}

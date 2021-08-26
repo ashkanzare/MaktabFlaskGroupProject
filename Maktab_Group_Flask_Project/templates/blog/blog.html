@@ -85,10 +85,9 @@
                             <img class="card-img-top mx-auto d-block mt-2 rounded shadow" style="max-width: 100%; max-height: 100%; object-fit: cover; object-position: inherit" src="{{ url_for('static', filename=post.image ) }}" alt="Post image">
                         </div>
                     {% endif %}
-<<<<<<< HEAD
                       <div class="card-body" >
                             <h5 class="card-title mt-1" style="height: 2rem">{{ post.title }}</h5>
-                            <p class=" mb-2">نویسنده:<span class="mr-2"><a href="#">{{ post.author.username }}</a></span></p>
+                            <p class="mt-2 mb-4">نویسنده:<span class="mr-2"><a href="#" data-toggle="tooltip" data-placement="left" data-html="true" title="first name : {{ post.author.id.first_name }}<br>last name : {{ post.author.last_name }}<br> join date : {{ post.author.date }}">{{ post.author }}</a></span></p>
                             <p class="mt-2 mb-2">دسته:<span class="mr-2"><a href="{{ url_for('blog.category', variable=post.category.id ) }}">{{ post.category }}</a></span></p>
                             <div class="d-flex mt-1 justify-content-between">
                                 <div class="d-flex">
@@ -98,24 +97,6 @@
                                 </div>
                                 <div>
                                     <a href="{{ url_for('blog.post', variable=post.id ) }}" style="font-size: 80%" class="text-info">دیدن پست</a>
-=======
-                      <div class="card-body">
-                            <h3 class="card-title mt-2" style="height: 5rem">{{ post.title }}</h3>
-                            <p class="mt-2 mb-4">نویسنده:<span class="mr-2"><a href="#">{{ post.author }}</a></span></p>
-                            <p class="mt-2 mb-4">دسته:<span class="mr-2"><a href="{{ url_for('blog.category', variable=post.category.id ) }}">{{ post.category }}</a></span></p>
-                            <div class="d-flex">
-                                <div class="likes-comments">
-                                    <i id="like" onclick="like_dislike('{{ post.id }}','{{ g.user.id }}', 'like','{{ url_for('API.like_post')}}')" class="like fa fa-thumbs-o-up m-2" value="like" aria-hidden="true" style="font-size: 150%;"></i>
-                                    <span class="tooltiptext">لایک</span>
-                                </div>
-                                <div class="likes-comments">
-                                    <i id="dislike" onclick="like_dislike('{{ post.id }}','{{ g.user.id }}', 'dislike','{{ url_for('API.like_post')}}')" class="dislike fa fa-thumbs-o-down m-2" value="dislike" aria-hidden="true"  style="font-size: 150%;"></i>
-                                    <span class="tooltiptext">دیس لایک </span>
-                                </div>
-                                <div class="likes-comments">
-                                    <i class="fa fa-comments-o m-2"  aria-hidden="true" style="font-size: 150%"></i>
-                                    <span  class="tooltiptext" >کامنت</span>
->>>>>>> c9840a4578325011a7ceec70dc29d1c6bbc885a9
                                 </div>
                             </div>
 
@@ -135,15 +116,22 @@
     </div>
     </div>
 {% endblock %}
-<<<<<<< HEAD
+
 {% block js %}
-{% if home_mode %}
+    {% if home_mode %}
+
+        {#js block for tooltip script please move this code to .js files#}
+
+        <script>
+            $(document).ready(function () {
+                $('[data-toggle="tooltip"]').tooltip();
+            });
+        </script>
 
         <script>
             parse('{{ new_posts.0.content|safe }}', '{{ new_posts.1.content|safe }}')
         </script>
 
-{% endif %}
+    {% endif %}
 {% endblock %}
-=======
->>>>>>> c9840a4578325011a7ceec70dc29d1c6bbc885a9
+

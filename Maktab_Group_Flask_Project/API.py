@@ -3,7 +3,8 @@ import shutil
 
 import flask
 
-from flask import Blueprint, redirect, url_for, request, g
+
+from flask import Blueprint, redirect, url_for, render_template, request
 
 
 from Maktab_Group_Flask_Project.utils.extra_functions import find_categories
@@ -88,3 +89,13 @@ def post_comments(variable):
     comment_select = comments.order_by('-id')[:5*counter]
     json_comments = json.loads(comment_select.to_json())
     return flask.jsonify(result=json_comments, time=int(datetime.datetime.utcnow().timestamp() * 1000), max=len(comments))
+
+
+@bp.route('/user-profile/<variable>')
+def user_profile(variable):
+    """ return userprofile and 6 post from the same user """
+    user = User.objects(username=variable).first()
+    posts_user = Post.top_6_posts(variable)
+    return render_template('user/user_profile.html', user=user, posts_user=posts_user)
+
+

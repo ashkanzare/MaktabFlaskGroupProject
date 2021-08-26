@@ -69,7 +69,6 @@ def edit_profile():
 def create_post():
     """ create a post """
     if request.method == 'POST':
-        print(request.args)
         try:
             check_active_exist = request.form['is_active']
             is_active = True
@@ -89,7 +88,7 @@ def create_post():
         category = Category.objects(name=category_name.strip()).first()
 
         new_post = Post(
-            author={'id': user.id, 'username': user.username},
+            author={'id': user, 'username': user.username},
             category=category,
             title=title,
             content=content,
@@ -112,7 +111,6 @@ def create_post():
         return redirect(url_for('user.post_list'))
 
     else:
-
         tags = Tag.objects().limit(6)
         categories = Category.objects()
         tags_str = ''
@@ -178,3 +176,6 @@ def edit_post(variable):
         for tag in tags:
             tags_str = f"{tags_str}, {tag['name']}"
         return render_template('user/edit_post.html', post=post, tags=tags_str, categories=categories)
+
+
+
