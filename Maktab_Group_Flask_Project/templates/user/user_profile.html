@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% block title %}پروفایل{% endblock %}
+{% block style %}
+    <style>
+    #userprofile {
+        text-align: right;
+    }
+    </style>
+
+{% endblock %}
+{% block content %}
+{% if user %}
+{#    show the user specs #}
+    <div class="container d-flex justify-content-center mt-5" id="userprofile">
+
+        <div class="card shadow" style="width: 50rem;">
+            <div>
+                <h4 class="mt-4 ml-2 float-left fw-bolder text-primary"><span>{{ user.username}}</span>@</h4>
+            </div>
+            {% if user.photo %}
+               <img class="card-img-top mx-auto d-block mt-2" src="{{ url_for('static', filename=user.photo ) }}" alt="profile image" style="width: 18rem; height: 18rem; border-radius: 50%">
+            {% else %}
+               <img class="card-img-top mx-auto d-block mt-2" src="{{ url_for('static', filename="media/users/user_public/defaultProfile.jpg" ) }}" alt="profile imag2e" style="width: 18rem; height: 18rem; border-radius: 50%">
+            {% endif %}
+            <div class="card-body">
+                <div>
+                    <h3 class="mt-4">{{ user.first_name|capitalize }} {{ user.last_name|capitalize }}</h3>
+                    <h4>{{ user.bio }}</h4>
+                </div>
+                <div class="float-left">
+                    <button class="btn btn-success">دنبال کردن</button>
+                    <button class="btn btn-primary">پیام</button>
+                </div>
+            </div>
+
+
+        </div>
+        </div>
+     <div class="container d-flex justify-content-center mt-5" id="userprofile">
+
+
+                        <div class="row">
+                        <div class="row justify-content-center">
+    {% for post in posts_user %}
+        <div class="card shadow text-right mt-2 col-md-4" style="width: inherit">
+                    {% if post.image %}
+                        <div style="max-height: 10rem; overflow: hidden;">
+                            <img class="card-img-top mx-auto d-block mt-2 rounded shadow" style="max-width: 100%; max-height: 100%; object-fit: cover; object-position: inherit" src="{{ url_for('static', filename=post.image ) }}" alt="Post image">
+                        </div>
+                    {% endif %}
+                      <div class="card-body" >
+                            <h5 class="card-title mt-1" style="height: 2rem">{{ post.title }}</h5>
+                            <p class="mt-2 mb-4">نویسنده:<span class="mr-2"><a href="{{ url_for('API.user_profile', variable=post.author.username ) }}" data-toggle="tooltip" data-placement="left" data-html="true" title="{{ post.author|get_info(0) }} {{ post.author|get_info(1) }}<br> عضو شده از {{ post.author|get_info(2)|convert_date }}">{{ post.author.username }}</a></span></p>
+                            <p class="mt-2 mb-2">دسته:<span class="mr-2"><a href="{{ url_for('blog.category', variable=post.category.id ) }}">{{ post.category }}</a></span></p>
+                            <div class="d-flex mt-1 justify-content-between">
+                                <div class="d-flex">
+                                    <div class="ml-3 text-success" style="font-size: 80%"><span class="ml-2">{{ post.likes_count|en_to_fa }}</span>لایک</div>
+                                    <div class="ml-3" style="font-size: 80%"><span>|</span></div>
+                                    <div class="text-danger" style="font-size: 80%"><span class="ml-2" >{{ post.dislikes_count|en_to_fa }}</span>دیس لایک</div>
+                                </div>
+                                <div>
+                                    <a href="{{ url_for('blog.post', variable=post.id ) }}" style="font-size: 80%" class="text-info">دیدن پست</a>
+                                </div>
+                            </div>
+
+                            <div class="mt-2 card-content" style="max-height: 10rem; font-size: 80%; text-align: justify;overflow: hidden;text-overflow: ellipsis; ">{{ post.content|safe}}</div>
+
+
+                          </div>
+                </div>
+    {% endfor %}
+
+            </div>
+
+        </div>
+
+     </div>
+
+
+{% else %}
+
+{% endif %}
+
+{% endblock %}
+{% block js %}
+    <script>
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+
+{% endblock %}

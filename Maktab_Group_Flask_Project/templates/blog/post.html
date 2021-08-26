@@ -4,12 +4,28 @@
 {% block font %}
     <script src="https://kit.fontawesome.com/53bbe38c27.js" crossorigin="anonymous"></script>
 {% endblock %}
+{% block style %}
+    <style>
+    {% if action %}
+        {% if action.value %}
+            #like {
+                color: green;
+            }
+        {% else %}
+            #dislike {
+                color: red;
+            }
+        {% endif %}
+    {% endif %}
+
+    </style>
+{% endblock %}
 {% block content %}
     <div class="modal fade text-right" id="CommentModal">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
 
-                <!-- Modal Header -->
+                <!-- Comment Modal -->
                 <div class="modal-header d-flex justify-content-between">
                     <div>
                         <h4 class="modal-title">کامنت ها</h4>
@@ -20,12 +36,10 @@
 
                 </div>
 
-                <!-- Modal body -->
                 <div class="modal-body" id="comment-section"  style="transition: all 500ms">
 
                 </div>
 
-                <!-- Modal footer -->
                 <div class="modal-footer">
                     <div class="col-9">
                             <input type="text" class="form-control" placeholder="کامنت بگذارید..." name="comment" id="comment">
@@ -48,15 +62,17 @@
                     {% endif %}
                       <div class="card-body">
                             <h3 class="card-title mt-2" style="height: 5rem">{{ post.title }}</h3>
-                            <p class="mt-2 mb-4">نویسنده:<span class="mr-2"><a href="#">{{ post.author.username }}</a></span></p>
+                            <p class="mt-2 mb-4">نویسنده:<span class="mr-2"><a href="{{ url_for('API.user_profile', variable=post.author.username ) }}">{{ post.author.username }}</a></span></p>
                             <p class="mt-2 mb-4">دسته:<span class="mr-2"><a href="{{ url_for('blog.category', variable=post.category.id ) }}">{{ post.category }}</a></span></p>
                             <div class="d-flex">
                                 <div class="likes-comments">
-                                    <i class="fa fa-thumbs-o-up m-2" aria-hidden="true" style="font-size: 150%;"></i>
+                                    <i id="like" onclick="like_dislike('{{ post.id }}','{{ g.user.id }}', 'like','{{ url_for('API.post_action')}}')" class="like fa fa-thumbs-o-up m-2"
+                                       aria-hidden="true" style="font-size: 150%;"></i>
                                     <span class="tooltiptext">لایک</span>
                                 </div>
                                 <div class="likes-comments">
-                                    <i class="fa fa-thumbs-o-down m-2" aria-hidden="true" style="font-size: 150%;"></i>
+                                    <i id="dislike" onclick="like_dislike('{{ post.id }}','{{ g.user.id }}', 'dislike','{{ url_for('API.post_action')}}')" class="dislike fa fa-thumbs-o-down m-2"
+                                       aria-hidden="true" style="font-size: 150%;"></i>
                                     <span class="tooltiptext">دیس لایک </span>
                                 </div>
                                 <div class="likes-comments">
@@ -65,9 +81,9 @@
                                 </div>
                             </div>
                             <div class="d-flex mt-3">
-                                <div class="ml-3 text-success"><span class="ml-2">{{ post.likes_count|en_to_fa }}</span>لایک</div>
+                                <div class="ml-3 text-success"><span id="post-like" class="ml-2">{{ post.likes_count|en_to_fa }}</span>لایک</div>
                                 <div class="ml-3"><span>|</span></div>
-                                <div class="text-danger"><span class="ml-2">{{ post.dislikes_count|en_to_fa }}</span>دیس لایک</div>
+                                <div class="text-danger"><span id="post-dislike" class="ml-2">{{ post.dislikes_count|en_to_fa }}</span>دیس لایک</div>
                             </div>
                             <div class="mt-3">
                                 <p style="font-size: 90%">{{ post.date|date_delta }} پیش </p>
@@ -91,4 +107,11 @@
                           </div>
                 </div>
 
+{% endblock %}
+
+{% block js %}
+    <script>
+
+
+    </script>
 {% endblock %}

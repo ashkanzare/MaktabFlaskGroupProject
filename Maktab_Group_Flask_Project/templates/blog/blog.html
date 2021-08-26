@@ -34,8 +34,8 @@
                                         <p  style="font-size: 80%">{{ new_posts.0.date|date_delta }} پیش</p>
                                     </div>
                                 </div>
-                                <div class="float-left ml-5">
-                                <a href="{{ url_for('blog.post', variable=new_posts.0.id ) }}" class="text-white read_more">ادامه مطلب...</a>
+                                <div class="float-left ml-5 ">
+                                <a href="{{ url_for('blog.post', variable=new_posts.0.id ) }}" class="text-white read_more ">ادامه مطلب...</a>
                                 </div>
                             </div>
 
@@ -85,7 +85,7 @@
                     {% endif %}
                       <div class="card-body" >
                             <h5 class="card-title mt-1" style="height: 2rem">{{ post.title }}</h5>
-                            <p class=" mb-2">نویسنده:<span class="mr-2"><a href="#">{{ post.author.username }}</a></span></p>
+                            <p class="mt-2 mb-4">نویسنده:<span class="mr-2"><a href="{{ url_for('API.user_profile', variable=post.author.username ) }}" data-toggle="tooltip" data-placement="left" data-html="true" title="{{ post.author|get_info(0) }} {{ post.author|get_info(1) }}<br> عضو شده از {{ post.author|get_info(2)|convert_date }}">{{ post.author.username }}</a></span></p>
                             <p class="mt-2 mb-2">دسته:<span class="mr-2"><a href="{{ url_for('blog.category', variable=post.category.id ) }}">{{ post.category }}</a></span></p>
                             <div class="d-flex mt-1 justify-content-between">
                                 <div class="d-flex">
@@ -110,9 +110,14 @@
 {% block js %}
 {% if home_mode %}
 
-        <script>
-            parse('{{ new_posts.0.content|safe }}', '{{ new_posts.1.content|safe }}')
-        </script>
+    <script>
+        parse('{{ new_posts.0.content|safe }}', '{{ new_posts.1.content|safe }}')
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
 
 {% endif %}
 {% endblock %}

@@ -7,7 +7,7 @@ from flask import render_template
 from flask import request
 from werkzeug.security import check_password_hash
 
-from Maktab_Group_Flask_Project.models import User, Category, Tag
+from Maktab_Group_Flask_Project.models import User, Category, Tag, LikeDislike
 from Maktab_Group_Flask_Project.utils.extra_functions import (
     check_photo, create_user, check_for_register_errors, lower_form_values)
 
@@ -30,7 +30,8 @@ def home():
 def post(variable):
     """ show one post """
     selected_post = Post.objects(pk=variable).first()
-    return render_template('blog/post.html', post=selected_post)
+    user_action = LikeDislike.objects(user=g.user.id, post=selected_post.id).first()
+    return render_template('blog/post.html', post=selected_post, action=user_action)
 
 
 def login_required(view):

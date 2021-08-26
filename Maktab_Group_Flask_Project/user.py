@@ -32,6 +32,9 @@ def edit_profile():
         # get image from request
         image = request.files['file']
 
+        # get bio from request
+        bio = request.files['bio']
+
         # make directory for user profile picture
         photo = check_photo(image, user_id, 'user', 'username', default_photo=user.photo)
 
@@ -48,6 +51,7 @@ def edit_profile():
             user.username = user_field['username']
             user.email = user_field['email']
             user.photo = photo
+            user.bio = bio
             if user_field['password'] != '':
                 user.password = generate_password_hash(user_field['password'])
             user.save()
@@ -147,6 +151,7 @@ def edit_post(variable):
         title = request.form['title']
         content = request.form['content-data']
         image = request.files['file']
+
 
         category_name = request.form['category']
         category = Category.objects(name=category_name.strip()).first()

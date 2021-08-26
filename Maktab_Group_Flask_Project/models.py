@@ -15,6 +15,7 @@ class User(db.Document):
     photo = db.StringField(required=False, null=True)
     password = db.StringField(required=True)
     date = db.DateTimeField(required=True, default=datetime.now())
+    bio = db.StringField(default='')
 
     def __str__(self):
         return self.username
@@ -61,6 +62,10 @@ class LikeDislike(db.Document):
 
     def __str__(self):
         return f"{self.user} -- {self.post.title} -- {self.value}"
+
+    @classmethod
+    def counter(cls, post_id, action):
+        return len(cls.objects(post=post_id, value=action))
 
 
 class Comment(db.Document):

@@ -1,4 +1,4 @@
-from ..models import User, Tag, Category
+from ..models import User, Tag, Category, LikeDislike
 
 from werkzeug.security import generate_password_hash
 from flask import request, redirect, url_for, flash, json
@@ -87,6 +87,7 @@ def lower_form_values(request_):
         'email': request_.form['email'],
         'password': request_.form['password'],
         're_password': request_.form['re_password'],
+
     }
     # lower the fields
     for field in user_field.keys():
@@ -133,3 +134,9 @@ def find_categories(categories):
             find_categories(category['children'])
     return categories
 
+
+def set_likes_count(post):
+    post.likes_count = LikeDislike.counter(post.id, True)
+    post.dislikes_count = LikeDislike.counter(post.id, False)
+    post.save()
+    return True
