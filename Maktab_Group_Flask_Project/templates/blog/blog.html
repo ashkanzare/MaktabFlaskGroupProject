@@ -30,12 +30,12 @@
                             <div >
                                 <div class="float-right mr-5">
                                     <div class="user-date">
-                                        <h5  style="font-size: 110%">{{ new_posts.0.author.username }}</h5>
-                                        <p  style="font-size: 110%">{{ new_posts.0.date }}</p>
+                                        <p  style="font-size: 90%">{{ new_posts.0.author.username|get_name }}</p>
+                                        <p  style="font-size: 80%">{{ new_posts.0.date|date_delta }} پیش</p>
                                     </div>
                                 </div>
                                 <div class="float-left ml-5">
-                                <a href="#" class="text-white read_more">ادامه مطلب...</a>
+                                <a href="{{ url_for('blog.post', variable=new_posts.0.id ) }}" class="text-white read_more">ادامه مطلب...</a>
                                 </div>
                             </div>
 
@@ -54,8 +54,16 @@
                                 <p id="new_2" class="card-text mt-5"></p>
 
                             </div>
-                            <div class="float-left ml-5">
-                                <a href="#" class="text-white read_more">ادامه مطلب...</a>
+                            <div >
+                                <div class="float-right mr-5">
+                                    <div class="user-date">
+                                        <p  style="font-size: 90%">{{ new_posts.1.author.username|get_name }}</p>
+                                        <p  style="font-size: 80%">{{ new_posts.1.date|date_delta }} پیش</p>
+                                    </div>
+                                </div>
+                                <div class="float-left ml-5">
+                                <a href="{{ url_for('blog.post', variable=new_posts.1.id ) }}" class="text-white read_more">ادامه مطلب...</a>
+                                </div>
                             </div>
 
                     </div>
@@ -79,10 +87,15 @@
                             <h5 class="card-title mt-1" style="height: 2rem">{{ post.title }}</h5>
                             <p class=" mb-2">نویسنده:<span class="mr-2"><a href="#">{{ post.author.username }}</a></span></p>
                             <p class="mt-2 mb-2">دسته:<span class="mr-2"><a href="{{ url_for('blog.category', variable=post.category.id ) }}">{{ post.category }}</a></span></p>
-                            <div class="d-flex mt-1">
-                                <div class="ml-3 text-success" style="font-size: 80%"><span class="ml-2">{{ post.likes_count|en_to_fa }}</span>لایک</div>
-                                <div class="ml-3" style="font-size: 80%"><span>|</span></div>
-                                <div class="text-danger" style="font-size: 80%"><span class="ml-2" >{{ post.dislikes_count|en_to_fa }}</span>دیس لایک</div>
+                            <div class="d-flex mt-1 justify-content-between">
+                                <div class="d-flex">
+                                    <div class="ml-3 text-success" style="font-size: 80%"><span class="ml-2">{{ post.likes_count|en_to_fa }}</span>لایک</div>
+                                    <div class="ml-3" style="font-size: 80%"><span>|</span></div>
+                                    <div class="text-danger" style="font-size: 80%"><span class="ml-2" >{{ post.dislikes_count|en_to_fa }}</span>دیس لایک</div>
+                                </div>
+                                <div>
+                                    <a href="{{ url_for('blog.post', variable=post.id ) }}" style="font-size: 80%" class="text-info">دیدن پست</a>
+                                </div>
                             </div>
 
                             <div class="mt-2 card-content" style="max-height: 10rem; font-size: 80%; text-align: justify;overflow: hidden;text-overflow: ellipsis; ">{{ post.content|safe}}</div>

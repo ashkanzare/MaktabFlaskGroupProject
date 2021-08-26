@@ -30,8 +30,8 @@ function search(url, url_static) {
                       <div class="text-center col-8 mt-4">
                             <h3 class="card-title">${post.title}</h3>
                       </div>
-                      <div class="text-center col-2 mt-4">
-                            <p class="mt-2 mb-4">نویسنده:<span class="mr-2"><a href="#">${post.author.username}</a></span></p>
+                      <div class="text-center col-2 mt-4 ml-2">
+                            <p class="mt-2 mb-4 ">نویسنده:<span class="mr-2"><a href="#">${post.author.username}</a></span></p>
                       </div>
                     </div>  
                   `;
@@ -54,4 +54,77 @@ function parse(text1, text2) {
     let content_2 =  sum_up_text($.parseHTML(text2))
     $('#new_1').html(content_1.substring(0,200) + '...')
     $('#new_2').html(content_2.substring(0,200) + '...')
+}
+
+function convertNumber(fromNum) {
+    let persianNums = '۰١۲۳۴۵۶۷۸۹';
+    return persianNums.indexOf(fromNum);
+}
+
+function comment(url1, url2) {
+    let comment = $('#comment')
+    let comment_text = comment.val()
+    $.post(url1, {'comment_content': comment_text}, function(data, status) {
+            show_comments(url2)
+          });
+    comment.val('')
+}
+
+function get_time_diff( datetime1, datetime2 )
+{
+
+    let diff = datetime2 - datetime1;
+    console.log(datetime1, datetime2)
+    let years = Math.floor(diff / 1000 / 60 / (60 * 24 * 30 * 12));
+    let months = Math.floor(diff / 1000 / 60 / (60 * 24 * 30));
+    let days = Math.floor(diff / 1000 / 60 / (60 * 24));
+    let hour = Math.floor(diff / 1000 / 60 / (60));
+    let minute = Math.floor(diff / 1000 / 60 );
+    let seconds = Math.floor(diff / 1000 );
+
+    if (years !== 0) {
+        return `${years} سال پیش`
+    }
+    else if (months !== 0) {
+        return `${months} ماه پیش`
+    }
+    else if (days !== 0) {
+        return `${days} روز پیش`
+    }
+    else if (hour !== 0) {
+        return `${hour} ساعت پیش`
+    }
+    else if (minute !== 0) {
+        return `${minute} دقیقه پیش`
+    }
+    else if (seconds !== 0) {
+        return `${seconds} ثانیه پیش`
+    }
+    else {
+        return `   الان    `
+    }
+
+}
+
+function show_comments(url) {
+    $.get(url, function(data, status) {
+            const section = document.getElementById('comment-section');
+            section.innerHTML = ''
+
+            for (let comment of data['result']) {
+                  let date = Number(comment.date);
+                  const content = `
+                <div class="row">
+                    <div class="col-9" style="width: 80%">
+                        <div class="row">
+                            <div class="col-4" style="font-weight: bolder">${comment.user.username}</div>
+                            <div class="col-8">${comment.comment}</div>
+                        </div>    
+                    </div>
+                    <div class="bg-succes col-3"><p style="font-size: 60%; font-weight: lighter" class="mt-1">${ get_time_diff(date, data['time']) }</p></div>
+                    </div>
+                  `;
+
+                  section.innerHTML += content;}
+            });
 }

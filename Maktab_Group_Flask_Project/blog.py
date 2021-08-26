@@ -1,3 +1,5 @@
+import datetime
+
 from flask import session, redirect, url_for, Blueprint, json, jsonify
 from flask import flash
 from flask import g
@@ -11,7 +13,7 @@ from Maktab_Group_Flask_Project.utils.extra_functions import (
 
 import functools
 
-from Maktab_Group_Flask_Project.models import Post
+from Maktab_Group_Flask_Project.models import Post, Comment
 
 bp = Blueprint("blog", __name__)
 
@@ -27,8 +29,8 @@ def home():
 @bp.route('/post/<variable>')
 def post(variable):
     """ show one post """
-    selected_post = Post.objects(pk=variable)
-    return render_template('blog/blog.html', posts=selected_post)
+    selected_post = Post.objects(pk=variable).first()
+    return render_template('blog/post.html', post=selected_post)
 
 
 def login_required(view):
@@ -148,3 +150,18 @@ def tag(variable):
     tag_posts = Tag.objects(pk=variable).first()
     return render_template('blog/blog.html', posts=[post for post in tag_posts.posts if post.is_active],
                            tag=tag_posts.name)
+
+
+@bp.route('/comment/<variable>', methods=['GET', 'POST'])
+def comment(variable):
+    """ post a comment """
+    if request.method == 'POST':
+        post = Post.objects(pk=variable).first()
+        post.comments_count += 1
+        post.save()
+        user = {'username': g.user.username}
+        comment_content = request.form['comment_content']
+        new_comment = Comment(post=post, user=user, comment=comment_content, date=str(int(datetime.datetime.utcnow().timestamp() * 1000)))
+        new_comment.save()
+        return "Comment Posted"
+    return "Nothing changed"

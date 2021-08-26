@@ -1,8 +1,9 @@
+import datetime
 import shutil
 
 import flask
 
-from flask import Blueprint, redirect, url_for
+from flask import Blueprint, redirect, url_for, g, request
 
 from Maktab_Group_Flask_Project.utils.extra_functions import find_categories
 
@@ -10,7 +11,7 @@ from mongoengine import Q
 
 from flask import json
 
-from Maktab_Group_Flask_Project.models import Post, User, Category, Tag
+from Maktab_Group_Flask_Project.models import Post, User, Category, Tag, Comment
 
 bp = Blueprint("API", __name__)
 
@@ -75,3 +76,11 @@ def search(variable):
                              Q(author__username__contains=variable))
     json_posts = json.loads(all_posts.to_json())
     return flask.jsonify(results=json_posts)
+
+
+@bp.route('/post-comments/<variable>')
+def post_comments(variable):
+    """ return comments of a post """
+    comments = Comment.objects(post=variable)[:2]
+    json_comments = json.loads(comments.to_json())
+    return flask.jsonify(result=json_comments, time=int(datetime.datetime.utcnow().timestamp() * 1000))

@@ -64,10 +64,10 @@ class LikeDislike(db.Document):
 
 
 class Comment(db.Document):
-    user = db.ReferenceField(User, required=True, reverse_delete_rule=db.CASCADE)
+    user = db.DictField(required=True)
     post = db.ReferenceField(Post, required=True, reverse_delete_rule=db.CASCADE)
     comment = db.StringField(required=True)
-    date = db.DateTimeField(required=True, default=datetime.now())
+    date = db.StringField(required=True)
 
     def __str__(self):
         return f"{self.user} -- {self.post.title} -- {self.comment}"
@@ -75,3 +75,4 @@ class Comment(db.Document):
     @classmethod
     def top_3_comment(cls, post):
         return Comment.objects(post=post).limit(3)
+
