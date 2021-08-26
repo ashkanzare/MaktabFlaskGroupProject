@@ -79,5 +79,5 @@ class Comment(db.Document):
 
     @classmethod
     def top_3_comment(cls, post):
-        return Comment.objects(post=post).limit(3)
+        return Comment.objects(post=post).order_by('-id').limit(3)
 

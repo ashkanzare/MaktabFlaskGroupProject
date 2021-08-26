@@ -84,9 +84,10 @@ def post_comments(variable):
     counter = int(request.args['counter'])
     comments = Comment.objects(post=variable)
     comment_select = comments.order_by('-id')[:5 * counter]
+    top_3_update = comments.order_by('-id')[:3]
     json_comments = json.loads(comment_select.to_json())
     return flask.jsonify(result=json_comments, time=int(datetime.datetime.utcnow().timestamp() * 1000),
-                         max=len(comments))
+                         max=len(comments), top_3=json.loads(top_3_update.to_json()))
 
 
 @bp.route('/user-profile/<variable>')

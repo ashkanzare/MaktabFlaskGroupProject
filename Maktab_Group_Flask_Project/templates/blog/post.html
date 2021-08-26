@@ -62,7 +62,7 @@
                     {% endif %}
                       <div class="card-body">
                             <h3 class="card-title mt-2" style="height: 5rem">{{ post.title }}</h3>
-                            <p class="mt-2 mb-4">نویسنده:<span class="mr-2"><a href="{{ url_for('API.user_profile', variable=post.author.username ) }}">{{ post.author.username }}</a></span></p>
+                            <p class="mt-2 mb-4">نویسنده:<span class="mr-2"><a href="{{ url_for('API.user_profile', variable=post.author.username ) }}" data-toggle="tooltip" data-placement="left" data-html="true" title="{{ post.author|get_info(0) }} {{ post.author|get_info(1) }}<br> عضو شده از {{ post.author|get_info(2)|convert_date }}">{{ post.author.username }}</a></span></p>
                             <p class="mt-2 mb-4">دسته:<span class="mr-2"><a href="{{ url_for('blog.category', variable=post.category.id ) }}">{{ post.category }}</a></span></p>
                             <div class="d-flex">
                                 <div class="likes-comments">
@@ -98,9 +98,28 @@
                                 </ul>
                             <div>
                                 {% if post.comments_count == 0 %}
-                                    <div class="d-flex mt-3"><div class="ml-3 text-secondary">بدون کامنت</div></div>
+                                    <ul class="comment-ul" id="top-3-comments">
+                                        <div class="d-flex mt-3"><div class="ml-3 text-secondary">بدون کامنت</div></div>
+                                    </ul>
                                 {% else %}
-                                    <div class="d-flex mt-3"><div class="ml-3 text-dark"><a href="#" class="ml-2 text-dark">دیدن <span></span> کامنت...</a></div></div>
+                                    <div >
+                                        <ul class="comment-ul" id="top-3-comments">
+                                        {% for comment in comments|reverse %}
+                                                <li style="font-weight: bolder">
+                                                    {{ comment.user.username }}
+                                                    <ul class="comment-ul">
+                                                        <li class="mr-3" style="font-weight: lighter">{{ comment.comment }}</li>
+                                                    </ul>
+
+                                                </li>
+
+                                        {% endfor %}
+                                        </ul>
+                                    </div>
+                                    <div class="d-flex mt-3">
+                                        <div class="ml-3 text-dark"><a href="#" data-toggle="modal" data-target="#CommentModal" onclick="show_comments('{{ url_for('API.post_comments', variable=post.id ) }}', 1);" class="ml-2 text-dark">دیدن
+                                            <span>{{ post.comments_count|en_to_fa }}</span> کامنت...</a></div>
+                                    </div>
                                 {% endif %}
                             </div>
                             </div>

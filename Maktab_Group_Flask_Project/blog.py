@@ -7,13 +7,11 @@ from flask import render_template
 from flask import request
 from werkzeug.security import check_password_hash
 
-from Maktab_Group_Flask_Project.models import User, Category, Tag, LikeDislike
+from Maktab_Group_Flask_Project.models import Post, Comment, User, Category, Tag, LikeDislike
 from Maktab_Group_Flask_Project.utils.extra_functions import (
     check_photo, create_user, check_for_register_errors, lower_form_values)
 
 import functools
-
-from Maktab_Group_Flask_Project.models import Post, Comment
 
 bp = Blueprint("blog", __name__)
 
@@ -31,7 +29,8 @@ def post(variable):
     """ show one post """
     selected_post = Post.objects(pk=variable).first()
     user_action = LikeDislike.objects(user=g.user.id, post=selected_post.id).first()
-    return render_template('blog/post.html', post=selected_post, action=user_action)
+    comments = Comment.top_3_comment(post=selected_post)
+    return render_template('blog/post.html', post=selected_post, action=user_action, comments=comments)
 
 
 def login_required(view):
@@ -157,12 +156,13 @@ def tag(variable):
 def comment(variable):
     """ post a comment """
     if request.method == 'POST':
-        post = Post.objects(pk=variable).first()
-        post.comments_count += 1
-        post.save()
+        post_ = Post.objects(pk=variable).first()
+        post_.comments_count += 1
+        post_.save()
         user = {'username': g.user.username}
         comment_content = request.form['comment_content']
-        new_comment = Comment(post=post, user=user, comment=comment_content, date=str(int(datetime.datetime.utcnow().timestamp() * 1000)))
+        new_comment = Comment(post=post_, user=user, comment=comment_content,
+                              date=str(int(datetime.datetime.utcnow().timestamp() * 1000)))
         new_comment.save()
         return "Comment Posted"
     return "Nothing changed"

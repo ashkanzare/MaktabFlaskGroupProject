@@ -6,9 +6,7 @@ from werkzeug.security import generate_password_hash
 from Maktab_Group_Flask_Project.utils.extra_functions import (
     check_photo, check_user_email_username, lower_form_values, tags_changes, change_photo)
 
-
 bp = Blueprint("user", __name__)
-
 
 
 @bp.route('/profile/')
@@ -151,7 +149,6 @@ def edit_post(variable):
         title = request.form['title']
         content = request.form['content-data']
         image = request.files['file']
-
 
         category_name = request.form['category']
         category = Category.objects(name=category_name.strip()).first()

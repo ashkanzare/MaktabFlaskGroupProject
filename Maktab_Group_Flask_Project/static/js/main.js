@@ -25,13 +25,14 @@ function search(url, url_static) {
                   }
                   card.classList = 'card-body';
                   const content = `
-                    <div class="shadow text-right mt-2 row bg-white justify-content-between rounded" style="min-width: 25%">
+                    <div class="search-results shadow text-right mt-2 row bg-white justify-content-between rounded" style="min-width: 25%">
                     <div class="mt-2 col-2 mb-2" style="max-width: 10rem"><img class="card-img-top cover" style="height: 5rem; width: auto;" src=${url_static + post_image} alt="Post image"></div>
                       <div class="text-center col-8 mt-4">
                             <h3 class="card-title">${post.title}</h3>
                       </div>
                       <div class="text-center col-2 mt-4 ml-2">
-                            <p class="mt-2 mb-4 ">نویسنده:<span class="mr-2"><a href="#">${post.author.username}</a></span></p>
+                            
+                            <p class="mt-2 mb-4 ">نویسنده:<span class="mr-2"><a href="/user-profile/${post.author.username}">${post.author.username}</a></span></p>
                       </div>
                     </div>  
                   `;
@@ -122,7 +123,9 @@ function more_comments(url) {
 function show_comments(url, counter) {
     $.get(url, {'counter': counter}, function(data, status) {
             const section = document.getElementById('comment-section');
+            const top_3_section = document.getElementById('top-3-comments');
             section.innerHTML = ''
+            top_3_section.innerHTML = ''
             let more_comments = `
                 <div class="text-center mb-4">
                     <button class="bg-white" onclick="more_comments('${url}')" id="more_comment" style="outline: none; width: 50px; height: 50px; border-radius: 50%"><i class="fa fa-plus bg-white" aria-hidden="true"></i></button>
@@ -131,6 +134,7 @@ function show_comments(url, counter) {
             if (data['result'].length !== data['max']) {
                 section.innerHTML += more_comments;
             }
+
             for (let comment of data['result'].reverse()) {
                   let date = Number(comment.date);
                   const content = `
@@ -142,11 +146,33 @@ function show_comments(url, counter) {
                             <div class="col-8">${comment.comment}</div>
                         </div>    
                     </div>
-                    <div class="bg-succes col-3"><p style="font-size: 60%; font-weight: lighter" class="mt-1">${ get_time_diff(date, data['time']) }</p></div>
+                    <div class="col-3"><p style="font-size: 60%; font-weight: lighter" class="mt-1">${ get_time_diff(date, data['time']) }</p></div>
                     </div>
                   `;
 
                   section.innerHTML += content;}
+
+
+            for (let comment of data['top_3'].reverse()) {
+
+                      const content = `
+                            <li style="font-weight: bolder">
+                                ${comment.user.username}
+                                <ul class="comment-ul">
+                                    <li class="mr-3" style="font-weight: lighter">${comment.comment}</li>
+                                </ul>
+
+                            </li>
+                      `;
+
+                      top_3_section.innerHTML += content;}
+            if (data['result'].length === 0 ) {
+                let content = `
+                    <div className="d-flex mt-3">
+                        <div className="ml-3 text-secondary">بدون کامنت</div>
+                    </div>`
+                top_3_section.innerHTML += content
+            }
             });
 
 }

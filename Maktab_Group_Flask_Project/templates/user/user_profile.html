@@ -15,7 +15,7 @@
 
         <div class="card shadow" style="width: 50rem;">
             <div>
-                <h4 class="mt-4 ml-2 float-left fw-bolder text-primary"><span>{{ user.username}}</span>@</h4>
+                <h4 class="mt-4 ml-3 float-left fw-bolder text-secondary"><span>{{ user.username}}</span></h4>
             </div>
             {% if user.photo %}
                <img class="card-img-top mx-auto d-block mt-2" src="{{ url_for('static', filename=user.photo ) }}" alt="profile image" style="width: 18rem; height: 18rem; border-radius: 50%">

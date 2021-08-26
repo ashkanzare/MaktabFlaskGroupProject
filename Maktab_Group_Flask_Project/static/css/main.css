@@ -245,8 +245,8 @@ li > i {
 }
 
 .card-title, .user-date {
-    font-weight: bolder;
-    text-shadow: 0 0 3px #2d2b27;
+    font-weight: bold;
+    text-shadow: 0 0 1px #2d2b27;
   }
 
 @media only screen and (max-width: 600px) {
@@ -295,4 +295,12 @@ li > i {
 
 .read_more {
     text-shadow: 0 0 3px #e8e6e2, 0 0 5px rgba(41, 62, 43, 0.88);
+}
+
+.comment-ul {
+    list-style: none;
+}
+
+.search-results:hover {
+    cursor: pointer;
 }
