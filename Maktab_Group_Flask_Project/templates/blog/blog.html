@@ -78,9 +78,11 @@
     <div class="container d-flex mt-5 flex-column align-items-center" id="profile">
 
     <div class="row justify-content-center">
+    <div class="col-8">
+    <div class="row">
     {% if posts|length != 0 %}
     {% for post in posts %}
-        <div class="card shadow text-right mt-2 col-md-4" style="width: inherit">
+        <div class="card shadow text-right mt-2 col-md-6" style="width: inherit">
                     {% if post.image %}
                         <div style="max-height: 10rem; overflow: hidden;">
                             <img class="card-img-top mx-auto d-block mt-2 rounded shadow" style="max-width: 100%; max-height: 100%; object-fit: cover; object-position: inherit" src="{{ url_for('static', filename=post.image ) }}" alt="Post image">
@@ -115,6 +117,27 @@
                 </h4>
         </div>
     {% endif %}
+
+    </div>
+
+    </div>
+    {% if home_mode %}
+
+        <div class="col-4 ">
+        <div class="sidenav">
+    <ul class="list-group"  style="text-align: right;">
+        <li class="list-group-item list-group-item" style="background-color: #009579; color: white">دسته بندی ها</li>
+        {% for cat in categories %}
+            <li class="list-group-item"><a href="{{ url_for('blog.category', variable=cat.id ) }}">{{ cat }}</a></li>
+        {% endfor %}
+
+    </ul>
+</div>
+
+{% endif %}
+
+
+        </div>
     </div>
     </div>
 {% endblock %}
