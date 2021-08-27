@@ -75,11 +75,15 @@
 
         </div>
     {% endif %}
-    <div class="container d-flex mt-5 flex-column align-items-center" id="profile">
+    <div class="container d-flex flex-column mt-5 align-items-center" id="profile">
 
     <div class="row justify-content-center">
+
+    <div class="col-8">
+    <div class="row">
     {% for post in posts %}
-        <div class="card shadow text-right mt-2 col-md-4" style="width: inherit">
+
+        <div class="card shadow text-right mt-2 col-6" style="width: inherit;">
                     {% if post.image %}
                         <div style="max-height: 10rem; overflow: hidden;">
                             <img class="card-img-top mx-auto d-block mt-2 rounded shadow" style="max-width: 100%; max-height: 100%; object-fit: cover; object-position: inherit" src="{{ url_for('static', filename=post.image ) }}" alt="Post image">
@@ -106,18 +110,26 @@
 
                           </div>
                 </div>
-            <script>
-                            let btnLike = document.querySelector('#like')
-                            let btnDisLike = document.querySelector('#dislike')
-                            btnDisLike.addEventListener('click',() =>btnDisLike.style.backgroundColor ='#cc3333')
-                            btnLike.addEventListener('click',()=>btnLike.style.backgroundColor ='#4bb544')
 
-</script>
+
     {% endfor %}
     </div>
     </div>
+    <div class="col-4">
+
+            <ul class="list-group"  style="text-align: right;">
+                <li class="list-group-item list-group-item-success">دسته بندی ها</li>
+                {% for cat in categories %}
+                    <li class="list-group-item"><a href="{{ url_for('blog.category', variable=cat.id ) }}">{{ cat }}</a></li>
+                {% endfor %}
+
+            </ul>
+
+        </div>
+
+    </div>
+    </div>
 {% endblock %}
-<<<<<<< HEAD
 {% block js %}
 {% if home_mode %}
 

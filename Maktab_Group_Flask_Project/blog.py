@@ -27,7 +27,8 @@ def home():
     """ home route for showing all posts """
     all_posts = Post.objects(is_active=True).order_by('-id')
     new_posts = all_posts[:2]
-    return render_template('blog/blog.html', posts=all_posts[2:], new_posts=new_posts, home_mode=True)
+    all_categories = Category.objects.all()
+    return render_template('blog/blog.html', posts=all_posts[2:], new_posts=new_posts, home_mode=True, categories=all_categories)
 
 
 @bp.route('/post/<variable>')

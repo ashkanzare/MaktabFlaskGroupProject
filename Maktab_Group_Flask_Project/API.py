@@ -95,7 +95,7 @@ def post_comments(variable):
 def user_profile(variable):
     """ return userprofile and 6 post from the same user """
     user = User.objects(username=variable).first()
-    posts_user = Post.objects(author__id=user.id)
+    posts_user = Post.objects(author__id=user.id).limit(6)
     return render_template('user/user_profile.html', user=user, posts_user=posts_user)
 
 

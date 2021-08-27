@@ -114,7 +114,6 @@ def create_post():
         return redirect(url_for('user.post_list'))
 
     else:
-
         tags = Tag.objects().limit(6)
         categories = Category.objects()
         tags_str = ''
