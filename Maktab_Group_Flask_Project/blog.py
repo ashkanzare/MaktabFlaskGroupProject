@@ -182,3 +182,18 @@ def comment(variable):
         return "Comment Posted"
     return "Nothing changed"
 
+
+@bp.route('/admin/', methods=['GET', 'POST'])
+def comment(variable):
+    """ create a category """
+    # if request.method == 'POST':
+    #     post_ = Post.objects(pk=variable).first()
+    #     post_.comments_count += 1
+    #     post_.save()
+    #     user = {'username': g.user.username}
+    #     comment_content = request.form['comment_content']
+    #     new_comment = Comment(post=post_, user=user, comment=comment_content,
+    #                           date=str(int(datetime.datetime.utcnow().timestamp() * 1000)))
+    #     new_comment.save()
+    #     return "Comment Posted"
+    return render_template('blog/admin.html')
