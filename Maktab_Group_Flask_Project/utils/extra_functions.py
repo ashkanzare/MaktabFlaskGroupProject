@@ -1,4 +1,5 @@
-from ..models import User, Tag, Category, LikeDislike, Post
+
+from ..models import User, Tag, Category, LikeDislike
 
 from werkzeug.security import generate_password_hash
 from flask import request, redirect, url_for, flash, json
@@ -87,6 +88,7 @@ def lower_form_values(request_):
         'email': request_.form['email'],
         'password': request_.form['password'],
         're_password': request_.form['re_password'],
+
     }
     # lower the fields
     for field in user_field.keys():
@@ -135,31 +137,8 @@ def find_categories(categories):
 
 
 
-def has_liked_post(post,user,action):
-    post_like = LikeDislike.objects(post =post ,user = user).first()
-    post_count = Post.objects(pk=post.id).first()
-    if post_like:
-
-        if post_like.value==action:
-            if action:
-                post_count.likes_count -=1
-            else:
-                post_count.dislikes_count -=1
-            post_like.delete()
-        else:
-            if action:
-                post_count.likes_count +=1
-            else:
-                post_count.dislikes_count +=1
-            post_like.value=action
-        post_like.save()
-        post_count.save()
-    else:
-        new_like = LikeDislike(user=user, post=post , value = action)
-        new_like.save()
-        if action:
-            post_count.likes_count += 1
-        else:
-            post_count.dislikes_count += 1
-
-
+def set_likes_count(post):
+    post.likes_count = LikeDislike.counter(post.id, True)
+    post.dislikes_count = LikeDislike.counter(post.id, False)
+    post.save()
+    return True

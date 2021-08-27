@@ -6,9 +6,7 @@ from werkzeug.security import generate_password_hash
 from Maktab_Group_Flask_Project.utils.extra_functions import (
     check_photo, check_user_email_username, lower_form_values, tags_changes, change_photo)
 
-
 bp = Blueprint("user", __name__)
-
 
 
 @bp.route('/profile/')
@@ -32,6 +30,9 @@ def edit_profile():
         # get image from request
         image = request.files['file']
 
+        # get bio from request
+        bio = request.files['bio']
+
         # make directory for user profile picture
         photo = check_photo(image, user_id, 'user', 'username', default_photo=user.photo)
 
@@ -48,6 +49,7 @@ def edit_profile():
             user.username = user_field['username']
             user.email = user_field['email']
             user.photo = photo
+            user.bio = bio
             if user_field['password'] != '':
                 user.password = generate_password_hash(user_field['password'])
             user.save()
