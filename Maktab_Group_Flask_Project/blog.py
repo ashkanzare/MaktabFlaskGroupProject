@@ -201,7 +201,7 @@ def create_category():
             flash('دسته ساخته شد!', 'text-success')
             return redirect(url_for("blog.create_category"))
 
-    if g.user.username == 'admin6':
+    if g.user and g.user.username == 'admin6':
         categories = Category.objects()
         return render_template('blog/admin.html', categories=categories)
     else:

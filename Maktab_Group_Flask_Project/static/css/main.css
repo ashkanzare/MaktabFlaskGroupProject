@@ -4,6 +4,11 @@
     background-color: rgb(253, 253, 253) !important;
 }
 
+
+a {
+    text-decoration: none!important;
+}
+
 nav {
     position: sticky;
 }
