@@ -3,7 +3,7 @@ import shutil
 
 import flask
 
-from flask import Blueprint, redirect, url_for, g, request, render_template
+from flask import Blueprint, redirect, url_for, request, g, render_template
 
 from Maktab_Group_Flask_Project.utils.extra_functions import find_categories, set_likes_count
 
@@ -12,6 +12,7 @@ from mongoengine import Q
 from flask import json
 
 from Maktab_Group_Flask_Project.models import Post, User, Category, Tag, Comment, LikeDislike
+
 
 bp = Blueprint("API", __name__)
 

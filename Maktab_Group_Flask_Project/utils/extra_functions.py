@@ -1,3 +1,4 @@
+
 from ..models import User, Tag, Category, LikeDislike
 
 from werkzeug.security import generate_password_hash
@@ -133,6 +134,7 @@ def find_categories(categories):
             category['children'] = json.loads(have_child.to_json())
             find_categories(category['children'])
     return categories
+
 
 
 def set_likes_count(post):

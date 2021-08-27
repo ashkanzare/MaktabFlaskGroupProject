@@ -1,7 +1,3 @@
-function convertNumber(fromNum) {
-    let persianNums = ['۰','١','۲','۳','۴','۵','۶','۷','۸','۹'];
-    return persianNums[fromNum];
-}
 
 function like_dislike(post, user, value, url) {
     let post_data = {
@@ -27,9 +23,8 @@ function like_dislike(post, user, value, url) {
                 dislike.css('color', 'black')
             }
         }
-        $('#post-like').html(convertNumber(data['likes']))
-        $('#post-dislike').html(convertNumber(data['dislikes']))
+        $('#post-like').html(String(data['likes']).replace(/[0-9]/g, c => String.fromCharCode(c.charCodeAt(0) + 1728)))
+        $('#post-dislike').html(String(data['dislikes']).replace(/[0-9]/g, c => String.fromCharCode(c.charCodeAt(0) + 1728)))
 
     });
 }
-
