@@ -66,18 +66,35 @@
                             <p class="mt-2 mb-4">دسته:<span class="mr-2"><a href="{{ url_for('blog.category', variable=post.category.id ) }}">{{ post.category }}</a></span></p>
                             <div class="d-flex">
                                 <div class="likes-comments">
-                                    <i id="like" onclick="like_dislike('{{ post.id }}','{{ g.user.id }}', 'like','{{ url_for('API.post_action')}}')" class="like fa fa-thumbs-o-up m-2"
-                                       aria-hidden="true" style="font-size: 150%;"></i>
-                                    <span class="tooltiptext">لایک</span>
+                                    {% if g.user %}
+                                        <i id="like" onclick="like_dislike('{{ post.id }}','{{ g.user.id }}', 'like','{{ url_for('API.post_action')}}')" class="like fa fa-thumbs-o-up m-2"
+                                           aria-hidden="true" style="font-size: 150%;"></i>
+                                        <span class="tooltiptext">لایک</span>
+                                    {% else %}
+                                        <i id="like" onclick="window.location.href='{{ url_for('blog.login') }}'" class="like fa fa-thumbs-o-up m-2"
+                                           aria-hidden="true" style="font-size: 150%;"></i>
+                                        <span class="tooltiptext">لایک</span>
+                                    {% endif %}
                                 </div>
                                 <div class="likes-comments">
+                                    {% if g.user %}
                                     <i id="dislike" onclick="like_dislike('{{ post.id }}','{{ g.user.id }}', 'dislike','{{ url_for('API.post_action')}}')" class="dislike fa fa-thumbs-o-down m-2"
                                        aria-hidden="true" style="font-size: 150%;"></i>
                                     <span class="tooltiptext">دیس لایک </span>
+                                    {% else %}
+                                    <i id="dislike"  onclick="window.location.href='{{ url_for('blog.login') }}'"  class="dislike fa fa-thumbs-o-down m-2"
+                                       aria-hidden="true" style="font-size: 150%;"></i>
+                                    <span class="tooltiptext">دیس لایک </span>
+                                    {% endif %}
                                 </div>
                                 <div class="likes-comments">
+                                    {% if g.user %}
                                     <i class="fa fa-comments-o m-2" aria-hidden="true" style="font-size: 150%" data-toggle="modal" data-target="#CommentModal" onclick="show_comments('{{ url_for('API.post_comments', variable=post.id ) }}', 1);"></i>
                                     <span class="tooltiptext">کامنت</span>
+                                    {% else %}
+                                        <i class="fa fa-comments-o m-2" aria-hidden="true" style="font-size: 150%" data-toggle="modal" data-target="#CommentModal" onclick="window.location.href='{{ url_for('blog.login') }}'"></i>
+                                    <span class="tooltiptext">کامنت</span>
+                                    {% endif %}
                                 </div>
                             </div>
                             <div class="d-flex mt-3">

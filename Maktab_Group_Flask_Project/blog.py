@@ -25,9 +25,12 @@ def welcome():
 @bp.route('/home/')
 def home():
     """ home route for showing all posts """
-    all_posts = Post.objects(is_active=True).order_by('-id')
-    new_posts = all_posts[:2]
-    return render_template('blog/blog.html', posts=all_posts[2:], new_posts=new_posts, home_mode=True)
+    try:
+        all_posts = Post.objects(is_active=True).order_by('-id')
+        new_posts = all_posts[:2]
+        return render_template('blog/blog.html', posts=all_posts[2:], new_posts=new_posts, home_mode=True)
+    except:
+        return render_template('blog/blog.html')
 
 
 @bp.route('/post/<variable>')
@@ -153,11 +156,12 @@ def tag(variable):
     tag_posts = Tag.objects(pk=variable).first()
     if tag_posts:
         return render_template('blog/blog.html', posts=[post for post in tag_posts.posts if post.is_active],
-                                tag=tag_posts.name)
+                               tag=tag_posts.name)
     return render_template('blog/page_not_found.html'), 404
 
 
 @bp.route('/comment/<variable>', methods=['GET', 'POST'])
+@login_required
 def comment(variable):
     """ post a comment """
     if request.method == 'POST':

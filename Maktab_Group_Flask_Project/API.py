@@ -3,8 +3,9 @@ import shutil
 
 import flask
 
-from flask import Blueprint, redirect, url_for, request, g, render_template
+from flask import Blueprint, redirect, url_for, request, g, render_template, flash
 
+from Maktab_Group_Flask_Project.blog import login_required
 from Maktab_Group_Flask_Project.utils.extra_functions import find_categories, set_likes_count
 
 from mongoengine import Q
@@ -102,25 +103,29 @@ def user_profile(variable):
 @bp.route('/post-action/', methods=['POST', 'GET'])
 def post_action():
     """ submit like, dislike """
-    data = request.args
-    action = True if data['value'] == 'like' else False
-    post = Post.objects(pk=data['post']).first()
-    post_act = LikeDislike.objects(post=post, user=g.user).first()
-    if post_act:
-        if post_act.value == action:
-            post_act.delete()
-            set_likes_count(post)
-            status = 'undone'
+    if g.user:
+        data = request.args
+        action = True if data['value'] == 'like' else False
+        post = Post.objects(pk=data['post']).first()
+        post_act = LikeDislike.objects(post=post, user=g.user).first()
+        if post_act:
+            if post_act.value == action:
+                post_act.delete()
+                set_likes_count(post)
+                status = 'undone'
+            else:
+                post_act.value = action
+                post_act.save()
+                set_likes_count(post)
+                status = 'reverse'
+
         else:
-            post_act.value = action
-            post_act.save()
+            new_action = LikeDislike(post=post, user=g.user, value=action)
+            new_action.save()
             set_likes_count(post)
-            status = 'reverse'
+            status = 'done'
 
+        return flask.jsonify(json.loads(json.dumps({'status': status, 'likes': post.likes_count, 'dislikes': post.dislikes_count})))
     else:
-        new_action = LikeDislike(post=post, user=g.user, value=action)
-        new_action.save()
-        set_likes_count(post)
-        status = 'done'
-
-    return flask.jsonify(json.loads(json.dumps({'status': status, 'likes': post.likes_count, 'dislikes': post.dislikes_count})))
+        flash('ابتدا باید وارد شوید', 'text-danger')
+        return redirect(url_for("blog.login"))
