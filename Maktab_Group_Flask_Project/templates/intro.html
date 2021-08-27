@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans:300,700,400' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="{{ url_for('static', filename="css/reset.css" ) }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename="css/style.css" ) }}">
+	<script src="{{ url_for('static', filename="js/modernizr.css" ) }}"></script>
+    <link href="{{ url_for('static', filename="css/main.css" ) }}" rel="stylesheet" type="text/css">
+	<title>خوش آمدید</title>
+</head>
+<body>
+
+
+
+<div class="context"></div>
+<div class="area">
+    <section class="cd-intro">
+        <div class="cd-intro-content mask-2 container" style="background-color: #009579">
+            <div>
+                <img style="width: 40%; border-radius: 50px" src="{{ url_for('static', filename="img/maktab.png") }}" alt="logo">
+                <h1 class="text-white mt-2 mb-2">مـــکتـــب بــــلاگ </h1>
+
+            </div>
+            <div class="content-wrapper">
+                <div>
+
+                    <div class="action-wrapper">
+                        <a href="{{ url_for("blog.home") }}" class="cd-btn main-action bg-white"><span style="color: #009579">بزن بریم!</span></a>
+                        <a href="{{ url_for("blog.register") }}" class="cd-btn">حساب نداری؟</a>
+
+                    </div>
+                </div>
+            </div>
+            <h3 id="welcome" class="text-white"></h3>
+        </div>
+    </section>
+    <ul class="circles">
+        <li class="text-center text-white"><span class="mt-2" style="line-height: 28px">هرچی بخوای هست</span></li>
+        <li></li>
+        <li></li>
+        <li class="text-center text-white"><span class="mt-2" style="line-height: 50px">بیا پیوی</span></li>
+        <li></li>
+        <li class="text-center text-white"><span class="mt-2" style="line-height: 50px">هنوز که اینجایی</span></li>
+        {% if user %}
+            <li class="text-center text-white"><span class="mt-2" style="line-height: 150px">نمیای تو؟</span></li>
+        {% else %}
+            <li class="text-center text-white"><span class="mt-2" style="line-height: 70px">نمیخوای ثبت نام کنی؟</span></li>
+        {% endif %}
+        <li> </li>
+        <li ></li>
+        {% if user %}
+            <li class="text-center text-white"><span class="mt-2" style="line-height: 150px">سلام {{ user.first_name }} چخبرا؟؟</span></li>
+        {% else %}
+            <li class="text-center text-white"><span class="mt-2" style="line-height: 150px">سلام  چخبرا؟؟</span></li>
+        {% endif %}
+    </ul>
+</div>
+<script src="{{ url_for('static', filename="js/jquery-2.1.4.js" ) }}"></script>
+<script src="{{ url_for('static', filename="js/main-animate.js" ) }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename="js/main.js" ) }}"></script>
+<script>
+typeWriter()
+</script>
+</body>
+</html>

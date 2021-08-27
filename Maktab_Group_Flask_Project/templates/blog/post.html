@@ -42,11 +42,11 @@
 
                 <div class="modal-footer">
                     <div class="col-9">
-                            <input type="text" class="form-control" placeholder="کامنت بگذارید..." name="comment" id="comment">
+                            <input type="text" class="form-control" placeholder="کامنت بگذارید..." name="comment" id="comment" onkeyup="check_input()">
                     </div>
                     <div class="col-2">
                             <p class="d-none" id="comment-counter">1</p>
-                            <button type="button" class="btn btn-secondary" onclick="comment('{{ url_for('blog.comment', variable=post.id ) }}', '{{ url_for('API.post_comments', variable=post.id ) }}')"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+                            <button disabled id="comment-btn" type="button" class="btn btn-secondary" onclick="comment('{{ url_for('blog.comment', variable=post.id ) }}', '{{ url_for('API.post_comments', variable=post.id ) }}'); $(this).prop('disabled', true);"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
                     </div>
 
 
@@ -102,11 +102,12 @@
                                         <div class="d-flex mt-3"><div class="ml-3 text-secondary">بدون کامنت</div></div>
                                     </ul>
                                 {% else %}
-                                    <div >
+                                    <div class="card-footer bg-white">
                                         <ul class="comment-ul" id="top-3-comments">
                                         {% for comment in comments|reverse %}
                                                 <li style="font-weight: bolder">
-                                                    {{ comment.user.username }}
+                                                    <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+                                                    <a class="username" href="{{ url_for('API.user_profile', variable=comment.user.username ) }}">{{ comment.user.username }}</a>
                                                     <ul class="comment-ul">
                                                         <li class="mr-3" style="font-weight: lighter">{{ comment.comment }}</li>
                                                     </ul>
@@ -116,9 +117,9 @@
                                         {% endfor %}
                                         </ul>
                                     </div>
-                                    <div class="d-flex mt-3">
+                                    <div class="d-flex mt-1">
                                         <div class="ml-3 text-dark"><a href="#" data-toggle="modal" data-target="#CommentModal" onclick="show_comments('{{ url_for('API.post_comments', variable=post.id ) }}', 1);" class="ml-2 text-dark">دیدن
-                                            <span>{{ post.comments_count|en_to_fa }}</span> کامنت...</a></div>
+                                            <span id="comment-count-realtime">{{ post.comments_count|en_to_fa }}</span> کامنت...</a></div>
                                     </div>
                                 {% endif %}
                             </div>

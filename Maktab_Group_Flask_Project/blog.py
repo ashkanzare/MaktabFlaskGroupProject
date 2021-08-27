@@ -17,6 +17,12 @@ bp = Blueprint("blog", __name__)
 
 
 @bp.route('/')
+def welcome():
+    """ welcome the user """
+    return render_template('intro.html', user=g.user)
+
+
+@bp.route('/home/')
 def home():
     """ home route for showing all posts """
     all_posts = Post.objects(is_active=True).order_by('-id')

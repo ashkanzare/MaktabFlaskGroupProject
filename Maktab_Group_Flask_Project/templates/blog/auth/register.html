@@ -1,7 +1,7 @@
 {% extends 'blog/auth/base_login_restore.html' %}
 {% block title %}ثبت نام{% endblock %}
 {% block content %}
-        <form class="form" id="createAccount" method="post" enctype="multipart/form-data">
+        <form class="form" id="createAccount" method="post" enctype="multipart/form-data" style="z-index: 1">
             <h1 class="form__title">ایجاد حساب کاربری</h1>
             <div class="form__message form__message--error">
                 {% with messages = get_flashed_messages(with_categories=true) %}

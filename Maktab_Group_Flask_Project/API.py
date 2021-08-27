@@ -62,7 +62,7 @@ def list_categories():
 @bp.route('/list-tags/')
 def list_tags():
     """ return list of tags """
-    all_tags = Tag.objects()
+    all_tags = Tag.objects().order_by('-id')[:6]
     json_tags = json.loads(all_tags.to_json())
     return flask.jsonify(json_tags)
 

@@ -7,7 +7,7 @@
         <script src="https://cdn.ckeditor.com/ckeditor5/29.1.0/decoupled-document/ckeditor.js"></script>
         <link href="{{ url_for('static', filename="css/main.css" ) }}" rel="stylesheet" type="text/css">
         <link href="{{ url_for('static', filename="css/tagsinput.css" ) }}" rel="stylesheet" type="text/css">
-
+        <link rel="icon" href="{{ url_for('static', filename="img/logo/logo.png" ) }}" >
         <script src="https://kit.fontawesome.com/53bbe38c27.js" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -48,7 +48,7 @@
     {% block style %}{% endblock %}
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light text-right">
+<nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light text-right navbar-fixed-top">
   <a class="navbar-brand" href="#" style="color: #007f67">بلاگ</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -91,31 +91,32 @@
 </nav>
 
 <div id="header-content">
-<div id="mySidenav" class="sidenav text-right">
-  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-  <div class="d-flex flex-column">
-      <div id="categories" class="text-right mt-3">
-            <h3 class="font-weight-bolder">دسته ها</h3>
+
+<div id="mySidebar" class="sidebar">
+  <a href="javascript:void(0)" class="closebtn mt-5" onclick="closeNav()">&times;</a>
+  <div class="d-flex flex-column ">
+      <div id="categories" class="text-right mt-3 d-flex">
+            <h3 class="font-weight-bolder ">دسته ها</h3>
       </div>
       <div id="tags" class="text-right mt-3">
             <h3 class="font-weight-bolder">برچسب ها</h3>
       </div>
   </div>
 </div>
-    <div id="search_bar_container" style="display: none">
-        <div class="search-overlay">
-            <span class="closebtn" onclick="closeSearch()" title="Close Overlay">×</span>
-            <div class="container">
-                <div class="mt-2 mb-5">
-                    <input style="width: 100%" class="mb-2 rounded" onkeyup="search('{{ url_for('API.search', variable='') }}', '{{ url_for('static', filename="" ) }}')" id="search_bar" type="text"
-                           placeholder="کلمه ی مورد نظر خود را وارد کنید..." name="search">
-                </div>
-                <div id="search_result" class="container">
 
-                </div>
+    <div id="mySearchbar" class="searchbar">
+        <a href="javascript:void(0)" class="closebtn mt-5" onclick="closeSearch()">&times;</a>
+        <div class="container">
+            <div class="mt-2 mb-2">
+                <input style="width: 100%" class="mt-2 rounded form-control"
+                       onkeyup="search('{{ url_for('API.search', variable='') }}', '{{ url_for('static', filename="" ) }}')"
+                       id="search_bar" type="text"
+                       placeholder="کلمه ی مورد نظر خود را وارد کنید..." name="search">
+            </div>
+            <div id="search_result" class="container text-center">
+
             </div>
         </div>
-    </div>
 </div>
 
 <div class="container" id="main-body">
@@ -133,16 +134,16 @@
         for (let category of array) {
             count += 1
             let ul = $('<ul/>')
-            let li = $('<li/>')
-            ul.attr('class', 'mt-2')
-            li.html(`<a class="category_a" href="{{ url_for('blog.category', variable='' ) }}${category._id.$oid}">${category.name}</a>`)
+            let li = $('<li/>').attr('class', 'd-flex').css('top', '5%')
+            ul.attr('class', 'mt-2 d-flex ')
+            li.html(`<a class="category_a d-flex justify-content-start" href="{{ url_for('blog.category', variable='' ) }}${category._id.$oid}">${category.name}</a>`)
             const myArr = category.path.split("/");
             ul.attr('class', `d-none level-${myArr.length}`)
             ul.attr('id', `${Math.random().toString(36).substr(2, 5)}`)
             ul.append(li)
             ul_name.append(ul)
             if ('children' in category) {
-                    let i = $('<i/>').attr('class', 'fa fa-caret-down arrow').attr('onclick', `get_sub("${ul.attr('id')}")`)
+                    let i = $('<i/>').attr('class', 'fa fa-caret-right arrow pt-2 pl-3').attr('onclick', `get_sub("${ul.attr('id')}")`)
                     li.append(i)
                     json_loop(category.children, ul)
                     }
@@ -158,10 +159,10 @@
             });
          $.get("{{ url_for('API.list_tags') }}", function(data, status){
                 let div = $('#tags')
-                let ul = $("<ul/>").attr('class', 'mt-2')
+                let ul = $("<ul/>").attr('class', 'mt-2 d-flex')
                 for (let tag of data) {
                     let li = $('<li/>')
-                    li.html(`<a href="{{ url_for('blog.tag', variable='' ) }}${tag._id.$oid}">${tag.name}</a>`)
+                    li.html(`<a class="tags-link" href="{{ url_for('blog.tag', variable='' ) }}${tag._id.$oid}">${tag.name}</a>`)
                     ul.append(li)
                 }
                 div.append(ul)
@@ -170,26 +171,31 @@
     function get_sub(id) {
         let ul = $(`#${id} > li > i`)
         if (ul.css('transform') === 'none') {
-            $(`#${id} > ul`).removeAttr('class', 'd-none')
-            ul.css('transform', 'rotate(90deg)')
+            $(`#${id} > ul`).removeAttr('class', 'd-none').attr('class', 'd-flex')
+            ul.css('transform', 'rotate(180deg)')
 
         }
         else {
             $(`#${id} > ul`).attr('class', 'd-none');
              ul.css('transform', 'none')
     }}
-    function openNav() {
-          document.getElementById("mySidenav").style.width = "50%";
-          $('.navbar').css('filter', 'blur(3px)')
-          $('#main-body').css('filter', 'blur(3px)')
-        }
+/* Set the width of the sidebar to 250px and the left margin of the page content to 250px */
 
-        function closeNav() {
-          document.getElementById("mySidenav").style.width = "0";
-          $('.navbar').css('filter', 'none')
-          $('#main-body').css('filter', 'none')
-        }
+function openNav() {
+  document.getElementById("mySidebar").style.height = "50%";
+}
 
+function closeNav() {
+  document.getElementById("mySidebar").style.height = "0%";
+}
+
+function openSearch() {
+  document.getElementById("mySearchbar").style.height = "75%";
+}
+
+function closeSearch() {
+  document.getElementById("mySearchbar").style.height = "0%";
+}
 </script>
 {% block js %}{% endblock %}
     <script>
@@ -197,5 +203,6 @@
             $('[data-toggle="tooltip"]').tooltip();
         });
     </script>
+</div>
 </body>
 </html>
