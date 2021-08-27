@@ -78,6 +78,7 @@
     <div class="container d-flex mt-5 flex-column align-items-center" id="profile">
 
     <div class="row justify-content-center">
+    {% if posts|length != 0 %}
     {% for post in posts %}
         <div class="card shadow text-right mt-2 col-md-4" style="width: inherit">
                     {% if post.image %}
@@ -107,6 +108,13 @@
                           </div>
                 </div>
     {% endfor %}
+    {% else %}
+        <div>
+                <h4 class="mt-5" style="color: #009579">
+                    شرمنده! پستی پیدا نکردیم
+                </h4>
+        </div>
+    {% endif %}
     </div>
     </div>
 {% endblock %}

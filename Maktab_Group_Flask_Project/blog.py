@@ -135,16 +135,6 @@ def logout():
     return redirect(url_for("blog.login"))
 
 
-@bp.route("/create_category")
-def create_category():
-    """ Create category """
-    # c1 = Category.objects(name='برنامه نویسی').first()
-    # c1.path = f"0/{c1.id}"
-    # c1.save()
-    q = Post.objects.search_text('ashkan').first()
-    return f'{q}'
-
-
 @bp.route("/category/<variable>")
 def category(variable):
     """ search a category's posts """
@@ -184,16 +174,31 @@ def comment(variable):
 
 
 @bp.route('/admin/', methods=['GET', 'POST'])
-def comment(variable):
+def create_category():
     """ create a category """
-    # if request.method == 'POST':
-    #     post_ = Post.objects(pk=variable).first()
-    #     post_.comments_count += 1
-    #     post_.save()
-    #     user = {'username': g.user.username}
-    #     comment_content = request.form['comment_content']
-    #     new_comment = Comment(post=post_, user=user, comment=comment_content,
-    #                           date=str(int(datetime.datetime.utcnow().timestamp() * 1000)))
-    #     new_comment.save()
-    #     return "Comment Posted"
-    return render_template('blog/admin.html')
+    if request.method == 'POST':
+        category_name = request.form["category-name"].lower()
+        parent_name = request.form["parent"].lower()
+        if Category.objects(name=category_name):
+            flash('این دسته قبلا ساخته شده است', 'text-danger')
+            return redirect(url_for("blog.create_category"))
+        else:
+            if parent_name == "سطح اول":
+                new_category = Category(name=category_name)
+                new_category.save()
+                new_category.path = f"0/{new_category.id}"
+                new_category.save()
+            else:
+                parent = Category.objects(name=parent_name).first()
+                new_category = Category(name=category_name)
+                new_category.save()
+                new_category.path = f"{parent.path}/{new_category.id}"
+                new_category.save()
+            flash('دسته ساخته شد!', 'text-success')
+            return redirect(url_for("blog.create_category"))
+
+    if g.user.username == 'admin6':
+        categories = Category.objects()
+        return render_template('blog/admin.html', categories=categories)
+    else:
+        return render_template('blog/page_not_found.html'), 404
