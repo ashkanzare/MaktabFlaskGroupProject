@@ -1,4 +1,3 @@
-
 function like_dislike(post, user, value, url) {
     let post_data = {
         'post': post,

@@ -92,14 +92,14 @@
           </li>
       {% endif %}
     </ul>
-  <button class="openBtn btn btn-outline-success my-2 my-sm-0 mr-2" onclick="openSearch()" >جستجو</button>
+  <button class="openBtn btn btn-outline-success my-2 my-sm-0 mr-2 search-bar-opener" onclick="openSearch()" >جستجو</button>
   </div>
 </nav>
 
 <div id="header-content">
 
 <div id="mySidebar" class="sidebar">
-  <a href="javascript:void(0)" class="closebtn mt-5" onclick="closeNav()">&times;</a>
+  <a href="javascript:void(0)" class="closebtn mt-5 text-white" onclick="closeNav()">&times;</a>
   <div class="d-flex flex-column ">
       <div id="categories" class="text-right mt-3 d-flex">
             <h3 class="font-weight-bolder ">دسته ها</h3>
@@ -111,7 +111,7 @@
 </div>
 
     <div id="mySearchbar" class="searchbar">
-        <a href="javascript:void(0)" class="closebtn mt-5" onclick="closeSearch()">&times;</a>
+        <a href="javascript:void(0)" class="closebtn mt-5 text-white" onclick="closeSearch()">&times;</a>
         <div class="container">
             <div class="mt-2 mb-2">
                 <input style="width: 100%" class="mt-2 rounded form-control"
@@ -131,84 +131,59 @@
 {% endblock %}
 
 </div>
-<div style="height: 5rem" class="container" id="footer">
+<div class="mt-5" style="height: 5rem" id="footer">
+    <section class="">
+  <footer class="text-center text-white" style="background-color: #009579;">
+      <div class="d-flex justify-content-between">
+      <div class="mt-2 mr-5" id="maktab-logo" onclick="window.location.href='https://maktabsharif.ir/'">
+          <img style="width: 100px; border-radius: 50px" src="{{ url_for('static', filename="img/maktab2.png") }}" alt="logo">
+          <h5 class="text-white">مکتب شریف </h5>
+      </div>
+    <div class="container p-4 pb-0">
+      <section >
+        <div class="d-flex justify-content-center align-items-center flex-column">
+          <span class="me-3 mb-2 mt-3">مکتب بلاگ رو به دوستاتم معرفی کن!</span>
+          <a onclick="copy()" id="copy_click" type="button" class="btn btn-outline-light btn-rounded">دریافت لینک دعوت</a>
+        </div>
 
+      </section>
+
+    </div>
+       <div class="mt-4 ml-5">
+          <img class="mb-1" style="width: 120px; border-radius: 50px" src="{{ url_for('static', filename="img/maktab.png") }}" alt="logo">
+          <h5 class="text-white mt-3">مکتب بلاگ </h5>
+      </div>
+       </div>
+    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+      © 2020 Copyright:
+      <a class="text-white" href="{{ url_for('blog.welcome') }}">MaktabBlog.com</a>
+    </div>
+  </footer>
+</section>
 </div>
 <script>
-    let count = 0;
-    function json_loop(array, ul_name) {
-        for (let category of array) {
-            count += 1
-            let ul = $('<ul/>')
-            let li = $('<li/>').attr('class', 'd-flex').css('top', '5%')
-            ul.attr('class', 'mt-2 d-flex ')
-            li.html(`<a class="category_a d-flex justify-content-start" href="{{ url_for('blog.category', variable='' ) }}${category._id.$oid}">${category.name}</a>`)
-            const myArr = category.path.split("/");
-            ul.attr('class', `d-none level-${myArr.length}`)
-            ul.attr('id', `${Math.random().toString(36).substr(2, 5)}`)
-            ul.append(li)
-            ul_name.append(ul)
-            if ('children' in category) {
-                    let i = $('<i/>').attr('class', 'fa fa-caret-right arrow pt-2 pl-3').attr('onclick', `get_sub("${ul.attr('id')}")`)
-                    li.append(i)
-                    json_loop(category.children, ul)
-                    }
-
-        }
-        return ul_name
-    }
-    $( document ).ready(function() {
-         $.get("{{ url_for('API.list_categories') }}", function(data, status){
-                let div = $('#categories')
-                let ul = json_loop(data, div)
-                div.append(ul)
-            });
-         $.get("{{ url_for('API.list_tags') }}", function(data, status){
-                let div = $('#tags')
-                let ul = $("<ul/>").attr('class', 'mt-2 d-flex')
-                for (let tag of data) {
-                    let li = $('<li/>')
-                    li.html(`<a class="tags-link" href="{{ url_for('blog.tag', variable='' ) }}${tag._id.$oid}">${tag.name}</a>`)
-                    ul.append(li)
-                }
-                div.append(ul)
-            })
-            });
-    function get_sub(id) {
-        let ul = $(`#${id} > li > i`)
-        if (ul.css('transform') === 'none') {
-            $(`#${id} > ul`).removeAttr('class', 'd-none').attr('class', 'd-flex')
-            ul.css('transform', 'rotate(180deg)')
-
-        }
-        else {
-            $(`#${id} > ul`).attr('class', 'd-none');
-             ul.css('transform', 'none')
-    }}
-/* Set the width of the sidebar to 250px and the left margin of the page content to 250px */
-
-function openNav() {
-  document.getElementById("mySidebar").style.height = "50%";
-}
-
-function closeNav() {
-  document.getElementById("mySidebar").style.height = "0%";
-}
-
-function openSearch() {
-  document.getElementById("mySearchbar").style.height = "75%";
-}
-
-function closeSearch() {
-  document.getElementById("mySearchbar").style.height = "0%";
-}
-</script>
-{% block js %}{% endblock %}
-    <script>
+$( document ).ready(function() {
+     $.get("{{ url_for('API.list_categories') }}", function(data, status){
+            let div = $('#categories')
+            let ul = json_loop(data, div, "{{ url_for('blog.category', variable='' ) }}")
+            div.append(ul)
+        });
+     $.get("{{ url_for('API.list_tags') }}", function(data, status){
+            let div = $('#tags')
+            let ul = $("<ul/>").attr('class', 'mt-2 d-flex')
+            for (let tag of data) {
+                let li = $('<li/>')
+                li.html(`<a class="tags-link" href="{{ url_for('blog.tag', variable='' ) }}${tag._id.$oid}">${tag.name}</a>`)
+                ul.append(li)
+            }
+            div.append(ul)
+        })
+        });
         $(document).ready(function () {
             $('[data-toggle="tooltip"]').tooltip();
         });
-    </script>
+</script>
+{% block js %}{% endblock %}
 </div>
 </body>
 </html>

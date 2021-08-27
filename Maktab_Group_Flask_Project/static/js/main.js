@@ -1,15 +1,3 @@
-function openSearch() {
-  $("#search_bar_container").css('display', 'block');
-  $('.navbar').css('filter', 'blur(3px)')
-  $('#main-body').css('filter', 'blur(3px)')
-}
-
-function closeSearch() {
-  $("#search_bar_container").css('display', 'none');
-  $("#search_result").html('')
-  $('.navbar').css('filter', 'none')
-  $('#main-body').css('filter', 'none')
-}
 
 
 function search(url, url_static) {
@@ -201,4 +189,71 @@ function typeWriter() {
         i++;
         setTimeout(typeWriter, speed);
     }
+}
+
+function copy() {
+  let copyText = 'maktabblog.com';
+  navigator.clipboard.writeText(copyText);
+}
+
+$(document).ready(function(){
+  $("#copy_click").hover(function(){
+    $(this).html("کلیک کن تا لینک کپی شه!")
+    }, function(){
+    $(this).html("دریافت لینک دعوت");
+  });
+});
+
+
+/* Set the width of the sidebar to 250px and the left margin of the page content to 250px */
+
+function openNav() {
+  document.getElementById("mySidebar").style.height = "50%";
+}
+
+function closeNav() {
+  document.getElementById("mySidebar").style.height = "0%";
+}
+
+function openSearch() {
+  document.getElementById("mySearchbar").style.height = "75%";
+}
+
+function closeSearch() {
+  document.getElementById("mySearchbar").style.height = "0%";
+}
+
+function get_sub(id) {
+    let ul = $(`#${id} > li > i`)
+    if (ul.css('transform') === 'none') {
+        $(`#${id} > ul`).removeAttr('class', 'd-none').attr('class', 'd-flex')
+        ul.css('transform', 'rotate(180deg)')
+
+    }
+    else {
+        $(`#${id} > ul`).attr('class', 'd-none');
+         ul.css('transform', 'none')
+}}
+
+let count = 0;
+function json_loop(array, ul_name, url_for) {
+    for (let category of array) {
+        count += 1
+        let ul = $('<ul/>')
+        let li = $('<li/>').attr('class', 'd-flex').css('top', '5%')
+        ul.attr('class', 'mt-2 d-flex ')
+        li.html(`<a class="category_a d-flex justify-content-start" href="${url_for}${category._id.$oid}">${category.name}</a>`)
+        const myArr = category.path.split("/");
+        ul.attr('class', `d-none level-${myArr.length}`)
+        ul.attr('id', `${Math.random().toString(36).substr(2, 5)}`)
+        ul.append(li)
+        ul_name.append(ul)
+        if ('children' in category) {
+                let i = $('<i/>').attr('class', 'fa fa-caret-right arrow pt-2 pl-3').attr('onclick', `get_sub("${ul.attr('id')}")`)
+                li.append(i)
+                json_loop(category.children, ul, url_for)
+                }
+
+    }
+    return ul_name
 }

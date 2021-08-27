@@ -509,3 +509,16 @@ body{
     background-color: #009579;
 }
 
+.search-bar-opener {
+    color: #009579!important;
+    border: 1px solid #009579!important;
+}
+
+.search-bar-opener:hover {
+    background-color: #009579!important;
+    color: white!important;
+}
+
+#maktab-logo:hover {
+    cursor: pointer;
+}

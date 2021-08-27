@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask
+from flask import Flask, render_template
 
 
 def create_app(test_config=None):
@@ -34,6 +34,10 @@ def create_app(test_config=None):
     app.register_blueprint(user.bp)
     app.register_blueprint(API.bp)
     app.register_blueprint(filters.bp)
+
+    @app.errorhandler(404)
+    def page_not_found(error):
+        return render_template('blog/page_not_found.html'), 404
 
     # make url_for('index') == url_for('blog.index')
     # in another app, you might define a separate main index here with

@@ -33,12 +33,15 @@ def home():
 @bp.route('/post/<variable>')
 def post(variable):
     """ show one post """
-    selected_post = Post.objects(pk=variable).first()
-    user_action = None
-    if g.user:
-        user_action = LikeDislike.objects(user=g.user.id, post=selected_post.id).first()
-    comments = Comment.top_3_comment(post=selected_post)
-    return render_template('blog/post.html', post=selected_post, action=user_action, comments=comments)
+    try:
+        selected_post = Post.objects(pk=variable).first()
+        user_action = None
+        if g.user:
+            user_action = LikeDislike.objects(user=g.user.id, post=selected_post.id).first()
+        comments = Comment.top_3_comment(post=selected_post)
+        return render_template('blog/post.html', post=selected_post, action=user_action, comments=comments)
+    except:
+        return render_template('blog/page_not_found.html'), 404
 
 
 def login_required(view):
@@ -47,7 +50,7 @@ def login_required(view):
     @functools.wraps(view)
     def wrapped_view(**kwargs):
         if g.user is None:
-            flash('ابتدا باید ثبت نام کنید', 'text-danger')
+            flash('ابتدا باید وارد شوید', 'text-danger')
             return redirect(url_for("blog.register"))
 
         return view(**kwargs)
@@ -146,18 +149,22 @@ def create_category():
 def category(variable):
     """ search a category's posts """
     categories = Category.objects(path__contains=variable)
-    posts = Post.objects(category__in=[cat.id for cat in categories], is_active=True).order_by('-id')
-    # json_categories = json.loads(posts.to_json())
-    # return jsonify(json_categories)
-    return render_template('blog/blog.html', posts=posts, category=categories.first().name)
+    if categories:
+        posts = Post.objects(category__in=[cat.id for cat in categories], is_active=True).order_by('-id')
+        # json_categories = json.loads(posts.to_json())
+        # return jsonify(json_categories)
+        return render_template('blog/blog.html', posts=posts, category=categories.first().name)
+    return render_template('blog/page_not_found.html'), 404
 
 
 @bp.route("/tag/<variable>")
 def tag(variable):
     """ search a tag's posts """
     tag_posts = Tag.objects(pk=variable).first()
-    return render_template('blog/blog.html', posts=[post for post in tag_posts.posts if post.is_active],
-                           tag=tag_posts.name)
+    if tag_posts:
+        return render_template('blog/blog.html', posts=[post for post in tag_posts.posts if post.is_active],
+                                tag=tag_posts.name)
+    return render_template('blog/page_not_found.html'), 404
 
 
 @bp.route('/comment/<variable>', methods=['GET', 'POST'])
@@ -174,3 +181,4 @@ def comment(variable):
         new_comment.save()
         return "Comment Posted"
     return "Nothing changed"
+
