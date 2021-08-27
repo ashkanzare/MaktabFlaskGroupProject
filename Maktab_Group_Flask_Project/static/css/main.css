@@ -527,3 +527,13 @@ body{
 #maktab-logo:hover {
     cursor: pointer;
 }
+
+.sidenav {
+  width: 100%;
+  position: sticky;
+  z-index: 1;
+  top: 50%;
+  left: 10%;
+  overflow-x: hidden;
+  padding: 8px 0;
+}

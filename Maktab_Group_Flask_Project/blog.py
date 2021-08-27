@@ -28,7 +28,8 @@ def home():
     try:
         all_posts = Post.objects(is_active=True).order_by('-id')
         new_posts = all_posts[:2]
-        return render_template('blog/blog.html', posts=all_posts[2:], new_posts=new_posts, home_mode=True)
+        categories = Category.objects().limit(6)
+        return render_template('blog/blog.html', posts=all_posts[2:], new_posts=new_posts, home_mode=True, categories=categories)
     except:
         return render_template('blog/blog.html')
 
