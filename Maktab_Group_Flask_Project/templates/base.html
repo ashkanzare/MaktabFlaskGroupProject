@@ -3,26 +3,29 @@
 <head>
         <meta charset="UTF-8">
         <title>{% block title %}{% endblock %}</title>
+        <script src="https://kit.fontawesome.com/53bbe38c27.js" crossorigin="anonymous"></script>
+
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <script src="https://cdn.ckeditor.com/ckeditor5/29.1.0/decoupled-document/ckeditor.js"></script>
         <link href="{{ url_for('static', filename="css/main.css" ) }}" rel="stylesheet" type="text/css">
         <link href="{{ url_for('static', filename="css/tagsinput.css" ) }}" rel="stylesheet" type="text/css">
-
-        <script src="https://kit.fontawesome.com/53bbe38c27.js" crossorigin="anonymous"></script>
+        <link rel="icon" href="{{ url_for('static', filename="img/logo/logo.png" ) }}" >
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="../static/js/deactivate_delete_post.js"></script>
+        <script type="text/javascript" src="../static/js/deactivate_delete_post.js" ></script>
         <script type="text/javascript" src="../static/js/main.js"></script>
+        <script src="{{ url_for('static', filename="js/like_or_dis_like.js" ) }}"></script>
         <script src="../static/js/tagsinput.js"></script>
+
         {% block font %}{% endblock %}
         <script src="{{ url_for('static', filename="js/deactivate_delete_post.js" ) }}"></script>
-<<<<<<< HEAD
         {% block head %}{% endblock %}
-=======
-        <script src="{{ url_for('static', filename="js/like_or_dis_like.js" ) }}"></script>
->>>>>>> c9840a4578325011a7ceec70dc29d1c6bbc885a9
+
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
     <style>
         @font-face {
           font-family: iranian sans;
@@ -51,7 +54,7 @@
     {% block style %}{% endblock %}
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light text-right">
+<nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light text-right navbar-fixed-top">
   <a class="navbar-brand" href="#" style="color: #007f67">بلاگ</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -62,8 +65,8 @@
       <li class="nav-item {% block active_home %}{% endblock %}">
         <a class="nav-link" href="{{ url_for("blog.home") }}">خانه <span class="sr-only">(current)</span></a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link"><span style="cursor: pointer" onclick="openNav()"> دسته ها</span></a>
+      <li class="nav-item  ml-3">
+        <a class="nav-link"><span style="cursor: pointer"  onclick="openNav()"> دسته ها</span></a>
       </li>
       {% if not g.user %}
           <li class="nav-item">
@@ -89,111 +92,98 @@
           </li>
       {% endif %}
     </ul>
-  <button class="openBtn btn btn-outline-success my-2 my-sm-0 mr-2" onclick="openSearch()" >جستجو</button>
+  <button class="openBtn btn btn-outline-success my-2 my-sm-0 mr-2 search-bar-opener" onclick="openSearch()" >جستجو</button>
   </div>
 </nav>
 
 <div id="header-content">
-<div id="mySidenav" class="sidenav text-right">
-  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-  <div class="d-flex flex-column">
-      <div id="categories" class="text-right mt-3">
-            <h3 class="font-weight-bolder">دسته ها</h3>
+
+<div id="mySidebar" class="sidebar">
+  <a href="javascript:void(0)" class="closebtn mt-5 text-white" onclick="closeNav()">&times;</a>
+  <div class="d-flex flex-column ">
+      <div id="categories" class="text-right mt-3 d-flex">
+            <h3 class="font-weight-bolder ">دسته ها</h3>
       </div>
       <div id="tags" class="text-right mt-3">
             <h3 class="font-weight-bolder">برچسب ها</h3>
       </div>
   </div>
 </div>
-    <div id="search_bar_container" style="display: none">
-        <div class="search-overlay">
-            <span class="closebtn" onclick="closeSearch()" title="Close Overlay">×</span>
-            <div class="container">
-                <div class="mt-2 mb-5">
-                    <input style="width: 100%" class="mb-2 rounded" onkeyup="search('{{ url_for('API.search', variable='') }}', '{{ url_for('static', filename="" ) }}')" id="search_bar" type="text"
-                           placeholder="کلمه ی مورد نظر خود را وارد کنید..." name="search">
-                </div>
-                <div id="search_result" class="container">
 
-                </div>
+    <div id="mySearchbar" class="searchbar">
+        <a href="javascript:void(0)" class="closebtn mt-5 text-white" onclick="closeSearch()">&times;</a>
+        <div class="container">
+            <div class="mt-2 mb-2">
+                <input style="width: 100%" class="mt-2 rounded form-control"
+                       onkeyup="search('{{ url_for('API.search', variable='') }}', '{{ url_for('static', filename="" ) }}')"
+                       id="search_bar" type="text"
+                       placeholder="کلمه ی مورد نظر خود را وارد کنید..." name="search">
+            </div>
+            <div id="search_result" class="container text-center">
+
             </div>
         </div>
-    </div>
 </div>
 
-<div class="container" id="main-body">
+<div class="container position-relative" id="main-body" style="min-height:100vh; clear: both">
 {% block content %}
 
 {% endblock %}
 
 </div>
-<div style="height: 5rem" class="container" id="footer">
+<div class="mt-5" style="height: 5rem; bottom: 0;position:relative;width:100%;" id="footer">
+    <section class="">
+  <footer class="text-center text-white" style="background-color: #009579;">
+      <div class="d-flex justify-content-between">
+      <div class="mt-2 mr-5" id="maktab-logo" onclick="window.location.href='https://maktabsharif.ir/'">
+          <img style="width: 100px; border-radius: 50px" src="{{ url_for('static', filename="img/maktab2.png") }}" alt="logo">
+          <h5 class="text-white">مکتب شریف </h5>
+      </div>
+    <div class="container p-4 pb-0">
+      <section >
+        <div class="d-flex justify-content-center align-items-center flex-column">
+          <span class="me-3 mb-2 mt-3">مکتب بلاگ رو به دوستاتم معرفی کن!</span>
+          <a onclick="copy()" id="copy_click" type="button" class="btn btn-outline-light btn-rounded">دریافت لینک دعوت</a>
+        </div>
 
+      </section>
+
+    </div>
+       <div class="mt-4 ml-5">
+          <img class="mb-1" style="width: 120px; border-radius: 50px" src="{{ url_for('static', filename="img/maktab.png") }}" alt="logo">
+          <h5 class="text-white mt-3">مکتب بلاگ </h5>
+      </div>
+       </div>
+    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+      © 2020 Copyright:
+      <a class="text-white" href="{{ url_for('blog.welcome') }}">MaktabBlog.com</a>
+    </div>
+  </footer>
+</section>
 </div>
 <script>
-    let count = 0;
-    function json_loop(array, ul_name) {
-        for (let category of array) {
-            count += 1
-            let ul = $('<ul/>')
-            let li = $('<li/>')
-            ul.attr('class', 'mt-2')
-            li.html(`<a class="category_a" href="{{ url_for('blog.category', variable='' ) }}${category._id.$oid}">${category.name}</a>`)
-            const myArr = category.path.split("/");
-            ul.attr('class', `d-none level-${myArr.length}`)
-            ul.attr('id', `${Math.random().toString(36).substr(2, 5)}`)
-            ul.append(li)
-            ul_name.append(ul)
-            if ('children' in category) {
-                    let i = $('<i/>').attr('class', 'fa fa-caret-down arrow').attr('onclick', `get_sub("${ul.attr('id')}")`)
-                    li.append(i)
-                    json_loop(category.children, ul)
-                    }
-
-        }
-        return ul_name
-    }
-    $( document ).ready(function() {
-         $.get("{{ url_for('API.list_categories') }}", function(data, status){
-                let div = $('#categories')
-                let ul = json_loop(data, div)
-                div.append(ul)
-            });
-         $.get("{{ url_for('API.list_tags') }}", function(data, status){
-                let div = $('#tags')
-                let ul = $("<ul/>").attr('class', 'mt-2')
-                for (let tag of data) {
-                    let li = $('<li/>')
-                    li.html(`<a href="{{ url_for('blog.tag', variable='' ) }}${tag._id.$oid}">${tag.name}</a>`)
-                    ul.append(li)
-                }
-                div.append(ul)
-            })
-            });
-    function get_sub(id) {
-        let ul = $(`#${id} > li > i`)
-        if (ul.css('transform') === 'none') {
-            $(`#${id} > ul`).removeAttr('class', 'd-none')
-            ul.css('transform', 'rotate(90deg)')
-
-        }
-        else {
-            $(`#${id} > ul`).attr('class', 'd-none');
-             ul.css('transform', 'none')
-    }}
-    function openNav() {
-          document.getElementById("mySidenav").style.width = "50%";
-          $('.navbar').css('filter', 'blur(3px)')
-          $('#main-body').css('filter', 'blur(3px)')
-        }
-
-        function closeNav() {
-          document.getElementById("mySidenav").style.width = "0";
-          $('.navbar').css('filter', 'none')
-          $('#main-body').css('filter', 'none')
-        }
-
+$( document ).ready(function() {
+     $.get("{{ url_for('API.list_categories') }}", function(data, status){
+            let div = $('#categories')
+            let ul = json_loop(data, div, "{{ url_for('blog.category', variable='' ) }}")
+            div.append(ul)
+        });
+     $.get("{{ url_for('API.list_tags') }}", function(data, status){
+            let div = $('#tags')
+            let ul = $("<ul/>").attr('class', 'mt-2 d-flex')
+            for (let tag of data) {
+                let li = $('<li/>')
+                li.html(`<a class="tags-link" href="{{ url_for('blog.tag', variable='' ) }}${tag._id.$oid}">${tag.name}</a>`)
+                ul.append(li)
+            }
+            div.append(ul)
+        })
+        });
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
 </script>
 {% block js %}{% endblock %}
+</div>
 </body>
 </html>

@@ -51,3 +51,10 @@ def convert_date(date):
     j_date = jdatetime.date.fromgregorian(day=date.day, month=date.month, year=date.year)
     month = j_date.j_months_fa[j_date.month - 1]
     return f"{en_to_fa(j_date.day)} {month} {en_to_fa(j_date.year)}"
+
+
+@bp.app_template_filter('get_info')
+def get_info(obj, index):
+    user = User.objects(pk=obj['id']).first()
+    info = user.first_name, user.last_name, user.date
+    return info[index]

@@ -3,16 +3,16 @@ import shutil
 
 import flask
 
-from flask import Blueprint, redirect, url_for, request, g
+from flask import Blueprint, redirect, url_for, request, g, render_template, flash
 
-
-from Maktab_Group_Flask_Project.utils.extra_functions import find_categories
+from Maktab_Group_Flask_Project.blog import login_required
+from Maktab_Group_Flask_Project.utils.extra_functions import find_categories, set_likes_count
 
 from mongoengine import Q
 
 from flask import json
 
-from Maktab_Group_Flask_Project.models import Post, User, Category, Tag, Comment
+from Maktab_Group_Flask_Project.models import Post, User, Category, Tag, Comment, LikeDislike
 
 
 bp = Blueprint("API", __name__)
@@ -64,7 +64,7 @@ def list_categories():
 @bp.route('/list-tags/')
 def list_tags():
     """ return list of tags """
-    all_tags = Tag.objects()
+    all_tags = Tag.objects().order_by('-id')[:6]
     json_tags = json.loads(all_tags.to_json())
     return flask.jsonify(json_tags)
 
@@ -85,6 +85,47 @@ def post_comments(variable):
     """ return comments of a post """
     counter = int(request.args['counter'])
     comments = Comment.objects(post=variable)
-    comment_select = comments.order_by('-id')[:5*counter]
+    comment_select = comments.order_by('-id')[:5 * counter]
+    top_3_update = comments.order_by('-id')[:3]
     json_comments = json.loads(comment_select.to_json())
-    return flask.jsonify(result=json_comments, time=int(datetime.datetime.utcnow().timestamp() * 1000), max=len(comments))
+    return flask.jsonify(result=json_comments, time=int(datetime.datetime.utcnow().timestamp() * 1000),
+                         max=len(comments), top_3=json.loads(top_3_update.to_json()))
+
+
+@bp.route('/user-profile/<variable>')
+def user_profile(variable):
+    """ return userprofile and 6 post from the same user """
+    user = User.objects(username=variable).first()
+    posts_user = Post.objects(author__id=user.id)
+    return render_template('user/user_profile.html', user=user, posts_user=posts_user)
+
+
+@bp.route('/post-action/', methods=['POST', 'GET'])
+def post_action():
+    """ submit like, dislike """
+    if g.user:
+        data = request.args
+        action = True if data['value'] == 'like' else False
+        post = Post.objects(pk=data['post']).first()
+        post_act = LikeDislike.objects(post=post, user=g.user).first()
+        if post_act:
+            if post_act.value == action:
+                post_act.delete()
+                set_likes_count(post)
+                status = 'undone'
+            else:
+                post_act.value = action
+                post_act.save()
+                set_likes_count(post)
+                status = 'reverse'
+
+        else:
+            new_action = LikeDislike(post=post, user=g.user, value=action)
+            new_action.save()
+            set_likes_count(post)
+            status = 'done'
+
+        return flask.jsonify(json.loads(json.dumps({'status': status, 'likes': post.likes_count, 'dislikes': post.dislikes_count})))
+    else:
+        flash('ابتدا باید وارد شوید', 'text-danger')
+        return redirect(url_for("blog.login"))

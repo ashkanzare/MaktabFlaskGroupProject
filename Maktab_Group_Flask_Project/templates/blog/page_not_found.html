@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans:300,700,400' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="{{ url_for('static', filename="css/reset.css" ) }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename="css/style.css" ) }}">
+	<script src="{{ url_for('static', filename="js/modernizr.css" ) }}"></script>
+    <link href="{{ url_for('static', filename="css/main.css" ) }}" rel="stylesheet" type="text/css">
+	<title>پیج پیدا نشد!</title>
+</head>
+<body id="intro">
+
+
+
+<div class="context"></div>
+<div class="area">
+    <div class="text-center">
+                <span class="display-1 d-block pt-5">404</span>
+                <div class="mb-4 lead mt-5" style="font-size: 150%">پیجی که دنبالشی متاسفانه پیدا نکردیم!</div>
+                <a href="{{ url_for('blog.home') }}" class="ml-3 text-white" style="z-index: 999!important; position: relative" >برگردیم به خونه</a>
+            </div>
+    <ul class="circles">
+        <li class="text-center text-white"><span class="mt-2" style="line-height: 100px">ای بابا</span></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li class="text-center text-white"><span class="mt-2" style="line-height: 120px">غصه نخور بابا!</span></li>
+        <li class="text-center text-white"><span class="mt-2" style="line-height: 150px">شرمنده شدیم!</span></li>
+        <li></li>
+        <li></li>
+        <li class="text-center text-white"><span class="mt-2" style="line-height: 50px">یه دور دیگه آدرسو چک کن</span></li>
+
+    </ul>
+</div>
+<script src="{{ url_for('static', filename="js/jquery-2.1.4.js" ) }}"></script>
+<script src="{{ url_for('static', filename="js/main-animate.js" ) }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename="js/main.js" ) }}"></script>
+<script>
+typeWriter()
+</script>
+</body>
+</html>
