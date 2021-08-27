@@ -350,7 +350,7 @@ li > i {
           src: url('../fonts/FontsFree-Net-ir_sans.ttf');
         }
 
-        * {
+        #intro {
             direction: rtl;
             font-family: "iranian sans", sans-serif!important;
         }
@@ -370,7 +370,7 @@ body{
     width: 100%;
     position: absolute;
     top:50vh;
-    background-color: red!important;
+
 
 }
 

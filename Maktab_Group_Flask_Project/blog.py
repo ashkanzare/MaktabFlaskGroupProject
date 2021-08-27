@@ -34,7 +34,9 @@ def home():
 def post(variable):
     """ show one post """
     selected_post = Post.objects(pk=variable).first()
-    user_action = LikeDislike.objects(user=g.user.id, post=selected_post.id).first()
+    user_action = None
+    if g.user:
+        user_action = LikeDislike.objects(user=g.user.id, post=selected_post.id).first()
     comments = Comment.top_3_comment(post=selected_post)
     return render_template('blog/post.html', post=selected_post, action=user_action, comments=comments)
 

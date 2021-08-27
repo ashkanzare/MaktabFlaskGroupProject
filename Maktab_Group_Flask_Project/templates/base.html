@@ -3,23 +3,27 @@
 <head>
         <meta charset="UTF-8">
         <title>{% block title %}{% endblock %}</title>
+        <script src="https://kit.fontawesome.com/53bbe38c27.js" crossorigin="anonymous"></script>
+
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <script src="https://cdn.ckeditor.com/ckeditor5/29.1.0/decoupled-document/ckeditor.js"></script>
         <link href="{{ url_for('static', filename="css/main.css" ) }}" rel="stylesheet" type="text/css">
         <link href="{{ url_for('static', filename="css/tagsinput.css" ) }}" rel="stylesheet" type="text/css">
         <link rel="icon" href="{{ url_for('static', filename="img/logo/logo.png" ) }}" >
-        <script src="https://kit.fontawesome.com/53bbe38c27.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="../static/js/deactivate_delete_post.js"></script>
+        <script type="text/javascript" src="../static/js/deactivate_delete_post.js" ></script>
         <script type="text/javascript" src="../static/js/main.js"></script>
         <script src="{{ url_for('static', filename="js/like_or_dis_like.js" ) }}"></script>
         <script src="../static/js/tagsinput.js"></script>
+
         {% block font %}{% endblock %}
         <script src="{{ url_for('static', filename="js/deactivate_delete_post.js" ) }}"></script>
         {% block head %}{% endblock %}
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
     <style>
         @font-face {
           font-family: iranian sans;
