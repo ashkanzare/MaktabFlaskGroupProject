@@ -47,10 +47,14 @@
                         <div style="max-height: 10rem; overflow: hidden;">
                             <img class="card-img-top mx-auto d-block mt-2 rounded shadow" style="max-width: 100%; max-height: 100%; object-fit: cover; object-position: inherit" src="{{ url_for('static', filename=post.image ) }}" alt="Post image">
                         </div>
+                    {% else %}
+                         <div style="max-height: 10rem; overflow: hidden;">
+                            <img class="card-img-top mx-auto d-block mt-2 rounded shadow" style="max-width: 100%; max-height: 100%; object-fit: cover; object-position: inherit" src="{{ url_for('static', filename='media/posts/post-default/post.jpg' ) }}" alt="Post image">
+                        </div>
                     {% endif %}
                       <div class="card-body" >
                             <h5 class="card-title mt-1" style="height: 2rem">{{ post.title }}</h5>
-                            <p class="mt-2 mb-4">نویسنده:<span class="mr-2"><a href="{{ url_for('API.user_profile', variable=post.author.username ) }}" data-toggle="tooltip" data-placement="left" data-html="true" title="{{ post.author|get_info(0) }} {{ post.author|get_info(1) }}<br> عضو شده از {{ post.author|get_info(2)|convert_date }}">{{ post.author.username }}</a></span></p>
+                            <p class="mt-2 mb-4">نویسنده:<span class="mr-2"><a href="{{ url_for('API.user_profile', variable=post.author ) }}" data-toggle="tooltip" data-placement="left" data-html="true" title="{{ post.author|get_info(0) }} {{ post.author|get_info(1) }}<br> عضو شده از {{ post.author|get_info(2)|convert_date }}">{{ post.author.username }}</a></span></p>
                             <p class="mt-2 mb-2">دسته:<span class="mr-2"><a href="{{ url_for('blog.category', variable=post.category.id ) }}">{{ post.category }}</a></span></p>
                             <div class="d-flex mt-1 justify-content-between">
                                 <div class="d-flex">

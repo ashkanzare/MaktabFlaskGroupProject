@@ -25,13 +25,14 @@ def welcome():
 @bp.route('/home/')
 def home():
     """ home route for showing all posts """
-    try:
-        all_posts = Post.objects(is_active=True).order_by('-id')
-        new_posts = all_posts[:2]
-        categories = Category.objects().limit(6)
-        return render_template('blog/blog.html', posts=all_posts[2:], new_posts=new_posts, home_mode=True, categories=categories)
-    except:
-        return render_template('blog/blog.html')
+
+    all_posts = Post.objects(is_active=True).order_by('-id')
+
+    new_posts = all_posts
+    categories = Category.objects()
+    return render_template('blog/blog.html', posts=all_posts, new_posts=new_posts, home_mode=True, categories=categories)
+
+
 
 
 @bp.route('/post/<variable>')

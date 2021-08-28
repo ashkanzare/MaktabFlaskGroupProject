@@ -31,7 +31,7 @@ def edit_profile():
         image = request.files['file']
 
         # get bio from request
-        bio = request.files['bio']
+        bio = request.form['bio']
 
         # make directory for user profile picture
         photo = check_photo(image, user_id, 'user', 'username', default_photo=user.photo)
@@ -42,8 +42,8 @@ def edit_profile():
 
         # check if edited email and username are unique
         # if there is no error then save new changes
-        check_info = check_user_email_username(user_field['username'], user_field['email'], user.id)
-        if check_info:
+        check_info = check_user_email_username(user_field['username'], user_field['email'], user_id)
+        if not check_info:
             user.first_name = user_field['first_name']
             user.last_name = user_field['last_name']
             user.username = user_field['username']
@@ -55,7 +55,7 @@ def edit_profile():
             user.save()
 
         elif check_info == "invalid_username":
-            flash('نام کابری از قبل گرفته شده است', 'text-danger')
+            flash('نام کاربری از قبل گرفته شده است', 'text-danger')
             return redirect(url_for('user.edit_profile'))
 
         else:
@@ -91,7 +91,7 @@ def create_post():
         category = Category.objects(name=category_name.strip()).first()
 
         new_post = Post(
-            author={'id': user.id, 'username': user.username},
+            author=user,
             category=category,
             title=title,
             content=content,
@@ -127,7 +127,7 @@ def create_post():
 def post_list():
     """ return user's posts"""
     user = g.user
-    user_post = Post.objects(author__id=user.id).order_by('-id')
+    user_post = Post.objects(author=user).order_by('-id')
     return render_template('user/post_list.html', posts=user_post)
 
 

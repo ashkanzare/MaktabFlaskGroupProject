@@ -55,7 +55,10 @@
 </head>
 <body>
 <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light text-right navbar-fixed-top">
-  <a class="navbar-brand" href="#" style="color: #007f67">بلاگ</a>
+<div class="text-center ml-2">
+    <img  style="width: 20px; border-radius: 50px" src="{{ url_for('static', filename="img/logo/logo.png") }}" alt="logo"><br>
+</div>
+
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -101,8 +104,8 @@
 <div id="mySidebar" class="sidebar">
   <a href="javascript:void(0)" class="closebtn mt-5 text-white" onclick="closeNav()">&times;</a>
   <div class="d-flex flex-column ">
-      <div id="categories" class="text-right mt-3 d-flex">
-            <h3 class="font-weight-bolder ">دسته ها</h3>
+      <div id="categories" class="text-right mt-3">
+            <h3 class="font-weight-bolder ml-5">دسته ها</h3>
       </div>
       <div id="tags" class="text-right mt-3">
             <h3 class="font-weight-bolder">برچسب ها</h3>
@@ -114,7 +117,7 @@
         <a href="javascript:void(0)" class="closebtn mt-5 text-white" onclick="closeSearch()">&times;</a>
         <div class="container">
             <div class="mt-2 mb-2">
-                <input style="width: 100%" class="mt-2 rounded form-control"
+                <input style="width: 100%" class="mt-2 rounded form-control search-phone"
                        onkeyup="search('{{ url_for('API.search', variable='') }}', '{{ url_for('static', filename="" ) }}')"
                        id="search_bar" type="text"
                        placeholder="کلمه ی مورد نظر خود را وارد کنید..." name="search">
@@ -139,11 +142,11 @@
           <img style="width: 100px; border-radius: 50px" src="{{ url_for('static', filename="img/maktab2.png") }}" alt="logo">
           <h5 class="text-white">مکتب شریف </h5>
       </div>
-    <div class="container p-4 pb-0">
+    <div class="container p-4 pb-0 phone-footer-div">
       <section >
         <div class="d-flex justify-content-center align-items-center flex-column">
-          <span class="me-3 mb-2 mt-3">مکتب بلاگ رو به دوستاتم معرفی کن!</span>
-          <a onclick="copy()" id="copy_click" type="button" class="btn btn-outline-light btn-rounded">دریافت لینک دعوت</a>
+          <span class="me-3 mb-2 mt-3 phone-footer">مکتب بلاگ رو به دوستاتم معرفی کن!</span>
+          <a onclick="copy()" id="copy_click" type="button" class="phone-footer btn btn-outline-light btn-rounded">دریافت لینک دعوت</a>
         </div>
 
       </section>

@@ -34,8 +34,8 @@ def delete_post(variable):
     post = Post.objects(id=variable).first()
     if post:
         Tag.objects(posts=post).update(pull__posts=post)
-        if post.image != '':
-            shutil.rmtree(f"static/{'/'.join(post.image.split('/')[:3])}")
+        # if post.image != '':
+        #     shutil.rmtree(f"static/{'/'.join(post.image.split('/')[:3])}")
         post.delete()
     return redirect(url_for('user.post_list'))
 
@@ -72,12 +72,13 @@ def list_tags():
 @bp.route('/search/<variable>')
 def search(variable):
     """ return results of search """
+    user_search = User.objects(username__contains=variable).first()
     all_posts = Post.objects(Q(content__contains=variable) |
                              Q(title__contains=variable) |
                              Q(tags__name__contains=variable) |
-                             Q(author__username__contains=variable))
+                             Q(author=user_search))
     json_posts = json.loads(all_posts.to_json())
-    return flask.jsonify(results=json_posts)
+    return flask.jsonify(results=[{'_id': post['_id'], 'title': post['title'], 'author': User.objects(pk=post['author']['$oid']).first().username, 'image': post['image']} for post in json_posts])
 
 
 @bp.route('/post-comments/<variable>')
@@ -96,7 +97,7 @@ def post_comments(variable):
 def user_profile(variable):
     """ return userprofile and 6 post from the same user """
     user = User.objects(username=variable).first()
-    posts_user = Post.objects(author__id=user.id)
+    posts_user = Post.objects(author=user.id)
     return render_template('user/user_profile.html', user=user, posts_user=posts_user)
 
 

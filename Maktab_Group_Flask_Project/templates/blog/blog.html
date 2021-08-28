@@ -15,42 +15,58 @@
         <div class="text-center mt-2">
             <h3>پست های مربوط به برچسب '<span>{{ tag }}'</span><span style="font-size: 70%"> ({{ posts|length|en_to_fa }} پست)</span></h3>
         </div>
-    {% elif home_mode %}
+        {% elif new_posts|length >= 2 %}
+    {% if home_mode %}
+
         <div id="header-site" class="d-flex text-center justify-content-center">
             <h3>تازه ها</h3>
         </div>
         <div class="container">
             <div class="row">
-                <div style='background-image: url("{{ url_for('static', filename=new_posts.0.image ) }}")'
-                     class="new_posts col-md-10">
-                    <div class="text-white text-test">
-
-                            <div class="card-body">
-                                <h4 class="card-title mt-2">{{ new_posts.0.title|safe }}</h4>
-                                <p id="new_1" class="card-text mt-5"></p>
-                            </div>
-                            <div >
-                                <div class="float-right mr-5">
-                                    <div class="user-date">
-                                        <p  style="font-size: 90%">{{ new_posts.0.author.username|get_name }}</p>
-                                        <p  style="font-size: 80%">{{ new_posts.0.date|date_delta }} پیش</p>
-                                    </div>
-                                </div>
-                                <div class="float-left ml-5 ">
-                                <a href="{{ url_for('blog.post', variable=new_posts.0.id ) }}" class="text-white read_more ">ادامه مطلب...</a>
-                                </div>
-                            </div>
-
-                    </div>
-                </div>
-                <div class="col-md-2"></div>
-            </div>
-            <div class="row">
-                <div class="col-md-2"></div>
-                <div style='background-image: url("{{ url_for('static', filename=new_posts.1.image ) }}")'
+            {% if new_posts.0.image %}
+            <div style='background-image: url("{{ url_for('static', filename=new_posts.0.image ) }}")'
+                 class="new_posts col-md-10 shadow">
+                <div class="text-white text-test">
+            {% else %}
+                    <div style='background-image: url("{{ url_for('static', filename='media/posts/post-default/post-2.jpg' ) }}")'
                      class="new_posts col-md-10 shadow">
                     <div class="text-white text-test">
 
+                        {% endif %}
+
+                        <div class="card-body">
+                            <h4 class="card-title mt-2">{{ new_posts.0.title|safe }}</h4>
+                            <p id="new_2" class="card-text mt-5"></p>
+
+                        </div>
+                        <div >
+                            <div class="float-right mr-5">
+                                <div class="user-date">
+                                    <p  style="font-size: 90%">{{ new_posts.0.author.id|get_name }}</p>
+                                    <p  style="font-size: 80%">{{ new_posts.0.date|date_delta }} پیش</p>
+                                </div>
+                            </div>
+                            <div class="float-left ml-5">
+                            <a href="{{ url_for('blog.post', variable=new_posts.0.id ) }}" class="text-white read_more">ادامه مطلب...</a>
+                            </div>
+                        </div>
+
+                </div>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+            <div class="row">
+                <div class="col-md-2"></div>
+                {% if new_posts.1.image %}
+                <div style='background-image: url("{{ url_for('static', filename=new_posts.1.image ) }}")'
+                     class="new_posts col-md-10 shadow">
+                    <div class="text-white text-test">
+                {% else %}
+                    <div style='background-image: url("{{ url_for('static', filename='media/posts/post-default/post-2.jpg' ) }}")'
+                     class="new_posts col-md-10 shadow">
+                    <div class="text-white text-test">
+
+                        {% endif %}
                             <div class="card-body">
                                 <h4 class="card-title mt-2">{{ new_posts.1.title|safe }}</h4>
                                 <p id="new_2" class="card-text mt-5"></p>
@@ -59,7 +75,7 @@
                             <div >
                                 <div class="float-right mr-5">
                                     <div class="user-date">
-                                        <p  style="font-size: 90%">{{ new_posts.1.author.username|get_name }}</p>
+                                        <p  style="font-size: 90%">{{ new_posts.1.author.id|get_name }}</p>
                                         <p  style="font-size: 80%">{{ new_posts.1.date|date_delta }} پیش</p>
                                     </div>
                                 </div>
@@ -74,18 +90,24 @@
             </div>
 
         </div>
+            {% endif %}
     {% endif %}
     <div class="container d-flex mt-5 flex-column align-items-center" id="profile">
 
     <div class="row justify-content-center">
-    <div class="col-8">
+    <div class="col-md-8">
     <div class="row">
-    {% if posts|length != 0 %}
+
+    {% if posts %}
     {% for post in posts %}
-        <div class="card shadow text-right mt-2 col-md-6" style="width: inherit">
+        <div class="card shadow text-right mt-2 col-md-6" style="width: inherit; min-width: 20rem;">
                     {% if post.image %}
                         <div style="max-height: 10rem; overflow: hidden;">
                             <img class="card-img-top mx-auto d-block mt-2 rounded shadow" style="max-width: 100%; max-height: 100%; object-fit: cover; object-position: inherit" src="{{ url_for('static', filename=post.image ) }}" alt="Post image">
+                        </div>
+                        {% else %}
+                         <div style="max-height: 10rem; overflow: hidden;">
+                            <img class="card-img-top mx-auto d-block mt-2 rounded shadow" style="max-width: 100%; max-height: 100%; object-fit: cover; object-position: inherit" src="{{ url_for('static', filename='media/posts/post-default/post.jpg' ) }}" alt="Post image">
                         </div>
                     {% endif %}
                       <div class="card-body" >
@@ -110,21 +132,21 @@
                           </div>
                 </div>
     {% endfor %}
+
+
+    </div>
     {% else %}
         <div>
-                <h4 class="mt-5" style="color: #009579">
+                <h4 class="mt-5 ml-5" style="color: #009579; min-width: 20rem">
                     شرمنده! پستی پیدا نکردیم
                 </h4>
         </div>
     {% endif %}
-
-    </div>
-
     </div>
     {% if home_mode %}
 
-        <div class="col-4 ">
-        <div class="sidenav">
+        <div class="col-md-4 mt-2">
+        <div class="sidenav" style="min-width: 15rem">
     <ul class="list-group"  style="text-align: right;">
         <li class="list-group-item list-group-item" style="background-color: #009579; color: white">دسته بندی ها</li>
         {% for cat in categories %}
@@ -142,6 +164,7 @@
     </div>
 {% endblock %}
 {% block js %}
+    {% if new_posts|length >= 2 %}
 {% if home_mode %}
 
     <script>
@@ -150,5 +173,6 @@
 
 
 {% endif %}
+    {% endif %}
 {% endblock %}
 

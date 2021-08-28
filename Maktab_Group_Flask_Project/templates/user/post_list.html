@@ -44,6 +44,7 @@
                             </div>
                         </div>
                         <div class="mt-5" style="text-align: justify;">{{ post.content|safe }}</div>
+                        {% if post.tags %}
                         <div class="pt-3">
                             <p>برچسب ها:</p>
                             <ul class="tags">
@@ -53,6 +54,7 @@
                             </ul>
                         <div></div>
                         </div>
+                        {% endif %}
 
                         <a href="{{ url_for('user.edit_post', variable=post.id) }}" class="btn btn-primary mt-5">ویرایش پست</a>
                         <button type="button"  class="btn btn-danger mt-5" onclick="doDelete('{{ post.id }}', '{{ url_for('API.delete_post',variable='')}}'+'{{ post.id }}')">حذف پست</button>

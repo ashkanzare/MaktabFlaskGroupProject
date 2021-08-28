@@ -89,6 +89,8 @@
                                 </div>
                                 <div class="likes-comments">
                                     {% if g.user %}
+
+
                                     <i class="fa fa-comments-o m-2" aria-hidden="true" style="font-size: 150%" data-toggle="modal" data-target="#CommentModal" onclick="show_comments('{{ url_for('API.post_comments', variable=post.id ) }}', 1);"></i>
                                     <span class="tooltiptext">کامنت</span>
                                     {% else %}
@@ -116,6 +118,8 @@
                             <div>
                                 {% if post.comments_count == 0 %}
                                     <ul class="comment-ul" id="top-3-comments">
+                                        <span id="comment-count-realtime" class="d-none">0</span>
+
                                         <div class="d-flex mt-3"><div class="ml-3 text-secondary">بدون کامنت</div></div>
                                     </ul>
                                 {% else %}

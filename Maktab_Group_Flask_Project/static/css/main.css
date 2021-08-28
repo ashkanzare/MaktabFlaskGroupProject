@@ -3,10 +3,30 @@
 #main-body, #header-content, body {
     background-color: rgb(253, 253, 253) !important;
 }
-
-
 a {
     text-decoration: none!important;
+}
+
+@media screen and (max-width: 1000px) {
+  .sidebar, .searchbar {
+    position: relative!important;
+  }
+  .phone-image {
+      width: 2rem!important;
+  }
+  .phone-title {
+      font-size: 70%!important;
+  }
+  .search-phone {
+      width: 80%!important;
+      margin-right: 10%!important;
+  }
+  .phone-footer {
+      font-size: 70%!important;
+  }
+  .phone-footer-div {
+      margin-top: 5%!important;
+  }
 }
 
 nav {
@@ -526,14 +546,4 @@ body{
 
 #maktab-logo:hover {
     cursor: pointer;
-}
-
-.sidenav {
-  width: 100%;
-  position: sticky;
-  z-index: 1;
-  top: 50%;
-  left: 10%;
-  overflow-x: hidden;
-  padding: 8px 0;
 }

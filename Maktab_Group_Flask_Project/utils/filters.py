@@ -39,9 +39,9 @@ def date_delta(date_time):
 
 
 @bp.app_template_filter('get_name')
-def get_name(username):
+def get_name(user_id):
     """ get user name and return first_name and last_name """
-    user = User.objects(username=username).first()
+    user = User.objects(pk=user_id).first()
     return f"{user.first_name} {user.last_name}"
 
 
@@ -55,6 +55,6 @@ def convert_date(date):
 
 @bp.app_template_filter('get_info')
 def get_info(obj, index):
-    user = User.objects(pk=obj['id']).first()
+    user = User.objects(username=obj.username).first()
     info = user.first_name, user.last_name, user.date
     return info[index]

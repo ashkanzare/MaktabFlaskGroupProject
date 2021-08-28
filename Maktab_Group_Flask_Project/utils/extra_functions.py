@@ -14,13 +14,14 @@ def check_photo(image, _id, dir_name, hash_word, default_photo=''):
     if image:
         extension = image.filename.split('.')[-1]
         try:
-            os.makedirs(f'static/media/{dir_name}s/{dir_name}_{_id}/')
+            os.makedirs(f'Maktab_Group_Flask_Project/static/media/{dir_name}s/{dir_name}_{_id}/')
         except FileExistsError:
             pass
-        path = f'static/media/{dir_name}s/{dir_name}_{_id}/' + \
+        path = f'Maktab_Group_Flask_Project/static/media/{dir_name}s/{dir_name}_{_id}/' + \
                sha256(request.form[hash_word].encode()).hexdigest() + '.' + extension
+
         image.save(path)
-        photo = path[7:]
+        photo = path[34:]
     return photo
 
 
@@ -100,15 +101,15 @@ def lower_form_values(request_):
 def check_user_email_username(username, email, user_id):
     check_user = User.objects(username=username).first()
     check_email = User.objects(email=email).first()
-
-    if check_user and check_user.id != user_id:
+    print('check: ', check_user)
+    if check_user and check_user.id != user_id and check_user.username == username:
         return 'invalid_username'
 
-    elif check_email and check_email.id != user_id:
+    elif check_email and check_email.id != user_id and check_email.email == email:
         return 'invalid_email'
 
     else:
-        return True
+        return False
 
 
 def tags_changes(tags, new_post):

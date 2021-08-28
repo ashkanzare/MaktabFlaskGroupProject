@@ -1,18 +1,19 @@
 {% extends 'base.html' %}
 {% block title %}ویرایش پروفایل{% endblock %}
 {% block content %}
-{% with messages = get_flashed_messages() %}
-     {% if messages %}
-           {% for message in messages %}
-                <div class="text-danger">{{ message }}</div>
-           {% endfor %}
-     {% endif %}
-{% endwith %}
+
 <div class="text-center mt-3">
     <h3>
            ویرایش اطلاعات
     </h3>
 </div>
+    {% with messages = get_flashed_messages() %}
+     {% if messages %}
+           {% for message in messages %}
+                <div class="text-danger text-center mt-2 font-weight-bold">{{ message }}</div>
+           {% endfor %}
+     {% endif %}
+{% endwith %}
 <form method="post" enctype="multipart/form-data" class="text-right">
       <div class="form-group">
         <label for="first_name">نام</label>

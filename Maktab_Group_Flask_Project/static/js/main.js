@@ -1,5 +1,4 @@
 
-
 function search(url, url_static) {
         const container = document.getElementById('search_result');
 
@@ -12,18 +11,18 @@ function search(url, url_static) {
                   const card = document.createElement('div');
                   let post_image = post.image;
                   if ( post_image === "") {
-                      post_image = 'media/posts/post_public/post.jpg'
+                      post_image = 'media/posts/post-default/post.jpg'
                   }
                   card.classList = 'card-body';
                   const content = `
                     <div class="search-results shadow text-right mt-2 row bg-white justify-content-between rounded" onclick="window.location='/post/${post._id.$oid}';" style="min-width: 25%">
-                    <div class="mt-2 col-2 mb-2" style="max-width: 10rem"><img class="card-img-top cover" style="height: 5rem; width: auto;" src=${url_static + post_image} alt="Post image"></div>
+                    <div class="mt-2 col-2 mb-2 phone-image" style="max-width: 10rem"><img class="card-img-top cover" style="height: 5rem; width: auto;" src=${url_static + post_image} alt="Post image"></div>
                       <div class="text-center col-8 mt-4">
-                            <h3 class="card-title">${post.title}</h3>
+                            <h3 class="card-title phone-title">${post.title}</h3>
                       </div>
                       <div class="text-center col-2 mt-4 ml-2">
                
-                            <a class="writer-link" href="/user-profile/${post.author.username}">${post.author.username}</a>
+                            <a class="writer-link" href="/user-profile/${post.author}">${post.author}</a>
                       </div>
                     </div>  
                   `;
@@ -59,8 +58,12 @@ function comment(url1, url2) {
     let comment_text = comment.val()
     $.post(url1, {'comment_content': comment_text}, function(data, status) {
             let counter_elem = $('#comment-counter')
+
             let counter = Number(counter_elem.html())
+            console.log(counter_elem);
+            console.log(counter);
             let real_time_counter = $('#comment-count-realtime')
+
             let num = Number(real_time_counter.html().replace(/[٠-٩]/g, d => "٠١٢٣٤٥٦٧٨٩".indexOf(d)).replace(/[۰-۹]/g, d => "۰۱۲۳۴۵۶۷۸۹".indexOf(d)))
             real_time_counter.html(String(num+1).replace(/[0-9]/g, c => String.fromCharCode(c.charCodeAt(0) + 1728)))
             show_comments(url2, counter)
@@ -168,6 +171,8 @@ function show_comments(url, counter) {
                 let content = `
                     <div class="d-flex mt-3">
                         <div class="ml-3 text-secondary">بدون کامنت</div>
+                        <span id="comment-count-realtime" class="d-none">0</span>
+
                     </div>`
                 top_3_section.innerHTML += content
             }
@@ -208,6 +213,7 @@ $(document).ready(function(){
 /* Set the width of the sidebar to 250px and the left margin of the page content to 250px */
 
 function openNav() {
+
   document.getElementById("mySidebar").style.height = "50%";
 }
 

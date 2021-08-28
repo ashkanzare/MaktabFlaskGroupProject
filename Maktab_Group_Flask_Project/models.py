@@ -10,7 +10,7 @@ db = get_db()
 class User(db.Document):
     first_name = db.StringField(max_length=50)
     last_name = db.StringField(max_length=50)
-    username = db.StringField(max_length=50)
+    username = db.StringField(max_length=50, unique=True)
     email = db.StringField(required=False, null=True)
     photo = db.StringField(required=False, null=True)
     password = db.StringField(required=True)
@@ -31,7 +31,7 @@ class Category(db.Document):
 
 
 class Post(db.Document):
-    author = db.DictField(required=True)
+    author = db.ReferenceField(User, required=True)
     category = db.ReferenceField(Category, required=True)
     title = db.StringField(max_length=250, required=True)
     content = db.StringField(required=True)
