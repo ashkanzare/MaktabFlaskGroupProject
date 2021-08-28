@@ -3,6 +3,7 @@
 #main-body, #header-content, body {
     background-color: rgb(253, 253, 253) !important;
 }
+
 a {
     text-decoration: none!important;
 }
@@ -68,13 +69,12 @@ nav {
   border-radius: 6px;
   padding: 3px 0;
   font-size: 90%;
-
-  /* Position the tooltip */
   position: absolute;
   z-index: 1;
   top: 90%;
   left: 50%;
   margin-left: -60px;
+
 }
 
 .likes-comments:hover .tooltiptext {

@@ -26,11 +26,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if ($("#username").val() === "") {
             e.preventDefault();
-            setFormMessage(loginForm, "error", "نام کاربری را وارد گنید");
+            setFormMessage(loginForm, "error", "نام کاربری را وارد کنید");
         }
         else if ($("#password").val() === "") {
             e.preventDefault();
-            setFormMessage(loginForm, "error", "رمز عبور را وارد گنید");
+            setFormMessage(loginForm, "error", "رمز عبور را وارد کنید");
         }
 
 
