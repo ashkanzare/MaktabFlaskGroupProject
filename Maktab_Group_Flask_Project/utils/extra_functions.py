@@ -14,14 +14,14 @@ def check_photo(image, _id, dir_name, hash_word, default_photo=''):
     if image:
         extension = image.filename.split('.')[-1]
         try:
-            os.makedirs(f'Maktab_Group_Flask_Project/static/media/{dir_name}s/{dir_name}_{_id}/')
+            os.makedirs(f'static/media/{dir_name}s/{dir_name}_{_id}/')
         except FileExistsError:
             pass
-        path = f'Maktab_Group_Flask_Project/static/media/{dir_name}s/{dir_name}_{_id}/' + \
+        path = f'static/media/{dir_name}s/{dir_name}_{_id}/' + \
                sha256(request.form[hash_word].encode()).hexdigest() + '.' + extension
 
         image.save(path)
-        photo = path[34:]
+        photo = path[7:]
     return photo
 
 

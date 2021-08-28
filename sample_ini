@@ -1,2 +1,0 @@
-[PROD]
-DB_URI = mongodb+srv://niania77:niania77@flaskblogapp.phjgj.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
